@@ -1,5 +1,7 @@
 -- iter.lua
--- 
+--
+-- Collection of functions for some common tasks related to iterators.
+--
 -- Copyright (C) 2009-2013 Francesco Abbate
 -- 
 -- This program is free software; you can redistribute it and/or modify

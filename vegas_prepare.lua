@@ -3,7 +3,7 @@
 -- Create a function that can perform a VEGAS Monte Carlo multidimensional
 -- numerical integration.
 --
--- Copyright (C) 2009-2015 Francesco Abbate
+-- Copyright (C) 2009-2015 Lesley De Cruz & Francesco Abbate
 -- 
 -- This program is free software; you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by

@@ -1,5 +1,5 @@
 
-local M = {}
+local check = {}
 
 local floor = math.floor
 local type = type
@@ -16,15 +16,15 @@ local function is_real(x)
    return type(x) == 'number'
 end
 
-function M.integer(x)
+function check.integer(x)
    if not is_integer(x) then error('integer expected', 2) end
 end
 
-function M.number(x)
+function check.number(x)
    if not is_real(x) then error('number expected', 2) end
 end
 
-M.is_integer = is_integer
-M.is_real    = is_real
+check.is_integer = is_integer
+check.is_real    = is_real
 
-return M
+return check
