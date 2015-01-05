@@ -23,7 +23,7 @@ local ffi = require 'ffi'
 local bit = require 'bit'
 local band, rshift = bit.band, bit.rshift
 local gsl = require 'lgsl.gsl'
-local algo = require 'lgsl.quicksort'
+local algo = require 'lgsl.sort'
 
 local sqrt, abs, floor = math.sqrt, math.abs, math.floor
 local format = string.format
