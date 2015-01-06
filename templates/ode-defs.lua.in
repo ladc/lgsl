@@ -35,6 +35,7 @@
 # end
 
 local ffi  = require 'ffi'
+local matrix = require 'lgsl.matrix'
 
 local function ode_new()
    local n = $(N)

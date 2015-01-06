@@ -19,4 +19,4 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 local template = require 'lgsl.template'
-return template.load('lgsl/templates/rnd-defs', {})
+return template.load('lgsl.templates.rnd-defs', {})

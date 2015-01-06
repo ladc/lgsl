@@ -102,7 +102,7 @@ local function vegas_prepare(spec)
     template_spec[k] = spec[k] or v
   end
   -- initialise vegas states
-  local state = template.load('vegas-defs', template_spec)
+  local state = template.load('lgsl.templates.vegas-defs', template_spec)
   return getintegrator(state,template_spec)
 end
 

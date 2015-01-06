@@ -40,7 +40,7 @@ local function ode(spec)
    if not is_known[method] then error('unknown ode method: ' .. method) end
    spec.method = nil
 
-   local ode_loaded = template.load(method, spec)
+   local ode_loaded = template.load("lgsl.templates."..method, spec)
 
    local mt = {
       __index = {step = ode_loaded.step, init = ode_loaded.init, evolve = ode_loaded.evolve}

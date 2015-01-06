@@ -33,7 +33,7 @@ local abs, max, min = math.abs, math.max, math.min
 
 # order = 8
 
-$(include 'ode-defs')
+$(include 'lgsl.templates.ode-defs')
 
 # Abar = { '14005451/335480064',
 #	   '0',

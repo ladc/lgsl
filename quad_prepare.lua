@@ -37,7 +37,7 @@ local function quad_prepare(options)
 
    if limit < 8 then limit = 8 end
    
-   local q = template.load(method, {limit= limit, order= order})
+   local q = template.load("lgsl.templates."..method, {limit= limit, order= order})
 
    return q
 end

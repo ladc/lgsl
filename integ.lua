@@ -30,7 +30,7 @@ local function integ(f, a, b, epsabs, epsrel)
    check.number(b)
    
    if not q_default then
-      q_default = template.load('qag', {limit= 64, order= 21})
+      q_default = template.load('lgsl.templates.qag', {limit= 64, order= 21})
    end
 
    local result = q_default (f, a, b, epsabs, epsrel)

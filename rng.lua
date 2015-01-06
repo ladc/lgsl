@@ -25,6 +25,8 @@ local format, tonumber = string.format, tonumber
 
 local rng =  {}
 
+local rng_type = ffi.typeof('gsl_rng')
+
 local function rng_getint(r, seed)
    return tonumber(gsl.gsl_rng_uniform_int(r, seed))
 end

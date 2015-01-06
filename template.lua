@@ -79,7 +79,7 @@ end
 
 local function process(name, defs)
    local path = package.path
-   local filename, errmsg = package.searchpath(name, path:gsub("%.lua([;$])",".lua.in%1"))
+   local filename, errmsg = package.searchpath(name,(path:gsub("%.lua([;$])",".lua.in%1")))
    if not filename then error(errmsg) end
    local template = read_file(filename)
    local codegen = preprocess(template, 'template_gen', defs)

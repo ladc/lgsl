@@ -30,7 +30,7 @@ local abs, max, min = math.abs, math.max, math.min
 
 # order = 5
 
-$(include 'ode-defs')
+$(include 'lgsl.templates.ode-defs')
 
 # AH = { '1/4', '3/8', '12/13', '1', '1/2' }
 

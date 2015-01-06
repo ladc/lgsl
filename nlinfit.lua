@@ -45,7 +45,7 @@ local function nlinfit(spec)
    end
 
    local n, p = spec.n, spec.p
-   local s = { lm = template.load('lmfit', {N= n, P= p}) }
+   local s = { lm = template.load('lgsl.templates.lmfit', {N= n, P= p}) }
 
    setmetatable(s, NLINFIT)
 
