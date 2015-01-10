@@ -1,8 +1,9 @@
 
 local demo_list = {}
-local demo_flatlist={}
+local demo_flatlist = {}
+local group_flatlist = {}
 
-local function load_demo(name)
+local function load_demo_file(name)
    io.write("Load demo ",name,": ")
    local record = require(name)
    assert(type(record)=="table","Demo must return table: "..name)
@@ -11,6 +12,7 @@ local function load_demo(name)
    if not section then
       section = {}
       demo_list[group] = section
+      group_flatlist[#group_flatlist+1]=group
    end
    local i = #section
    for k, v in ipairs(info) do
@@ -31,16 +33,8 @@ end
 local demo_files = {
   'fft', 'bspline', 'wave-particle', 'plot', 'fractals', 
   'ode', 'nlinfit', 'integ', 'anim', 'linfit', 
--- 'contour', 'svg', 'graphics', 
   'sf', 'vegas', 
---  'gdt-lm'
 }
-
-for i, name in ipairs(demo_files) do
-   load_demo(name)
-end
-
-io.write("demos = {",list2string(demo_flatlist),"}\n\n")
 
 local function print_demos_list()
    for group, t in pairs(demo_list) do
@@ -74,9 +68,9 @@ local function listcontains(list,item)
 end
 
 local function rundemos(dflist) -- Optional list of demofunction names or string.match regexps (eg. anim will match anim1 and anim2)
- for group, d in pairs(demo_list) do
+ for i, group in ipairs(group_flatlist) do
     local categoryshown=false
-    for i,v in ipairs(d) do
+    for j,v in ipairs(demo_list[group]) do
       if not dflist or listcontains(dflist,v.name) then
         if not categoryshown then 
           categoryshown=true    
@@ -90,11 +84,24 @@ local function rundemos(dflist) -- Optional list of demofunction names or string
  end
 end
 
+for i, name in ipairs(demo_files) do
+   load_demo_file(name)
+end
+
+io.write("demos = {",list2string(demo_flatlist),"}\n\n")
+
 -- local alldemos = {"fft1", "fft2", "fft3", "bspline1", "wave", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "nlfit1", "nlfit2", "numint", "anim1", "anim2", "anim3", "linfit1", "linfit2", "sf1", "sf2", "vegas", "sphere"}
 
-local demos = {"fft1", "fft2", "fft3", "bspline1", "wave", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "nlfit1", "nlfit2", "numint", "anim1", "anim2", "anim3", "linfit1", "linfit2", "sf1", "sf2", "vegas", "sphere"}
-rundemos(arg[1] and arg or demos)
+local working_demos = {"fft1", "fft2", "fft3", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "numint", "anim1", "anim2", "anim3", "sf1", "sf2", "vegas", "sphere"}
+local broken_demos = { "bspline1", "wave", "nlfit1", "nlfit2", "linfit1", "linfit2"}
 
+if arg[1] then
+  rundemos(arg)
+else
+  rundemos(working_demos)
+  io.write("\nThe following demos currently fail:\n\n")
+  rundemos(broken_demos)
+end
 return {
    list = print_demos_list,
    load = load_demo,
