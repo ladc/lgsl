@@ -20,7 +20,7 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-local template = require 'lgsl.template'
+local template = require("lgsl.template")
 
 local function ode(spec)
    local required = {N= 'number', eps_abs= 'number'}

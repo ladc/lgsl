@@ -82,7 +82,7 @@ local function rundemos(dflist) -- Optional list of demofunction names or string
           categoryshown=true    
           io.write("Category: ",group,"\n")
         end
-        io.write(string.format("  %s.%s: %s\n",v.fname,v.name,v.description),"\n")
+        io.write(string.format("  %s.%s: %s\n",v.fname,v.name,v.description))
         io.flush()
         v.f()
       end

@@ -27,7 +27,7 @@
 -- Modified by: Brian Gough, 12/2000
 -- Adapted for LuaJIT2 by Lesley De Cruz and Francesco Abbate, 2012
 
-local ffi = require 'ffi'
+local ffi = require("ffi")
 
 local floor, min, max = math.floor, math.min, math.max
 local modf, sqrt, log  = math.modf, math.sqrt, math.log

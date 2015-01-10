@@ -29,7 +29,7 @@
 
 local abs, min, max, pow = math.abs, math.min, math.max, math.pow
 
-local ffi = require "ffi"
+local ffi = require("ffi")
 
 $(include 'lgsl.templates.gauss-kronrod-x-wgs')
 

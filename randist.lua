@@ -20,7 +20,7 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-local gsl = require 'lgsl.gsl'
+local gsl = require("lgsl.gsl")
 
 local randist = {
    bernoulli_pdf = gsl.gsl_ran_bernoulli_pdf,

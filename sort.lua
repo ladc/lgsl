@@ -6,7 +6,7 @@
 -- Copyright (C) 2009-2015 Francesco Abbate.
 --
 
-local bit = require 'bit'
+local bit = require("bit")
 
 local band, rshift = bit.band, bit.rshift
 

@@ -19,7 +19,7 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-local template = require 'lgsl.template'
+local template = require("lgsl.template")
 local NLINFIT_METHODS = {
    set     = function(ss, fdf, x0) return ss.lm.set(fdf, x0) end,
    iterate = function(ss) return ss.lm.iterate() end,

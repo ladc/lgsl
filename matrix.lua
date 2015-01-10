@@ -19,23 +19,23 @@
 -- along with this program; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-local ffi = require 'ffi'
-local bit = require 'bit'
+local ffi = require("ffi")
+local bit = require("bit")
 local band, rshift = bit.band, bit.rshift
-local gsl = require 'lgsl.gsl'
-local algo = require 'lgsl.sort'
+local gsl = require("lgsl.gsl")
+local algo = require("lgsl.sort")
 
 local sqrt, abs, floor = math.sqrt, math.abs, math.floor
 local format = string.format
 
-local check = require 'lgsl.check'
+local check = require("lgsl.check")
 local is_integer, is_real = check.is_integer, check.is_real
 
 local gsl_matrix         = ffi.typeof('gsl_matrix')
 local gsl_matrix_complex = ffi.typeof('gsl_matrix_complex')
 local gsl_complex        = ffi.typeof('complex')
 
-local gsl_check = require 'lgsl.gsl-check'
+local gsl_check = require("lgsl.gsl-check")
 local tonumber = tonumber
 
 local NT = gsl.CblasNoTrans

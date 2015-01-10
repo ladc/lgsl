@@ -1,6 +1,6 @@
 
-local ffi = require 'ffi'
-local gsl = require 'lgsl.gsl'
+local ffi = require("ffi")
+local gsl = require("lgsl.gsl")
 
 local function gsl_check(status)
    if status ~= 0 then

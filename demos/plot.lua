@@ -1,10 +1,6 @@
 local graph = require("graph")
-local rng = require("lgsl.rng")
-local rnd = require("lgsl.rnd")
-local matrix = require("lgsl.matrix")
-local complex = require("lgsl.complex")
-local iter = require("lgsl.iter")
-local f = require("lgsl.fft")
+local lgsl = require("lgsl")
+local rng,rnd,matrix,complex,iter,f = lgsl.rng,lgsl.rnd,lgsl.matrix,lgsl.complex,lgsl.iter,lgsl.fft
 local fft, fftinv = f.fft, f.fftinv
 local sqrt, pi, exp, floor = math.sqrt, math.pi, math.exp, math.floor
 

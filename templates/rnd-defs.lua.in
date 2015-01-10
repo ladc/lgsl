@@ -15,7 +15,7 @@
 #   return table.concat(t, "\n")
 # end
 
-local gsl = require 'lgsl.gsl'
+local gsl = require("lgsl.gsl")
 
 local rnd = {}
 

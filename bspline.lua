@@ -18,10 +18,10 @@
 -- along with this program; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-local ffi = require 'ffi'
-local gsl = require 'lgsl.gsl'
-local matrix = require 'lgsl.matrix' 
-local gsl_check = require 'lgsl.gsl-check'
+local ffi = require("ffi")
+local gsl = require("lgsl.gsl")
+local matrix = require("lgsl.matrix") 
+local gsl_check = require("lgsl.gsl-check")
 
 local function eval(bs, x)
    local dof, ws = bs.dof, bs.ws

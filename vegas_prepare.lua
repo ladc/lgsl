@@ -20,8 +20,8 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-local ffi = require 'ffi'
-local template = require 'lgsl.template'
+local ffi = require("ffi")
+local template = require("lgsl.template")
 
 local abs  = math.abs
 

@@ -19,8 +19,8 @@
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 
-local template = require 'lgsl.template'
-local check = require 'lgsl.check'
+local template = require("lgsl.template")
+local check = require("lgsl.check")
 
 local function quad_prepare(options)
    local known_methods = {qng= true, qag= true}

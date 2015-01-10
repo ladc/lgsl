@@ -18,15 +18,15 @@
 -- along with this program; if not, write to the Free Software
 -- Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-local ffi = require 'ffi'
-local bit = require 'bit'
-local gsl = require 'lgsl.gsl'
-local matrix = require 'lgsl.matrix'
-local complex = require 'lgsl.complex'
+local ffi = require("ffi")
+local bit = require("bit")
+local gsl = require("lgsl.gsl")
+local matrix = require("lgsl.matrix")
+local complex = require("lgsl.complex")
 
-local gsl_check = require 'lgsl.gsl-check'
+local gsl_check = require("lgsl.gsl-check")
 
-local check     = require 'lgsl.check'
+local check     = require("lgsl.check")
 local is_integer = check.is_integer
 
 local tobit, band, rshift = bit.tobit, bit.band, bit.rshift
