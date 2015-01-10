@@ -169,7 +169,7 @@ local function quicksort(array, i0, i1, f)
         end
     end
 
-    local complete = quicksort_loop(i0, i1, 2 * lg2(i1 - i0 + 1))
+    quicksort_loop(i0, i1, 2 * lg2(i1 - i0 + 1))
     insertion_sort(array, f, i0, i1)
 end
 
