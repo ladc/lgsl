@@ -4,16 +4,18 @@ source = {
    url = "git://github.com/ladc/lgsl",
 }
 description = {
-   summary = "LGSL: the Lua GSL project",
+   summary = "Numerical algorithms for Lua based on the GSL Library",
    detailed = [[
-      LGSL is a collection of numeric algorithms and functions for Lua, based on the
+      LGSL is a collection of numerical algorithms and functions for Lua, based on the
       GNU Scientific Library (GSL). It allows matrix/vector manipulation and linear
       algebra operations. 
 
-      LGSL is not just a wrapper over the C API of GSL but offers a much more simple
-      and expressive way to use GSL. The objective of LGSL is to give the user the
-      power to easily access GSL functions without having to write a complete C
-      application.
+      LGSL is not just a wrapper over the C API of GSL but offers a much more
+      simple and expressive way to use GSL. The objective of LGSL is to give
+      the user the power to easily access GSL functions without having to write
+      a complete C application.
+
+      LGSL is based on the numerical modules of GSL Shell.
    ]],
    homepage = "http://www.nongnu.org/gsl-shell/",
    license = "GPL-3",

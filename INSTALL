@@ -2,30 +2,43 @@
 Install Instructions
 --------------------
 
-LGSL is implemented as a set of Lua files and does depend on LuaJIT 2.0 and on the GSL Library at least with the version 1.14.
-As the implementation is in Lua no compilation is needed.
+LGSL is implemented as a set of Lua files and depends on LuaJIT (version 2.0 or
+higher) and on the GSL library (version 1.14 or higher).  As the implementation
+is in Lua, no compilation is needed.
 
-The standard method to install the files is to type "make install" from the source directory.
-The command will install all the required files in a system-wide directory in the package search path of Lua and requires sudo privileges.
-Before installing you may change the PREFIX directory in "Makefile".
+The standard method to install the files is to type "make install" from the
+source directory.  The command will install all the required files in a
+system-wide directory in the package search path of Lua and requires sudo
+privileges.  Before installing you may change the PREFIX directory in
+"Makefile" or with "make install PREFIX=/path/to/install".
 
-On Debian based systems like Ubuntu or Debian itself the package can be installed by using a Debian package.
-The command "make debian" or simply "make" will build a debian package in the source code directory.
-Once the package is created it can be installed with sudo privileges using the command:
+The easiest way to install and update LGSL is with LuaRocks. 
+
+> luarocks install lgsl-<version>.rockspec
+
+For instance, to install the latest development version, run
+
+> luarocks install https://rawgit.com/ladc/lgsl/master/lgsl-scm-1.rockspec
+
+On Debian-based systems like Ubuntu or Debian itself, the package can be
+installed from a Debian package.  The command "make debian" or simply "make"
+will build a Debian package in the source code directory.  Once the package is
+created, it can be installed with sudo privileges using the command:
 
 > sudo dpkg -i <name-of-debian-package>
 
 Recommended Packages
 --------------------
 
-If you want to create some plots you may install the Lua Graphics Toolkit.
-This latter can be found on github at the address:
+If you want to create plots, you may install the Lua Graphics Toolkit:
 
 https://github.com/franko/graph-toolkit
-
 
 Manual Installation
 -------------------
 
-To install manually the package the files contained in the "src" directory should be copied inside a folder named "lgsl". This latter shoud be copied in a directory included in the standard Lua search path such as /usr/share/lua/5.1.
-The files included in src/templates should be included as well by copying them in a subfolder named "templates".
+To manually install the package, the files contained in the "src" directory
+should be copied inside a folder named "lgsl". This latter shoud be copied in a
+directory included in the standard Lua search path such as /usr/share/lua/5.1.
+The files included in src/templates should be included as well by copying them
+in a subfolder named "templates".
