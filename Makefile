@@ -1,13 +1,13 @@
 
 PACKAGE_NAME = luajit-lgsl
-VERSION = 1.0
+VERSION = 0.1
 LUA = luajit
 
 DEB_PACKAGE = $(PACKAGE_NAME)_$(VERSION)-1_$(ARCH).deb
 
 ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
-PREFIX = /usr
+PREFIX = /usr/local
 DEBIAN = debian_build$(PREFIX)
 
 LUA_SRC = bspline.lua check.lua complex.lua csv.lua eigen.lua fft.lua \
