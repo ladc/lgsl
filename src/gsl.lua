@@ -2678,14 +2678,17 @@ size_t
 gsl_interp_bsearch(const double x_array[], double x,
                    size_t index_lo, size_t index_hi);
 
+void *dlopen(const char *filename, int flag);
 ]]
 
 
-ffi.load(ffi.os == "Windows" and "libblas" or "blas",true)
 if jit.os == 'Linux' then
+        ffi.C.dlopen("/usr/lib/libblas.so", 0x0102)
 	return ffi.load('gsl')
 elseif jit.os == 'OSX' then
+        ffi.C.dlopen("/usr/lib/libblas.dylib", 0x0102)
 	return ffi.load('libgsl.0.dylib')
 else
+        ffi.load("libblas",true)
 	return ffi.load('libgsl-0')
 end
