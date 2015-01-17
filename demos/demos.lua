@@ -92,15 +92,12 @@ io.write("demos = {",list2string(demo_flatlist),"}\n\n")
 
 -- local alldemos = {"fft1", "fft2", "fft3", "bspline1", "wave", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "nlfit1", "nlfit2", "numint", "anim1", "anim2", "anim3", "linfit1", "linfit2", "sf1", "sf2", "vegas", "sphere"}
 
-local working_demos = {"fft1", "fft2", "fft3", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "numint", "anim1", "anim2", "anim3", "sf1", "sf2", "vegas", "sphere"}
-local broken_demos = { "bspline1", "wave", "nlfit1", "nlfit2", "linfit1", "linfit2"}
+local working_demos = {"fft1", "fft2", "fft3", "gaussian", "fftplot", "vonkoch", "levyc", "pitags", "pitaga", "numint", "anim1", "anim2", "anim3", "sf1", "sf2", "vegas", "sphere", "bspline1", "wave", "nlfit1", "nlfit2", "linfit1", "linfit2"}
 
 if arg[1] then
   rundemos(arg)
 else
   rundemos(working_demos)
-  io.write("\nThe following demos currently fail:\n\n")
-  rundemos(broken_demos)
 end
 return {
    list = print_demos_list,
