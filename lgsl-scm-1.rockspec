@@ -8,7 +8,7 @@ description = {
    detailed = [[
       LGSL is a collection of numerical algorithms and functions for Lua, based on the
       GNU Scientific Library (GSL). It allows matrix/vector manipulation and linear
-      algebra operations. 
+      algebra operations.
 
       LGSL is not just a wrapper over the C API of GSL but offers a much more
       simple and expressive way to use GSL. The objective of LGSL is to give
@@ -57,9 +57,11 @@ build = {
       ["lgsl.ode"] = "src/ode.lua",
       ["lgsl.quad_prepare"] = "src/quad_prepare.lua",
       ["lgsl.vegas_prepare"] = "src/vegas_prepare.lua",
+      ["lgsl.demos"] = "demos/demos.lua",
    },
    install = {
       lua = {
+          -- templates
           ["lgsl.templates.gauss-kronrod-x-wgs"] = "src/templates/gauss-kronrod-x-wgs.lua.in",
           ["lgsl.templates.lmfit"] = "src/templates/lmfit.lua.in",
           ["lgsl.templates.ode-defs"] = "src/templates/ode-defs.lua.in",
@@ -72,6 +74,21 @@ build = {
           ["lgsl.templates.rnd-defs"] = "src/templates/rnd-defs.lua.in",
           ["lgsl.templates.sf-defs"] = "src/templates/sf-defs.lua.in",
           ["lgsl.templates.vegas-defs"] = "src/templates/vegas-defs.lua.in",
+          -- demos
+          ["lgsl.demos.anim"] = "demos/anim.lua",
+          ["lgsl.demos.bspline"] = "demos/bspline.lua",
+          ["lgsl.demos.demos"] = "demos/demos.lua",
+          ["lgsl.demos.fft"] = "demos/fft.lua",
+          ["lgsl.demos.fractals"] = "demos/fractals.lua",
+          ["lgsl.demos.integ"] = "demos/integ.lua",
+          ["lgsl.demos.linfit"] = "demos/linfit.lua",
+          ["lgsl.demos.nlinfit"] = "demos/nlinfit.lua",
+          ["lgsl.demos.ode"] = "demos/ode.lua",
+          ["lgsl.demos.plot"] = "demos/plot.lua",
+          ["lgsl.demos.roots"] = "demos/roots.lua",
+          ["lgsl.demos.sf"] = "demos/sf.lua",
+          ["lgsl.demos.vegas"] = "demos/vegas.lua",
+          ["lgsl.demos.wave-particle"] = "demos/wave-particle.lua",
       },
    },
    copy_directories = { "demos" },

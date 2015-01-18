@@ -1,4 +1,4 @@
-local gsl_roots = require("roots")
+local gsl_roots = require("lgsl.demos.roots")
 local graph = require("graph")
 local iter = require("lgsl.iter")
 local matrix = require("lgsl.matrix")
