@@ -40,9 +40,9 @@ end
 
 -- Print overview of demos per group.
 local function print_demos_list()
-   for group, t in pairs(demo_list) do
+   for _,group in ipairs(group_flatlist) do
       io.write('*** ', group, '\n')
-      for k, v in ipairs(t) do
+      for k, v in ipairs(demo_list[group]) do
          print(v.name .. ' (from '..v.fname..') ' .. v.description)
       end
       print ''
