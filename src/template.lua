@@ -9,9 +9,9 @@ local M = {}
 -------------------------------------------------------------------------------
 local function preprocess(chunk, name, defs)
 
-   local function parseDollarParen(pieces, chunk, s, e)
+   local function parseDollarParen(pieces, chunk)
       local append, format = table.insert, string.format
-      s = 1
+      local s = 1
       for term, executed, e in chunk:gmatch("()$(%b())()") do
 	 append(pieces,
 		format("%q..(%s or '')..", chunk:sub(s, term - 1), executed))
