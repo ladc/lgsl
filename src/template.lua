@@ -77,10 +77,23 @@ local function read_file(filename)
    return content
 end
 
-local function process(name, defs)
+local function locate_template_file(name)
    local path = package.path
    local filename, errmsg = package.searchpath(name,(path:gsub("%.lua([;$])",".lua.in%1")))
-   if not filename then error(errmsg) end
+   if not filename then
+      -- Try to search the template file locally, in the source folder.
+      local local_filename = string.gsub(name, "lgsl%.templates%.", "src/templates/") .. ".lua.in"
+      local ftest = io.open(local_filename, "r")
+      if ftest then
+         ftest.close()
+         return local_filename
+      end
+   end
+   return filename, errmsg
+end
+
+local function process(name, defs)
+   local filename = assert(locate_template_file(name))
    local template = read_file(filename)
    local codegen = preprocess(template, 'template_gen', defs)
    local code = {}
