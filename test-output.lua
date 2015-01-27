@@ -2,6 +2,7 @@
 local lfs = require("lfs")
 local test_dir = "tests"
 local log_dir = test_dir.."/log"
+package.path = "./?.lua;"..package.path
 
 local function reference_output(dirpath,testname)
   local f, err = io.open(dirpath.."/"..testname..".expect")
