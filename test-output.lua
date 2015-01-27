@@ -41,6 +41,7 @@ do
   end
 end
 
+local status = 0
 for testfile in lfs.dir(test_dir) do
   local fullname = test_dir.."/"..testfile
   if lfs.attributes(fullname).mode=="file" and testfile:find("%.lua$") then
@@ -60,16 +61,14 @@ for testfile in lfs.dir(test_dir) do
     local out_log
     if not err then
       record()
-      local status, run_err = pcall(loaded_test)
+      local run_ok, run_err = pcall(loaded_test)
       out_log = record("stop")
-      if not status then
+      if not run_ok then
         err = "failed to run: "..run_err
       end
     end
     local led, msg
-    if err then
-      led, msg = "E","error"
-    elseif out_log == out_ref then
+    if not err and out_log == out_ref then
       if out_log:find("^\r?\n?$") then
         led, msg = "-", "pass / no output"
       else
@@ -77,14 +76,18 @@ for testfile in lfs.dir(test_dir) do
       end
     else
       led, msg = "*","fail"
-      local log = io.open(log_dir.."/"..testname..".output.diff", "w")
-      if not log then err = "Could not open log file for writing."
-      else
-        log:write("*** reference ***\n",out_ref,"\n")
-        log:write("*** test program ***\n",out_log,"\n")
-        log:close()
+      status = 1
+      if not err then
+        local log = io.open(log_dir.."/"..testname..".output.diff", "w")
+        if not log then err = "Could not open log file for writing."
+        else
+          log:write("*** reference ***\n",out_ref,"\n")
+          log:write("*** test program ***\n",out_log,"\n")
+          log:close()
+        end
       end
     end
     print(string.format("%s %-24s %-6s %s",led, testname, msg, err or ""))
   end
 end
+os.exit(status)
