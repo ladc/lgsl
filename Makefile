@@ -29,16 +29,16 @@ $(DEB_PACKAGE):
 	@echo "creating debian package $(DEB_PACKAGE)"
 	@mkdir -p $(DEBIAN)/share/lua/5.1/lgsl
 	@mkdir -p $(DEBIAN)/share/lua/5.1/lgsl/templates
-	@cp $(LUA_SRC:%.lua=src/%.lua) $(DEBIAN)/share/lua/5.1/lgsl
-	@cp $(LUA_TEMPLATES_SRC:%.lua.in=src/templates/%.lua.in) $(DEBIAN)/share/lua/5.1/lgsl/templates
+	@cp $(LUA_SRC:%.lua=lgsl/%.lua) $(DEBIAN)/share/lua/5.1/lgsl
+	@cp $(LUA_TEMPLATES_SRC:%.lua.in=lgsl/templates/%.lua.in) $(DEBIAN)/share/lua/5.1/lgsl/templates
 	@fakeroot bash debian/build.sh $(PACKAGE_NAME) $(VERSION) $(LUA)
 
 install:
 	@echo "copying files in $(PREFIX)/share/lua/5.1/lgsl"
 	@mkdir -p $(PREFIX)/share/lua/5.1/lgsl
 	@mkdir -p $(PREFIX)/share/lua/5.1/lgsl/templates
-	@cp $(LUA_SRC:%.lua=src/%.lua) $(PREFIX)/share/lua/5.1/lgsl
-	@cp $(LUA_TEMPLATES_SRC:%.lua.in=src/templates/%.lua.in) $(PREFIX)/share/lua/5.1/lgsl/templates
+	@cp $(LUA_SRC:%.lua=lgsl/%.lua) $(PREFIX)/share/lua/5.1/lgsl
+	@cp $(LUA_TEMPLATES_SRC:%.lua.in=lgsl/templates/%.lua.in) $(PREFIX)/share/lua/5.1/lgsl/templates
 
 clean:
 	@echo "cleaning"

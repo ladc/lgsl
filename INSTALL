@@ -37,8 +37,8 @@ https://github.com/franko/graph-toolkit
 Manual Installation
 -------------------
 
-To manually install the package, the files contained in the "src" directory
+To manually install the package, the files contained in the "lgsl" directory
 should be copied inside a folder named "lgsl". This latter shoud be copied in a
 directory included in the standard Lua search path such as /usr/share/lua/5.1.
-The files included in src/templates should be included as well by copying them
+The files included in lgsl/templates should be included as well by copying them
 in a subfolder named "templates".
