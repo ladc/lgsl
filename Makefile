@@ -45,4 +45,7 @@ clean:
 	@rm -fr debian_build
 	@rm -fr $(DEB_PACKAGE)
 
-.PHONY: clean debian install
+test:
+	$(LUA) test-output.lua
+
+.PHONY: clean debian install test
