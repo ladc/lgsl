@@ -6,6 +6,8 @@ from glob import glob
 
 test_dir = "tests"
 luajit_exec = "luajit"
+env = os.environ.copy()
+env['LUA_PATH']= "./?.lua;;"
 
 if not os.path.isdir("tests/log"):
     try:
@@ -38,7 +40,7 @@ for dirpath, dirnames, filenames in os.walk(test_dir):
             out_tst = None
             run_error = None
             try:
-                process = subprocess.Popen([luajit_exec, fullname], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env = {'LUA_INIT': "@local_exec.lua"})
+                process = subprocess.Popen([luajit_exec, fullname], stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
                 out_tst, out_errors = process.communicate()
             except subprocess.CalledProcessError:
                 run_error = "fail to run"
