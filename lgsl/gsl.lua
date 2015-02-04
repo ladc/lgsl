@@ -2678,6 +2678,9 @@ size_t
 gsl_interp_bsearch(const double x_array[], double x,
                    size_t index_lo, size_t index_hi);
 
+int
+gsl_fcmp (double x, double y, double epsilon);
+
 void *dlopen(const char *filename, int flag);
 char *dlerror(void);
 ]]
