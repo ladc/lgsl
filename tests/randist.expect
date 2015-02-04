@@ -1,0 +1,65 @@
+Pass gaussian_pdf(x, sigma)        :  3.969525474770118e-01
+Pass gaussian_P(x, sigma)          :  5.398278372770290e-01
+Pass gaussian_Q(x, sigma)          :  4.601721627229710e-01
+Pass gaussian_Pinv(x, sigma)       : -1.281551565544601e+00
+Pass gaussian_Qinv(x, sigma)       :  1.281551565544601e+00
+Pass exponential_pdf(x, mu)        :  9.048374180359595e-01
+Pass exponential_P(x, mu)          :  9.516258196404043e-02
+Pass exponential_Q(x, mu)          :  9.048374180359595e-01
+Pass exponential_Pinv(x, mu)       :  1.053605156578263e-01
+Pass exponential_Qinv(x, mu)       :  2.302585092994045e+00
+Pass chisq_pdf(x, nu)              :  1.142894236600128e-06
+Pass chisq_P(x, nu)                :  2.563032539662434e-08
+Pass chisq_Q(x, nu)                :  9.999999743696746e-01
+Pass chisq_Pinv(x, nu)             :  4.168159008146109e+00
+Pass chisq_Qinv(x, nu)             :  1.468365657325983e+01
+Pass laplace_pdf(x, a)             :  1.612026834136676e-01
+Pass laplace_P(x, a)               :  5.163919497589970e-01
+Pass laplace_Q(x, a)               :  4.836080502410030e-01
+Pass laplace_Pinv(x, a)            : -4.828313737302301e+00
+Pass laplace_Qinv(x, a)            :  4.828313737302301e+00
+Pass tdist_pdf(x, nu)              :  3.858863266209659e-01
+Pass tdist_P(x, nu)                :  5.387317760216594e-01
+Pass tdist_Q(x, nu)                :  4.612682239783406e-01
+Pass tdist_Pinv(x, nu)             : -1.383028738396633e+00
+Pass tdist_Qinv(x, nu)             :  1.383028738396633e+00
+Pass cauchy_pdf(x, a)              :  1.059855336904963e-01
+Pass cauchy_P(x, a)                :  5.106064024055355e-01
+Pass cauchy_Q(x, a)                :  4.893935975944646e-01
+Pass cauchy_Pinv(x, a)             : -9.233050611525762e+00
+Pass cauchy_Qinv(x, a)             :  9.233050611525762e+00
+Pass rayleigh_pdf(x, sigma)        :  9.950124791926823e-02
+Pass rayleigh_P(x, sigma)          :  4.987520807317688e-03
+Pass rayleigh_Q(x, sigma)          :  9.950124791926823e-01
+Pass rayleigh_Pinv(x, sigma)       :  4.590436050264208e-01
+Pass rayleigh_Qinv(x, sigma)       :  2.145966026289347e+00
+Pass fdist_pdf(x, nu1, nu2)        :  8.638375985314765e-01
+Pass fdist_P(x, nu1, nu2)          :  9.297052154195022e-02
+Pass fdist_Q(x, nu1, nu2)          :  9.070294784580498e-01
+Pass fdist_Pinv(x, nu1, nu2)       :  1.081851067789194e-01
+Pass fdist_Qinv(x, nu1, nu2)       :  4.324555320336761e+00
+Pass gamma_pdf(x, a, b)            :  5.945183903129460e-04
+Pass gamma_P(x, a, b)              :  2.006749362439790e-05
+Pass gamma_Q(x, a, b)              :  9.999799325063756e-01
+Pass gamma_Pinv(x, a, b)           :  2.204130656498644e+00
+Pass gamma_Qinv(x, a, b)           :  1.064464067566841e+01
+Pass beta_pdf(x, a, b)             :  1.079999999999999e-01
+Pass beta_P(x, a, b)               :  3.699999999999995e-03
+Pass beta_Q(x, a, b)               :  9.963000000000000e-01
+Pass beta_Pinv(x, a, b)            :  3.204605837218185e-01
+Pass beta_Qinv(x, a, b)            :  8.574406832899693e-01
+Pass gaussian_tail_pdf(5, a, sigma):  1.101356902446165e-03
+Pass exppow_pdf(x, a, b)           :  1.878543514563088e-01
+Pass exppow_P(x, a, b)             :  5.187993564692450e-01
+Pass exppow_Q(x, a, b)             :  4.812006435307550e-01
+Pass lognormal_pdf(x, zeta, sigma) :  1.707930831120359e-02
+Pass lognormal_P(x, zeta, sigma)   :  4.789900863651144e-04
+Pass lognormal_Q(x, zeta, sigma)   :  9.995210099136349e-01
+Pass lognormal_Pinv(x, zeta, sigma):  7.546120026931251e-01
+Pass lognormal_Qinv(x, zeta, sigma):  9.791861344054885e+00
+Pass binomial_pdf(x, p, n)         :  1.679615999999999e-02
+Pass binomial_P(x, p, n)           :  1.679615999999999e-02
+Pass binomial_Q(x, p, n)           :  9.832038400000001e-01
+Pass poisson_pdf(x, mu)            :  3.678794411714423e-01
+Pass poisson_P(x, mu)              :  3.678794411714423e-01
+Pass poisson_Q(x, mu)              :  6.321205588285578e-01
