@@ -1,0 +1,2 @@
+sqrt(5):    iter =   4	x = 2.236		error = 9.181e-07	estimated error = 2.026e-03
+rosenbrock: iter =   3	x = (1.000,1.000)	f(x) = (1.998e-15,4.441e-15)	  error = 4.870e-15
