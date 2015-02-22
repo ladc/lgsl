@@ -118,7 +118,7 @@ $(SF_DECLARE('clausen', SF_NAME('clausen'), 1))
 
 $(SF_DECLARE('hydrogenicR_1', SF_NAME('hydrogenicR_1'), 2))
 $(SF_DECLARE('coulomb_CL', SF_NAME('coulomb_CL'), 2))
-$(SF_DECLARE('hydrogenicR', SF_NAME('hydrogenicR'), 2))
+$(SF_DECLARE('hydrogenicR', SF_NAME('hydrogenicR'), 4))
 
 local function wave_wrap()
 	local F = ffi.new("gsl_sf_result")
@@ -203,6 +203,7 @@ $(SF_DECLARE('dilog', SF_NAME('dilog'), 1))
 
 $(SF_DECLARE('ellint_Kcomp', SF_NAME('ellint_Kcomp'), 1, 'DOUBLE'))
 $(SF_DECLARE('ellint_Ecomp', SF_NAME('ellint_Ecomp'), 1, 'DOUBLE'))
+$(SF_DECLARE('ellint_Pcomp', SF_NAME('ellint_Pcomp'), 2, 'DOUBLE'))
 
 $(SF_DECLARE('ellint_F', SF_NAME('ellint_F'), 2, 'DOUBLE'))
 $(SF_DECLARE('ellint_E', SF_NAME('ellint_E'), 2, 'DOUBLE'))
