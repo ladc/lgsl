@@ -26,7 +26,11 @@ do
   local old_print, old_write = print, io.write
   local out_buffer
   local function rec_print(...)
-    out_buffer = (out_buffer or "")..table.concat({...},"\t").."\n"
+    local args = {...}
+    for i,v in ipairs(args) do
+      args[i]=tostring(v)
+    end
+    out_buffer = (out_buffer or "")..table.concat(args,"\t").."\n"
   end
   local function rec_write(...)
     out_buffer = (out_buffer or "")..table.concat({...})
