@@ -48,4 +48,4 @@ xini = m.vec{-10,-5}
 -- Run root finder
 res = gnewton.run(fR,dfR,xini,opts)
 local x = res.x
-printf("rosenbrock: iter = %3u\tx = (%.3f,%.3f)\tf(x) = (%.3e,%.3e)\t  error = %.3e\n",res.iter,x[1],x[2],res.f(x)[1],res.f(x)[2],(res.f(x)):norm())
+printf("rosenbrock: iter = %3u\tx = (%.3f,%.3f)\tf(x) = (%.3e,%.3e)\t  error = %.3e\n",res.iter,x[1],x[2],res.f(x)[1],res.f(x)[2],res.phi)
