@@ -90,6 +90,7 @@ end
 --        - x: location of the root found
 --        - dx: final step
 --        - phi: norm of the residual of f(x)
+--        - iter: number of iterations
 --
 local function gnewton_run(f, df, x0, opts, s)
   s = s or gnewton_getstate(f, df, x0)
