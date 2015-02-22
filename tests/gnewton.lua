@@ -21,11 +21,12 @@ end
 
 local xini = m.vec{5.0}
 
-local r_expected = sqrt(5)
-
 -- Run root finder
 local res = gnewton.run(f5,df5,xini,opts)
-printf ("sqrt(5):    iter = %3u\tx = %.3f\t\terror = %.3e\testimated error = %.3e\n",res.iter,res.x[1],res.x[1] - r_expected, res.dx:norm())
+
+printf(
+  "sqrt(5):    iter = %3u\tx = %.3f\t\terror = %.3e\testimated error = %.3e\n",
+  res.iter,res.x[1],res.x[1] - sqrt(5), res.dx:norm())
 
 --------------------------------------------------------------------------------
 -- Example 2: Rosenbrock
@@ -47,5 +48,8 @@ xini = m.vec{-10,-5}
 
 -- Run root finder
 res = gnewton.run(fR,dfR,xini,opts)
+
 local x = res.x
-printf("rosenbrock: iter = %3u\tx = (%.3f,%.3f)\tf(x) = (%.3e,%.3e)\t  error = %.3e\n",res.iter,x[1],x[2],res.f(x)[1],res.f(x)[2],res.phi)
+printf(
+  "rosenbrock: iter = %3u\tx = (%.3f,%.3f)\tf(x) = (%.3e,%.3e)\t  error = %.3e\n",
+  res.iter,x[1],x[2],res.f(x)[1],res.f(x)[2],res.phi)
