@@ -1,0 +1,73 @@
+Pass airyAi(-500.0)                :  7.259012010404114e-02
+Pass airyAi(-5.0)                  :  3.507610090241142e-01
+Pass airyAi(-0.3000000000000094)   :  4.309030952855831e-01
+Pass airyAi(0.6999999999999907)    :  1.891624003981519e-01
+Pass airyAi(1.649999999999991)     :  5.831058618720885e-02
+Pass airyAi(2.54999999999999)      :  1.446149513295428e-02
+Pass airyAi(3.499999999999987)     :  2.584098786989702e-03
+Pass airyAi(5.39999999999998)      :  4.272986169411866e-05
+Pass airyAi_scaled(-5.0)           :  3.507610090241142e-01
+Pass airyAi_scaled(0.6999999999999907):  2.795125667681217e-01
+Pass airyAi_scaled(1.649999999999991):  2.395493001442741e-01
+Pass airyAi_scaled(2.54999999999999):  2.183658595899388e-01
+Pass airyAi_scaled(3.499999999999987):  2.032920808163519e-01
+Pass airyAi_scaled(5.39999999999998):  1.836050093282229e-01
+Pass airyBi(-500.0)                : -9.468857013299103e-02
+Pass airyBi(-5.0)                  : -1.383691349016005e-01
+Pass airyBi(0.6999999999999907)    :  9.733286558781599e-01
+Pass airyBi(1.649999999999991)     :  2.196407956850028e+00
+Pass airyBi(2.54999999999999)      :  6.973628612493443e+00
+Pass airyBi(3.499999999999987)     :  3.305550675461069e+01
+Pass airyBi(5.39999999999998)      :  1.604476078241272e+03
+Pass airyBi_scaled(-5.0)           : -1.383691349016005e-01
+Pass airyBi_scaled(0.6999999999999907):  6.587080754582302e-01
+Pass airyBi_scaled(1.649999999999991):  5.346449995597539e-01
+Pass airyBi_scaled(2.54999999999999):  4.618354555422970e-01
+Pass airyBi_scaled(3.499999999999987):  4.201771882353061e-01
+Pass airyBi_scaled(5.39999999999998):  3.734050675720473e-01
+Pass airyAi_deriv(-5.0)            :  3.271928185544435e-01
+Pass airyAi_deriv(-0.5500000000000094): -1.914604987143629e-01
+Pass airyAi_deriv(0.4999999999999906): -2.249105326646850e-01
+Pass airyAi_deriv(1.899999999999992): -6.043678178575718e-02
+Pass airyAi_deriv(3.249999999999988): -7.792687926790889e-03
+Pass airyAi_deriv(5.199999999999981): -1.589434526459543e-04
+Pass airyAi_deriv_scaled(-5.0)     :  3.271928185544435e-01
+Pass airyAi_deriv_scaled(0.5499999999999906): -2.874057279170166e-01
+Pass airyAi_deriv_scaled(1.499999999999991): -3.314199796863637e-01
+Pass airyAi_deriv_scaled(2.49999999999999): -3.661089384751620e-01
+Pass airyAi_deriv_scaled(3.649999999999986): -3.974033831453963e-01
+Pass airyAi_deriv_scaled(6.299999999999977): -4.508799189585947e-01
+Pass airyBi_deriv(-5.0)            :  7.784117730018990e-01
+Pass airyBi_deriv(-0.5500000000000094):  5.155785358765014e-01
+Pass airyBi_deriv(0.4999999999999906):  5.445725641405883e-01
+Pass airyBi_deriv(1.899999999999992):  3.495165862891568e+00
+Pass airyBi_deriv(3.249999999999988):  3.655485149250338e+01
+Pass airyBi_deriv(5.199999999999981):  2.279748293583233e+03
+Pass airyBi_deriv_scaled(-5.0)     :  7.784117730018990e-01
+Pass airyBi_deriv_scaled(0.5499999999999906):  4.322811281817566e-01
+Pass airyBi_deriv_scaled(1.499999999999991):  5.542307563918037e-01
+Pass airyBi_deriv_scaled(2.49999999999999):  6.755384441644985e-01
+Pass airyBi_deriv_scaled(3.649999999999986):  7.613959373000228e-01
+Pass airyBi_deriv_scaled(6.299999999999977):  8.852064139737571e-01
+Pass airyAi_zero(2)                : -4.087949444130970e+00
+Pass airyAi_zero(50)               : -3.802100867725525e+01
+Pass airyAi_zero(100)              : -6.045555727411670e+01
+Pass airyAi_zero(110)              : -6.443135670991325e+01
+Pass airyBi_zero(2)                : -3.271093302836353e+00
+Pass airyBi_zero(50)               : -3.776583438165180e+01
+Pass airyBi_zero(100)              : -6.025336482580837e+01
+Pass airyBi_zero(110)              : -6.423551676065615e+01
+Pass airyBi_zero(111)              : -6.462689948195194e+01
+Pass airyBi_zero(200)              : -9.588699147356682e+01
+Pass airyAi_deriv_zero(2)          : -3.248197582179837e+00
+Pass airyAi_deriv_zero(50)         : -3.776565910053887e+01
+Pass airyAi_deriv_zero(100)        : -6.025329596442479e+01
+Pass airyAi_deriv_zero(110)        : -6.423545617243546e+01
+Pass airyAi_deriv_zero(1000)       : -2.809378080358935e+02
+Pass airyBi_deriv_zero(2)          : -4.073155089071828e+00
+Pass airyBi_deriv_zero(50)         : -3.802083574095789e+01
+Pass airyBi_deriv_zero(100)        : -6.045548887257141e+01
+Pass airyBi_deriv_zero(110)        : -6.443129648944846e+01
+Pass airyBi_deriv_zero(111)        : -6.482208737584206e+01
+Pass airyBi_deriv_zero(200)        : -9.604731050310325e+01
+Pass airyBi_deriv_zero(1000)       : -2.810315164471119e+02

@@ -1,0 +1,97 @@
+Pass legendreP(1, -0.5)            : -5.000000000000000e-01
+Pass legendreP(1,  1.0e-8)         :  1.000000000000000e-08
+Pass legendreP(1,  0.5)            :  5.000000000000000e-01
+Pass legendreP(1,  1.0)            :  1.000000000000000e+00
+Pass legendreP(10, -0.5)           : -1.882286071777345e-01
+Pass legendreP(10,  1.0e-8)        : -2.460937499999986e-01
+Pass legendreP(10,  0.5)           : -1.882286071777344e-01
+Pass legendreP(10,  1.0)           :  1.000000000000000e+00
+Pass legendreP(99, -0.5)           :  8.300778172138770e-02
+Pass legendreP(99,  1.0e-8)        : -7.958923738716563e-08
+Pass legendreP(99,  0.5)           : -8.300778172138770e-02
+Pass legendreP(99,  0.999)         : -3.317727359254779e-01
+Pass legendreP(99,  1.0)           :  1.000000000000000e+00
+Pass legendreP(1000, -0.5)         : -1.916825109165028e-02
+Pass legendreP(1000,  1.0e-8)      :  2.522501817709829e-02
+Pass legendreP(1000,  0.5)         : -1.916825109165028e-02
+Pass legendreP(1000,  1.0)         :  1.000000000000000e+00
+Pass legendreP(4000, -0.5)         : -9.585404456573080e-03
+Pass legendreP(4000,  0.5)         : -9.585404456573080e-03
+Pass legendreP(4000,  1.0)         :  1.000000000000000e+00
+Pass legendrePlm(10, 0, -0.5)      : -1.882286071777344e-01
+Pass legendrePlm(10, 0, 1.0e-08)   : -2.460937499999986e-01
+Pass legendrePlm(10, 0, 0.5)       : -1.882286071777344e-01
+Pass legendrePlm(10, 1, -0.5)      : -2.006687739436126e+00
+Pass legendrePlm(10, 1, 1.0e-08)   : -2.707031249999995e-07
+Pass legendrePlm(10, 1, 0.5)       :  2.006687739436126e+00
+Pass legendrePlm(10, 5, -0.5)      : -3.008616970611618e+04
+Pass legendrePlm(10, 5, 1.0e-08)   : -2.533781249999997e-03
+Pass legendrePlm(10, 5, 0.5)       :  3.008616970611618e+04
+Pass legendrePlm(10, 5, 0.999)     : -5.036411489013271e-01
+Pass legendrePlm(100, 5, -0.5)     : -6.617107444248382e+08
+Pass legendrePlm(100, 5, 1.0e-08)  :  8.178987598063712e+02
+Pass legendrePlm(100, 5, 0.5)      :  6.617107444248382e+08
+Pass legendrePlm(100, 5, 0.999)    : -1.983161080380621e+09
+Pass legendresphPlm(10, 0, -0.5)   : -2.433270236930013e-01
+Pass legendresphPlm(10, 0, 0.5)    : -2.433270236930013e-01
+Pass legendresphPlm(10, 0, 0.999)  :  1.222575412279739e+00
+Pass legendresphPlm(10, 5, -0.5)   : -3.725739049803294e-01
+Pass legendresphPlm(10, 5, 1.0e-08): -3.137723358937679e-08
+Pass legendresphPlm(10, 5, 0.5)    :  3.725739049803294e-01
+Pass legendresphPlm(10, 5, 0.999)  : -6.236870674727370e-06
+Pass legendresphPlm(10, 10, -0.5)  :  1.287687118578572e-01
+Pass legendresphPlm(10, 10, 0.5)   :  1.287687118578572e-01
+Pass legendresphPlm(10, 10, 0.999) :  1.732080230758312e-14
+Pass legendresphPlm(200, 1, -0.5)  :  3.302975570099493e-01
+Pass legendresphPlm(200, 1, 0.5)   : -3.302975570099493e-01
+Pass legendresphPlm(200, 1, 0.999) : -1.406979205554626e+00
+Pass legendresphPlm(3, 1, 0.0)     :  3.231801841141507e-01
+Pass legendresphPlm(200, 1, -0.5)  :  3.302975570099493e-01
+Pass legendresphPlm(140,135,1)     :  0.000000000000000e+00
+Pass legendresphPlm(140,135,0.99998689456491752): -6.542652532690932e-305
+Pass conicalPsphreg(2,  1.0, -0.5) :  1.640627928700879e+00
+Pass conicalPsphreg(10, 1.0, -0.5) :  2.931526672504913e-05
+Pass conicalPsphreg(20, 1.0, -0.5) :  7.335769429462035e-15
+Pass conicalPsphreg(30, 1.0, -0.5) :  1.323561239426738e-26
+Pass conicalPsphreg(10, 1.0, 0.5)  :  2.701608719985788e-10
+Pass conicalPsphreg(20, 1.0, 0.5)  :  1.178256970143593e-24
+Pass conicalPsphreg(30, 1.0, 0.5)  :  3.636240588303798e-41
+Pass conicalPsphreg(10, 1.0, 2.0)  :  2.493492962628493e-10
+Pass conicalPsphreg(20, 1.0, 2.0)  :  1.128476248801262e-24
+Pass conicalPsphreg(30, 100.0, 100.0): -1.675777208715953e-64
+Pass conicalPcylreg(2, 1.0, -0.5)  :  2.204851047237526e+00
+Pass conicalPcylreg(10, 1.0, -0.5) :  7.335034531618655e-05
+Pass conicalPcylreg(20, 1.0, -0.5) :  2.541986061921216e-14
+Pass conicalPcylreg(30, 1.0, -0.5) :  5.579714972260537e-26
+Pass conicalPcylreg(10, 1.0, 0.5)  :  1.167407881964647e-09
+Pass conicalPcylreg(20, 1.0, 0.5)  :  7.066408031229072e-24
+Pass conicalPcylreg(30, 1.0, 0.5)  :  2.654197328686259e-40
+Pass conicalPcylreg(10, 1.0, 2.0)  :  1.073610975189086e-09
+Pass conicalPcylreg(20, 1.0, 2.0)  :  6.760965304863387e-24
+Pass conicalPcylreg(30, 100.0, 100.0): -4.268753482520651e-63
+Pass legendreH3d(5, 1.0e-06, 1.0e-06):  1.154401154401363e-32
+Pass legendreH3d(5, 1.0, 1.0e-10)  :  2.022491201695877e-52
+Pass legendreH3d(5, 1.0, 1.0)      :  1.149863503749158e-02
+Pass legendreH3d(5, 1.0, 5.0)      :  2.069694566254521e-03
+Pass legendreH3d(5, 1.0, 7.0)      : -1.755530378748899e-03
+Pass legendreH3d(5, 1.0, 10.0)     :  8.999979724504887e-05
+Pass legendreH3d(5, 1.0, 100.0)    : -4.185397793298568e-44
+Pass legendreH3d(5, 1.0, 500.0)    :  1.423511390109196e-217
+Pass legendreH3d(5, 100.0, 0.001)  :  9.642762597222418e-10
+Pass legendreH3d(5, 100.0, 0.002)  :  3.082120125430803e-08
+Pass legendreH3d(5, 100.0, 0.01)   :  9.281069019005840e-05
+Pass legendreH3d(5, 100.0, 1.0)    : -8.043100696178624e-03
+Pass legendreH3d(5, 100.0, 10.0)   : -3.927678432813974e-07
+Pass legendreH3d(5, 1000.0, 0.001) :  9.256365284253254e-05
+Pass legendreH3d(5, 1000.0, 0.01)  : -5.553733815473080e-02
+Pass legendreH3d(5, 1.0e+08, 1.0e-08):  9.256115861125842e-05
+Pass legendreH3d(5, 1.0e+08, 100.0): -6.496143209092861e-52
+Pass legendreQ(10, -0.5)           : -2.916581396658675e-01
+Pass legendreQ(10,  0.5)           :  2.916581396658675e-01
+Pass legendreQ(10,  1.5)           :  1.471423271820748e-05
+Pass legendreQ(100, -0.5)          : -9.492507395207282e-02
+Pass legendreQ(100,  0.5)          :  9.492507395207282e-02
+Pass legendreQ(100,  1.5)          :  1.162816343504412e-43
+Pass legendreQ(1000, -0.5)         : -3.010507497400530e-02
+Pass legendreQ(1000,  0.5)         :  3.010507497400530e-02
+Pass legendreQ(1000,  1.1)         :  1.075725844782536e-194

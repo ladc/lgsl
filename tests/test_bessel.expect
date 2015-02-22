@@ -1,0 +1,205 @@
+Pass besselJ(4, 0.1)               :  2.602864854568403e-07
+Pass besselJ(5, 2.0)               :  7.039629755871685e-03
+Pass besselJ(10, 20.0)             :  1.864825580239451e-01
+Pass besselJ(100, 100.0)           :  9.636667329586156e-02
+Pass besselJ(2, 900.0)             : -1.997434526968065e-02
+Pass besselJ(2, 15000.0)           : -2.045582018121638e-03
+Pass besselJ(0, 1.0e+10)           :  2.175591750246892e-06
+Pass besselJ(1, 1.0e+10)           : -7.676508175684158e-06
+Pass besselJ(0, 20000)             :  5.565974904954946e-03
+Pass besselJ(45, 900.0)            :  2.562434700634278e-02
+Pass besselY(4, 0.1)               : -3.058322979335316e+05
+Pass besselY(5, 2)                 : -9.935989128481975e+00
+Pass besselY(100, 100.0)           : -1.669214114175765e-01
+Pass besselY(100, 4294967296.0)    :  3.657889671577716e-06
+Pass besselY(1000, 4294967296.0)   :  3.656551321485398e-06
+Pass besselY(2, 15000.0)           : -6.185217273358618e-03
+Pass besselI_scaled(  -4,    0.1)  :  2.357525862005460e-07
+Pass besselI_scaled(   4,    0.1)  :  2.357525862005460e-07
+Pass besselI_scaled(   5,    2.0)  :  1.329761094188158e-03
+Pass besselI_scaled( 100,  100.0)  :  1.726686262816770e-22
+Pass besselI_scaled(   2,    1e7)  :  1.261566024466416e-04
+Pass besselI_scaled(   2,    1e8)  :  3.989422729212649e-05
+Pass besselI(   4,    0.1)         :  2.605469021299657e-07
+Pass besselI(   5,    2.0)         :  9.825679323131702e-03
+Pass besselI( 100,  100.0)         :  4.641534941616199e+21
+Pass besselK_scaled(   4,    0.1)  :  5.300402483725626e+05
+Pass besselK_scaled(   5,    2.0)  :  6.968655087607675e+01
+Pass besselK_scaled( 100,  100.0)  :  2.047573673116676e+19
+Pass besselK(   4,    0.1)         :  4.796002497925683e+05
+Pass besselK(   5,    2.0)         :  9.431049100596468e+00
+Pass besselK( 100,  100.0)         :  7.617129630494086e-25
+Pass besselj(0, 0.0)               :  1.000000000000000e+00
+Pass besselj(1,       10.0)        :  7.846694179875155e-02
+Pass besselj(5,        1.0)        :  9.256115861125816e-05
+Pass besselj(10,      10.0)        :  6.460515449256427e-02
+Pass besselj(100,    100.0)        :  1.088047701143834e-02
+Pass besselj(2000, 1048576.0)      :  7.449384239168568e-07
+Pass besselj(2, 900.0)             : -1.108911556883294e-03
+Pass besselj(2, 15000.0)           : -5.955592033075751e-05
+Pass besselj(100, 1000.0)          : -2.532631123094582e-04
+Pass besselj(30, 3878.62)          : -2.328556703433088e-04
+Pass besselj(49, 9912.63)          :  5.204335454484267e-05
+Pass besselj(49, 9950.35)          :  5.007736881956597e-05
+Pass besselj(52, 9930.51)          : -7.483858826672772e-06
+Pass besselj(364, 36.62)           :  1.118905527480213e-318
+Pass bessely(0,        0.01)       : -9.999500004166653e+01
+Pass bessely(0,        1.0)        : -5.403023058681398e-01
+Pass bessely(1,       10.0)        :  6.279282637970150e-02
+Pass bessely(5,        1.0)        : -9.994403433922364e+02
+Pass bessely(10,       0.01)       : -6.547307979737837e+30
+Pass bessely(10,      10.0)        : -1.724536720880578e-01
+Pass bessely(100,      1.0)        : -6.683079463258677e+186
+Pass bessely(100,    100.0)        : -2.298385049156228e-02
+Pass bessely(2000, 1048576.0)      :  5.954520144714616e-07
+Pass besseli_scaled(   0, 0.0)     :  1.000000000000000e+00
+Pass besseli_scaled(   1, 0.0)     :  0.000000000000000e+00
+Pass besseli_scaled(   4, 0.001)   :  1.057143434119036e-15
+Pass besseli_scaled(   4,   0.1)   :  9.579352242057134e-08
+Pass besseli_scaled(   5,   2.0)   :  4.851564602127540e-04
+Pass besseli_scaled(   5, 100.0)   :  4.300446777500000e-03
+Pass besseli_scaled( 100, 100.0)   :  1.389816196429913e-23
+Pass besselk_scaled(   4, 1.0/256.0):  1.820559981696195e+14
+Pass besselk_scaled(   4, 1.0/8.0) :  6.117321781440659e+06
+Pass besselk_scaled(   5,   2.0)   :  1.381073582949201e+02
+Pass besselk_scaled( 100, 100.0)   :  3.985930768060258e+18
+Pass besselJnu(0.0001, 1.0)        :  7.652115411876709e-01
+Pass besselJnu(0.0001, 10.0)       : -2.459270166445205e-01
+Pass besselJnu(0.0009765625, 10.0) : -2.458500798634692e-01
+Pass besselJnu(0.75, 1.0)          :  5.586524932048917e-01
+Pass besselJnu(0.75, 10.0)         : -4.968928974751508e-02
+Pass besselJnu( 1.0, 0.001)        :  4.999999375000026e-04
+Pass besselJnu( 1.0,   1.0)        :  4.400505857449335e-01
+Pass besselJnu( 1.75,  1.0)        :  1.685939225457632e-01
+Pass besselJnu(30.0,   1.0)        :  3.482869794251483e-42
+Pass besselJnu(30.0, 100.0)        :  8.146012958117223e-02
+Pass besselJnu(10.0,   1.0)        :  2.630615123687453e-10
+Pass besselJnu(10.0, 100.0)        : -5.473217693547201e-02
+Pass besselJnu(10.2, 100.0)        : -3.548919161046527e-02
+Pass besselJnu(2.0, 900.0)         : -1.997434526968065e-02
+Pass besselJnu(2.0, 15000.0)       : -2.045582018121638e-03
+Pass besselYnu(0.0001, 1.0)        :  8.813676933044479e-02
+Pass besselYnu(0.0001,10.0)        :  5.570979797521875e-02
+Pass besselYnu( 0.75,  1.0)        : -6.218694174429746e-01
+Pass besselYnu( 0.75, 10.0)        :  2.475706344676039e-01
+Pass besselYnu( 1.0, 0.001)        : -6.366221672311394e+02
+Pass besselYnu( 1.0,   1.0)        : -7.812128213002887e-01
+Pass besselYnu(30.0,   1.0)        : -3.048128783225643e+39
+Pass besselYnu(30.0, 100.0)        :  6.138839212010034e-03
+Pass besselYnu(10.0,   1.0)        : -1.216180142786892e+08
+Pass besselYnu(10.0, 100.0)        :  5.833157423641493e-02
+Pass besselYnu(10.2, 100.0)        :  7.169383985546288e-02
+Pass besselInu_scaled(0.0001,10.0) :  1.278333370958167e-01
+Pass besselInu_scaled( 1.0, 0.001) :  4.995003123542213e-04
+Pass besselInu_scaled( 1.0,   1.0) :  2.079104153497084e-01
+Pass besselInu_scaled(30.0,   1.0) :  1.302109498378591e-42
+Pass besselInu_scaled(30.0, 100.0) :  4.486987756920986e-04
+Pass besselInu_scaled(10.0,   1.0) :  1.012752986469207e-10
+Pass besselInu_scaled(10.0, 100.0) :  2.417668271825883e-02
+Pass besselInu_scaled(10.2, 100.0) :  2.369162884391381e-02
+Pass besselInu(0.0001,10.0)        :  2.815716626977003e+03
+Pass besselInu( 1.0, 0.001)        :  5.000000625000026e-04
+Pass besselInu( 1.0,   1.0)        :  5.651591039924850e-01
+Pass besselInu(30.0,   1.0)        :  3.539500588106448e-42
+Pass besselInu(30.0, 100.0)        :  1.206154870449843e+40
+Pass besselInu(10.0,   1.0)        :  2.752948039836874e-10
+Pass besselInu(10.0, 100.0)        :  6.498975524720148e+41
+Pass besselInu(10.2, 100.0)        :  6.368587361287031e+41
+Pass besselKnu_scaled(0.0001,10.0) :  3.916319346235422e-01
+Pass besselKnu_scaled( 1.0, 0.001) :  1.000996734559068e+03
+Pass besselKnu_scaled( 1.0,   1.0) :  1.636153486263258e+00
+Pass besselKnu_scaled(30.0,   1.0) :  1.279262986753975e+40
+Pass besselKnu_scaled(30.0, 100.0) :  1.067344344995485e+01
+Pass besselKnu_scaled(10.0,   1.0) :  4.912296520990199e+08
+Pass besselKnu_scaled(10.0, 100.0) :  2.057868717395578e-01
+Pass besselKnu_scaled(10.0, 1000.0):  4.165905142800566e-02
+Pass besselKnu_scaled(10.0, 1.0e+8):  1.253314762406079e-04
+Pass besselKnu_scaled(10.2, 100.0) :  2.099580835524439e-01
+Pass besselKnu(0.0001,0.001)       :  7.023689431812884e+00
+Pass besselKnu(0.0001,10.0)        :  1.778006232465487e-05
+Pass besselKnu( 1.0, 0.001)        :  9.999962381560856e+02
+Pass besselKnu( 1.0,   1.0)        :  6.019072301972346e-01
+Pass besselKnu(10.0, 0.001)        :  1.857945548390401e+38
+Pass besselKnu(10.0,   1.0)        :  1.807132899010295e+08
+Pass besselKnu(10.0, 100.0)        :  7.655427977388101e-45
+Pass besselKnu(10.2, 100.0)        :  7.810600225948217e-45
+Pass besselKnu(30.0,   1.0)        :  4.706145526783627e+39
+Pass besselKnu(30.0, 100.0)        :  3.970602055959399e-43
+Pass bessellnKnu(0.0001,1.0e-100)  :  5.439794449319847e+00
+Pass bessellnKnu(0.0001,0.0001)    :  2.232835507214331e+00
+Pass bessellnKnu(0.0001,10.0)      : -1.093743282256098e+01
+Pass bessellnKnu( 1.0, 1.0e-100)   :  2.302585092994045e+02
+Pass bessellnKnu( 1.0, 1.0e-10)    :  2.302585092994046e+01
+Pass bessellnKnu( 1.0, 0.001)      :  6.907751517131146e+00
+Pass bessellnKnu( 1.0,   1.0)      : -5.076519482107523e-01
+Pass bessellnKnu(30.0, 1.0e-100)   :  6.999113586185544e+03
+Pass bessellnKnu(30.0,   1.0)      :  9.134968784026326e+01
+Pass bessellnKnu(30.0, 100.0)      : -9.763224126416760e+01
+Pass bessellnKnu(100.0, 1.0e-100)  :  2.345360670618547e+04
+Pass bessellnKnu(100.0, 1.0)       :  4.277532510250188e+02
+Pass bessellnKnu(100.0, 100.0)     : -5.553422771502922e+01
+Pass bessellnKnu(1000.0, 1.0e-100) :  2.368561837559931e+05
+Pass bessellnKnu(10000.0, 1.0e-100):  2.391615589148907e+06
+Pass bessellnKnu(180.0, 2.2)       :  7.351994170369584e+02
+Pass bessellnKnu(3500.5, 1500.0)   :  1.731220077116483e+03
+Pass besselJ_zero(0.0,  1)         :  2.404825557695771e+00
+Pass besselJ_zero(0.0,  2)         :  5.520078110286304e+00
+Pass besselJ_zero(0.0, 20)         :  6.204846919022708e+01
+Pass besselJ_zero(0.0, 25)         :  7.775602563038805e+01
+Pass besselJ_zero(0.0, 100)        :  3.133742660775279e+02
+Pass besselJ_zero( 1.5, 1)         :  4.493409457909064e+00
+Pass besselJ_zero( 5.0, 1)         :  8.771483815959954e+00
+Pass besselJ_zero( 1.5, 2)         :  7.725251836937707e+00
+Pass besselJ_zero( 5.0, 2)         :  1.233860419746694e+01
+Pass besselJ_zero( 1.5, 3)         :  1.090412165942890e+01
+Pass besselJ_zero( 5.0, 3)         :  1.570017407971167e+01
+Pass besselJ_zero( 1.5, 4)         :  1.406619391283147e+01
+Pass besselJ_zero( 5.0, 4)         :  1.898013387517992e+01
+Pass besselJ_zero( 1.5, 5)         :  1.722075527193077e+01
+Pass besselJ_zero( 5.0, 5)         :  2.221779989656127e+01
+Pass besselJ_zero( 8.0, 5)         :  2.626681464117664e+01
+Pass besselJ_zero(20.0, 5)         :  4.141306551389263e+01
+Pass besselJ_zero( 1.5, 6)         :  2.037130295928756e+01
+Pass besselJ_zero( 5.0, 6)         :  2.543034115422270e+01
+Pass besselJ_zero( 8.0, 6)         :  2.954565967099855e+01
+Pass besselJ_zero( 1.5, 7)         :  2.351945249868901e+01
+Pass besselJ_zero( 5.0, 7)         :  2.862661830729114e+01
+Pass besselJ_zero( 8.0, 7)         :  3.279580003734146e+01
+Pass besselJ_zero( 1.5, 8)         :  2.666605425881268e+01
+Pass besselJ_zero( 5.0, 8)         :  3.181171672404776e+01
+Pass besselJ_zero(10.0, 8)         :  3.876180701788165e+01
+Pass besselJ_zero( 1.5, 9)         :  2.981159879089296e+01
+Pass besselJ_zero( 5.0, 9)         :  3.498878129455930e+01
+Pass besselJ_zero(10.0, 9)         :  4.200419023667180e+01
+Pass besselJ_zero( 1.5, 10)        :  3.295638903982248e+01
+Pass besselJ_zero( 5.0, 10)        :  3.815986856196713e+01
+Pass besselJ_zero(15.0, 10)        :  5.201724127888163e+01
+Pass besselJ_zero( 5.0, 11)        :  4.132638325404741e+01
+Pass besselJ_zero(15.0, 11)        :  5.528920414656006e+01
+Pass besselJ_zero( 5.0, 12)        :  4.448931912321973e+01
+Pass besselJ_zero(15.0, 12)        :  5.854582890438508e+01
+Pass besselJ_zero( 5.0, 13)        :  4.764939980669710e+01
+Pass besselJ_zero(15.0, 13)        :  6.178975989594505e+01
+Pass besselJ_zero( 5.0, 14)        :  5.080716520300636e+01
+Pass besselJ_zero(15.0, 14)        :  6.502305025104225e+01
+Pass besselJ_zero( 5.0, 15)        :  5.396302655837817e+01
+Pass besselJ_zero(15.0, 15)        :  6.824732199642078e+01
+Pass besselJ_zero( 5.0, 16)        :  5.711730278150426e+01
+Pass besselJ_zero(15.0, 16)        :  7.146387588502266e+01
+Pass besselJ_zero( 5.0, 17)        :  6.027024507294281e+01
+Pass besselJ_zero(15.0, 17)        :  7.467376871214043e+01
+Pass besselJ_zero( 5.0, 18)        :  6.342205404587578e+01
+Pass besselJ_zero(15.0, 18)        :  7.787786897348637e+01
+Pass besselJ_zero( 5.0, 19)        :  6.657289188711827e+01
+Pass besselJ_zero(15.0, 19)        :  8.107689772063283e+01
+Pass besselJ_zero( 5.0, 20)        :  6.972289116171675e+01
+Pass besselJ_zero(15.0, 20)        :  8.427145906971644e+01
+Pass besselJ_zero( 23.0, 11)       :  6.584339346952466e+01
+Pass besselJ_zero( 30.0, 11)       :  7.479730658517542e+01
+Pass besselJ_zero( 32.0, 15)       :  9.091363769186174e+01
+Pass besselJ_zero( 50.0, 15)       :  1.136974798807394e+02
+Pass besselJ_zero(  5.0, 22)       :  7.602079343059161e+01
+Pass besselJ_zero( 10.0, 22)       :  8.343918979610575e+01
+Pass besselJ_zero( 12.0, 22)       :  8.634549652053406e+01
+Pass besselJ_zero(100.0, 22)       :  1.998215022012252e+02
+Pass besselJ_zero(500.0, 22)       :  6.493413244089173e+02
