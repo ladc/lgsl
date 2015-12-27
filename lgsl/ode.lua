@@ -49,4 +49,4 @@ local function ode(spec)
    return setmetatable(ode_loaded.new(), mt)
 end
 
-return ode
+return setmetatable({ode=ode}, {__call= function(t,...) return ode(...) end})

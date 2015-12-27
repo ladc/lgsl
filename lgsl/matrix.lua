@@ -515,7 +515,6 @@ local function vector_op(scalar_op, element_wise, no_inverse)
                 if ra and rb then
                    local n1, n2 = tonumber(a.size1), tonumber(b.size2)
                    local c = matrix_alloc(n1, n2)
-                   local NT = gsl.CblasNoTrans
                    gsl_check(gsl.gsl_blas_dgemm(NT, NT, 1, a, b, 0, c))
                    return c
                 else
@@ -523,7 +522,6 @@ local function vector_op(scalar_op, element_wise, no_inverse)
                    if rb then b = mat_complex_of_real(b) end
                    local n1, n2 = tonumber(a.size1), tonumber(b.size2)
                    local c = matrix_calloc(n1, n2)
-                   local NT = gsl.CblasNoTrans
                    gsl_check(gsl.gsl_blas_zgemm(NT, NT, 1, a, b, 0, c))
                    return c
                 end

@@ -62,4 +62,4 @@ local function linfit(X, y, w)
    return c, chisq[0], cov
 end
 
-return linfit
+return setmetatable({linfit=linfit}, {__call=function(t,...) return linfit(...) end})

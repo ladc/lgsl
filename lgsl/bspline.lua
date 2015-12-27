@@ -72,4 +72,4 @@ local function bspline(a, b, nbreak)
    return bs
 end
 
-return bspline
+return setmetatable({bspline=bspline}, {__call=function(t,...) return bspline(...) end})

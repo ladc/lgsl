@@ -38,4 +38,4 @@ local function integ(f, a, b, epsabs, epsrel)
    return result
 end
 
-return integ
+return setmetatable({integ = integ},{__call = function(t,...) return integ(...) end})

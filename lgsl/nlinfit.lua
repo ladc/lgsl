@@ -52,4 +52,4 @@ local function nlinfit(spec)
    return s
 end
 
-return nlinfit
+return setmetatable({nlinfit=nlinfit}, {__call= function(t,...) return nlinfit(...) end})
