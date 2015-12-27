@@ -1,4 +1,4 @@
-package = "lgsl"
+package = "LGSL"
 version = "scm-1"
 source = {
    url = "git://github.com/ladc/lgsl",
