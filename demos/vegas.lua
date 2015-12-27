@@ -18,7 +18,7 @@ local function testdim(n)
   print("Integrating SUM_(k=1,"..n..") k*x[k]^2")
   local calls = 1e4*n
   local vegas_integ = vegas_prepare({N=n})
-  local result,sigma,runs,cont=vegas_integ(integrand,a,b,calls)
+  local vegas_result = vegas_integ(integrand,a,b,calls)
   print( string.format([[
 result = %.6f
 sigma  = %.6f
@@ -26,8 +26,10 @@ exact  = %.6f
 error  = %.6f = %.2g sigma
 calls  = %.0f
 ==========================
-]] ,result,sigma,exact, result - exact,  math.abs(result - exact)/sigma,runs*calls))
-  return result
+]] ,vegas_result.result,vegas_result.sigma,exact, 
+    vegas_result.result - exact,
+    math.abs(vegas_result.result - exact)/vegas_result.sigma,vegas_result.nruns*calls))
+  return vegas_result.result
 end
 
 local function demo1()
@@ -61,12 +63,14 @@ local function demo2()
     local a, b = ilist(function() return 0 end, d), ilist(function() return 1 end, d)
     local calls, n = d*1e4,1
     local vegas_integ = vegas_prepare({N=d})
-    local res,sig,num,cont = vegas_integ(getunitsphere(d),a,b,calls)
+    local vegas_result = vegas_integ(getunitsphere(d),a,b,calls)
+    local res,sig,num,cont = vegas_result.result, vegas_result.sigma, vegas_result.nruns, vegas_result.continue
     local fmt = "Volume = %.3f +/- %.3f "
     print(string.format(fmt,res*2^d,sig*2^d))
     while(sig/res > 0.005) do
       print("Increasing accuracy, doubling number of calls...")
-      res,sig,num = cont(calls*(2^n))
+      vegas_result = cont(calls*(2^n))
+      res,sig,num = vegas_result.result, vegas_result.sigma, vegas_result.nruns
       print(string.format(fmt,res*2^d,sig*2^d))
       n=n+1
     end

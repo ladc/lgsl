@@ -66,7 +66,7 @@ local function getintegrator(state,template_spec)
     local nruns = 0
     local result,sigma
     -- full integration:
-    local cont = function(c)
+    local function cont(c)
       calls = c or calls
       nruns = 0
       repeat
@@ -77,10 +77,10 @@ local function getintegrator(state,template_spec)
         result,sigma = state.integrate(f,a_work,rget)
         nruns = nruns+1
       until abs(state.chisq() - 1) < chidev
-      return result,sigma,nruns
+      return {result=result,sigma=sigma,nruns=nruns,continue=cont}
     end
     cont(calls)
-    return result,sigma,nruns,cont
+    return {result=result,sigma=sigma,nruns=nruns,continue=cont}
   end
 end
 
