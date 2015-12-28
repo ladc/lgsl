@@ -4,8 +4,6 @@
 * Contributions by Benjamin von Ardenne
 * Published under GPL-3
 
-*WARNING*: This package is a work in progress and is not yet fully functional!
-
 ## About
 
 LGSL is a collection of numerical algorithms and functions for Lua, based on

@@ -1,10 +1,11 @@
 package = "LGSL"
 version = "scm-1"
 source = {
-   url = "git://github.com/ladc/lgsl",
+   url = "https://github.com/ladc/lgsl/archive/master.zip",
+   dir = "lgsl-master"
 }
 description = {
-   summary = "Numerical algorithms for Lua based on the GSL Library",
+   summary = "A numerical library for Lua based on GSL",
    detailed = [[
       LGSL is a collection of numerical algorithms and functions for Lua, based on the
       GNU Scientific Library (GSL). It allows matrix/vector manipulation and linear
@@ -17,7 +18,7 @@ description = {
 
       LGSL is based on the numerical modules of GSL Shell.
    ]],
-   homepage = "http://www.nongnu.org/gsl-shell/",
+   homepage = "https://github.com/ladc/lgsl",
    license = "GPL-3",
    maintainer = "Lesley De Cruz <lesley.decruz+lgsl@gmail.com>"
 }
