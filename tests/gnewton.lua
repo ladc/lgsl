@@ -22,7 +22,7 @@ end
 local xini = m.vec{5.0}
 
 -- Run root finder
-local res = gnewton.run(f5,df5,xini,opts)
+local res = gnewton(f5,df5,xini,opts)
 
 printf(
   "sqrt(5):    iter = %3u\tx = %.3f\t\terror = %.3e\testimated error = %.3e\n",
@@ -33,7 +33,7 @@ printf(
 --------------------------------------------------------------------------------
 
 local a,b = 1,10 -- fn parameters
-opts = {maxiter = 1000, epsabs = 1e-7, stop_fn = gnewton.test_residual}
+opts = {maxiter = 1000, epsabs = 1e-7, stop_fn = multiroots.test_residual}
 
 local function fR(x)
   return m.vec{ a* (1 - x[1]),b*(x[2] - x[1]^2)}
@@ -47,7 +47,7 @@ end
 xini = m.vec{-10,-5}
 
 -- Run root finder
-res = gnewton.run(fR,dfR,xini,opts)
+res = gnewton(fR,dfR,xini,opts)
 
 local x = res.x
 printf(

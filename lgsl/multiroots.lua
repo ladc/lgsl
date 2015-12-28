@@ -31,7 +31,7 @@
 local matrix = require("lgsl.matrix")
 local GSL_DBL_EPSILON = 2.2204460492503131e-16
 local sqrt = math.sqrt
-local function gnewton_getstate(f,df,x0)
+local function gnewton_newstate(f,df,x0)
   return { phi = f(x0):norm(), x = x0, f = f, df = df, iter = 0 }
 end
 
@@ -62,14 +62,14 @@ local function gnewton_iterate(state, f, df, x0)
 end
 
 -- Test convergence (|dx| < epsabs + |x|*epsrel)
-local function gnewton_test_delta(s, epsabs, epsrel)
+local function test_delta(s, epsabs, epsrel)
   epsabs = epsabs or 1e-3
   epsrel = epsrel or 0 -- if no relative error is given, only consider absolute error
   return s.dx:norm() < epsabs + epsrel*s.x:norm()
 end
 
 -- Test residual (|f| < epsabs)
-local function gnewton_test_residual(s, epsabs)
+local function test_residual(s, epsabs)
   epsabs = epsabs or 1e-3
   return s.f(s.x):norm() < epsabs
 end
@@ -93,9 +93,10 @@ end
 --        - iter: number of iterations
 --
 local function gnewton_run(f, df, x0, opts, s)
-  s = s or gnewton_getstate(f, df, x0)
-  local maxiter = opts.maxiter or math.huge
-  local stop_fn = opts.stop_fn or gnewton_test_delta
+  s = s or gnewton_newstate(f, df, x0)
+  opts = opts or {}
+  local maxiter = opts.maxiter or 1e8
+  local stop_fn = opts.stop_fn or test_delta
   local x = x0:copy()
   s.converged = false
   for iter = 1,maxiter do
@@ -109,10 +110,7 @@ local function gnewton_run(f, df, x0, opts, s)
 end
 
 return {
-  gnewton = {
-    run = gnewton_run,
-    getstate = gnewton_getstate,
-    test_residual = gnewton_test_residual,
-    test_delta = gnewton_test_delta
-  }
+  gnewton = gnewton_run,
+  test_residual = test_residual,
+  test_delta = test_delta
 }
