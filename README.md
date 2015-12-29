@@ -33,8 +33,7 @@ documentation](http://www.nongnu.org/gsl-shell/doc/index.html) for now.
 To see some demos, fire up LuaJIT and type:
 
 ``` lua
-local demos = require("lgsl.demos")
-demos.run()
+require("lgsl.demos").run()
 ```
 
 # Installation Instructions
