@@ -79,11 +79,20 @@ make && sudo make install
 ```
 
 On most Linux distributions, the GSL library can be installed through your
-system package manager, e.g.
+system package manager.
 
+On Debian and derived distributions such as Ubuntu:
 ```
 sudo apt-get install libgsl0ldbl
-sudo yum install gsl.x86\_64
+``` 
+
+On Red Hat and family, e.g. CentOS:
+```
+sudo yum install gsl.x86_64
+```
+
+On Arch Linux:
+```
 sudo pacman -S gsl
 ```
 
