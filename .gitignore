@@ -1,2 +1,4 @@
+.*~
+.*.swp
 debian_build
 tests/log
