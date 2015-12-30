@@ -2687,18 +2687,21 @@ char *dlerror(void);
 
 local libgsl, libblas
 if jit.os == "Linux" or jit.os == "BSD" then
-  libgsl, libblas = "gsl","libblas.so"
+  libgsl, libblas = "gsl", "libgslcblas.so"
+  -- It may be required to explicitly dlopen the BLAS library with the
+  -- RTLD_NOW | RTLD_GLOBAL flags, to avoid missing symbols.  For some reason,
+  -- ffi.load'ing it does not suffice.
+  ffi.C.dlerror() -- initialize
+  ffi.C.dlopen(libblas, 0x0102) -- load lib with RTLD_NOW | RTLD_GLOBAL
+  local err = ffi.C.dlerror()
+  if err~=nil then
+    io.write("Warning: could not load BLAS library!\n",ffi.string(err),"\n")
+  end
 elseif jit.os == "OSX" then
-  libgsl, libblas = "libgsl.0.dylib","libblas.dylib"
-else
-  ffi.load("libblas",true)
-  return ffi.load("libgsl-0")
+  libgsl, libblas = "libgsl.0.dylib","libgslcblas.0.dylib"
+else -- windows
+  libgsl, libblas = "libgsl-0","libgslcblas-0"
 end
 
-ffi.C.dlerror() -- initialize
-ffi.C.dlopen(libblas, 0x0102) -- load lib with RTLD_NOW | RTLD_GLOBAL
-local err = ffi.C.dlerror()
-if err~=nil then
-  io.write("Warning: could not load BLAS library!\n",ffi.string(err),"\n")
-end
+ffi.load(libblas,true)
 return ffi.load(libgsl)
