@@ -1,0 +1,2 @@
+sqrt(5):    iter =   4	x = 2.236		error = 9.181e-07	dx = 2.026e-03
+rosenbrock: iter =   2	x = (1.000,1.000)	f(x) = (0.000e+00,0.000e+00)	  dx = 1.210e+02
