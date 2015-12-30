@@ -58,7 +58,7 @@ build = {
       ["lgsl.ode"] = "lgsl/ode.lua",
       ["lgsl.quad_prepare"] = "lgsl/quad_prepare.lua",
       ["lgsl.vegas_prepare"] = "lgsl/vegas_prepare.lua",
-      ["lgsl.multiroots"] = "lgsl/multiroots.lua",
+      ["lgsl.roots"] = "lgsl/roots.lua",
       ["lgsl.demos"] = "demos/demos.lua",
    },
    install = {
