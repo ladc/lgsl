@@ -92,5 +92,5 @@ build = {
           ["lgsl.demos.wave-particle"] = "demos/wave-particle.lua",
       },
    },
-   copy_directories = { "demos" },
+   copy_directories = { "tests" },
 }
