@@ -2685,9 +2685,9 @@ void *dlopen(const char *filename, int flag);
 char *dlerror(void);
 ]]
 
-local libgsl, libblas
+local libgsl, libblas = "gsl", "gslcblas"
 if jit.os == "Linux" or jit.os == "BSD" then
-  libgsl, libblas = "gsl", "libgslcblas.so"
+  libblas = "libgslcblas.so"
   -- It may be required to explicitly dlopen the BLAS library with the
   -- RTLD_NOW | RTLD_GLOBAL flags, to avoid missing symbols.  For some reason,
   -- ffi.load'ing it does not suffice.
@@ -2699,8 +2699,9 @@ if jit.os == "Linux" or jit.os == "BSD" then
   end
 elseif jit.os == "OSX" then
   libgsl, libblas = "libgsl.0.dylib","libgslcblas.0.dylib"
-else -- windows
-  libgsl, libblas = "libgsl-0","libgslcblas-0"
+elseif jit.os == "Windows" then
+  libgsl = package.searchpath("libgsl-0",package.cpath)
+  libblas = package.searchpath("libgslcblas-0",package.cpath)
 end
 
 ffi.load(libblas,true)
