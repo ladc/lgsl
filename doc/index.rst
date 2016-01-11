@@ -28,7 +28,6 @@ Contents:
    :maxdepth: 2
 
    intro.rst
-   general.rst
    complex.rst
    matrices.rst
    lua-base.rst
@@ -45,9 +44,6 @@ Contents:
    integ.rst
    sf.rst
    vegas.rst
-   graphics.rst
-   plot3d.rst
-   contour.rst
    csv.rst
    examples.rst
    gsl-ffi.rst
