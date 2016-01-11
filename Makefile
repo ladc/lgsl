@@ -12,7 +12,7 @@ DEBIAN = debian_build$(PREFIX)
 
 LUA_SRC = bspline.lua check.lua complex.lua csv.lua eigen.lua fft.lua \
 	gsl-check.lua gsl.lua integ.lua iter.lua linfit.lua \
-	matrix.lua nlinfit.lua ode.lua quad_prepare.lua randist.lua rnd.lua \
+	matrix.lua nlinfit.lua ode.lua randist.lua rnd.lua \
 	rng.lua sf.lua sort.lua template.lua vegas_prepare.lua
 
 LUA_TEMPLATES_SRC = gauss-kronrod-x-wgs.lua.in lmfit.lua.in \
@@ -49,5 +49,6 @@ clean:
 
 test:
 	$(LUA) test-output.lua
+
 
 .PHONY: clean debian install test

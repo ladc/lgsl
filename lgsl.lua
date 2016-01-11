@@ -35,7 +35,6 @@ local lgsl = {
   linfit = require("lgsl.linfit"),
   nlinfit = require("lgsl.nlinfit"),
   ode = require("lgsl.ode"),
-  quad_prepare = require("lgsl.quad_prepare"),
   vegas_prepare = require("lgsl.vegas_prepare"),
 }
 

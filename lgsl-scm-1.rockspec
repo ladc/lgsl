@@ -56,7 +56,6 @@ build = {
       ["lgsl.linfit"] = "lgsl/linfit.lua",
       ["lgsl.nlinfit"] = "lgsl/nlinfit.lua",
       ["lgsl.ode"] = "lgsl/ode.lua",
-      ["lgsl.quad_prepare"] = "lgsl/quad_prepare.lua",
       ["lgsl.vegas_prepare"] = "lgsl/vegas_prepare.lua",
       ["lgsl.demos"] = "demos/demos.lua",
    },
