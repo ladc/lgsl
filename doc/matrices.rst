@@ -214,7 +214,7 @@ All the functions described in this section have an equivalent function for comp
 
 .. function:: diag(t)
 
-   Given a table ``t`` of length ``n``, returns a diagonal matrix whose diagonal elements are equal to the elements of ``t``.
+   Given a table or column vector ``t`` of length ``n``, returns a diagonal matrix whose diagonal elements are equal to the elements of ``t``.
 
 .. function:: unit(n)
 

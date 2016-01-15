@@ -47,7 +47,7 @@ We give a complete example where a set of (x, y) observations are simulated and 
 
 	    print('Linear fit coefficients: ')
             c, chisq, cov = lgsl.linfit(X, y)
-            for i=1,#c do print(c[i]) end
+            print(c:show())
 
             fit = function(x) return c[1]+c[2]*x end
             
