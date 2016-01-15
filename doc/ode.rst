@@ -1,6 +1,6 @@
 .. highlight:: lua
 
-.. currentmodule:: ode
+.. module:: ode
 
 Ordinary Differential Equations
 ===============================
