@@ -3,24 +3,23 @@
 Random Numbers
 ==============
 
-This chapter describes routines for generating random numbers. GSL
-provides a large collection of random number generators that can be
-accessed through a uniform interface. You can choose very easily the
+LGSL provides an interface to GSL's large collection of random number
+generators through the module :mod:`rng`. You can very easily the choose
 generator you want to use and even switch between generators without
-needing to change your commands.
+needing to change your commands. Each instance of a generator keeps
+track of its own state so that you can have several different generators
+and they will not interfere with each other.
 
-Each instance of a generator keeps track of its own state so that you
-can have several different generators and they will not interfere with
-each other. Additional functions are available for transforming
-uniform random numbers into samples from continuous or discrete
-probability distributions such as the Gaussian, log-normal or Poisson
-distributions.
+An additional module :mod:`rnd` is available for transforming uniform
+random numbers into samples from continuous or discrete probability
+distributions such as the Gaussian, log-normal or Poisson distributions.
 
 General comments on random numbers
 ----------------------------------
 
 In 1988, Park and Miller wrote a paper entitled "Random number
-generators: good ones are hard to find." [park-miller]_.
+generators: good ones are hard to find." (`Commun. ACM, 31, 1192-1201
+<http://www.firstpr.com.au/dsp/rand31/p1192-park.pdf>`_).
 Fortunately, some excellent random number generators are available,
 though poor ones are still in common use.  You may be happy with the
 system-supplied random number generator on your computer, but you should
@@ -31,8 +30,10 @@ the hall to the coffee machine and back.
 
 A very nice review of random number generators was written by Pierre
 L'Ecuyer, as Chapter 4 of the book: Handbook on Simulation, Jerry
-Banks, ed. (Wiley, 1997).  The chapter is available in postscript from
-L'Ecuyer's ftp site (see references).  Knuth's volume on Seminumerical
+Banks, ed. (Wiley, 1997).  The chapter is `available in postscript
+<http://www.iro.umontreal.ca/~lecuyer/myftp/papers/handsim.ps>`_ from
+`L'Ecuyer's website <http://www.iro.umontreal.ca/~lecuyer/papers.html>`_. 
+Knuth's volume on Seminumerical
 Algorithms (originally published in 1968) devotes 170 pages to random
 number generators, and has recently been updated in its 3rd edition
 (1997).  It is brilliant, a classic.  If you don't own it, you should
@@ -93,27 +94,29 @@ So, if you want to generate random numbers the first step is to use the :func:`r
 
    .. method:: set(seed)
 
-     This method set the seed of the generator to the given integer value.
+     This method sets the seed of the generator to the given integer value.
 
 .. function:: list()
 
-     Return an array with all the list of all the supported generator type.
+     Return an array containing the list of all supported generator types.
 
 Examples
 --------
 
-So here a simple example that prints 20 integer numbers between 0 and 999::
+Below is a simple example that prints 20 integer numbers between 0 and 999::
 
+   rng = require("lgsl.rng")
    r = rng.new() -- we create a random number generator
    for k=1,20 do
       local n = r:getint(1000) -- we obtain a random integer < 1000
       print(n)
    end
 
-and here another example that creates a 5x5 matrix and initialize it with random numbers like before::
+and here's another example that creates a 5x5 matrix and initializes it with
+random numbers like before::
 
    r = rng.new() -- we create a random number generator
-   m = new(5, 5, |i,j| r:getint(1000)) -- create the matrix
+   m = new(5, 5, function(i,j) r:getint(1000)) -- create the matrix
 
 .. _rng-algorithms:
 
@@ -316,5 +319,3 @@ randomness.
           random-number generators", 'Computers in Physics', 12(4),
           Jul/Aug 1998, pp 385-392.
 
-
-.. [park-miller] Commun. ACM, 31, 1192-1201
