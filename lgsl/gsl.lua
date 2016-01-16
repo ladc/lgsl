@@ -2694,9 +2694,11 @@ if jit.os == "Linux" or jit.os == "BSD" then
   ffi.C.dlerror() -- initialize
   ffi.C.dlopen(libblas, 0x0102) -- load lib with RTLD_NOW | RTLD_GLOBAL
   local err = ffi.C.dlerror()
-  if string.find(err,"invalid flags to dlopen") then
-    ffi.C.dlopen(libblas, 2) -- different flags on Android
-  elseif err~=nil then
+  if err~=nil and ffi.string(err):find("invalid flags to dlopen") then
+    ffi.C.dlopen(libblas, 2) -- RTLD flags are enums on Android
+    err = ffi.C.dlerror()
+  end
+  if err~=nil then
     io.write("Warning: could not load BLAS library!\n",ffi.string(err),"\n")
   end
 elseif jit.os == "OSX" then
