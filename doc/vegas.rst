@@ -76,8 +76,6 @@ Functions
 
 The function :func:`vegas_prepare` returns an integrator with the following interface:
 
-.. module:: 
-
 .. function:: vegas_integ(f, a, b[, calls, options])
 
    Use the VEGAS Monte Carlo algorithm to integrate the function ``f`` over the ``N``-dimensional hypercubic region defined by the lower and upper limits in the vectors ``a`` and ``b`` (assuming 1-based indexing). The integration uses a fixed number of function calls ``calls``, as opposed to a target precision.  The optional ``options`` table can contain the fields

@@ -42,8 +42,7 @@ Contents:
    fft.rst
    ode.rst
    integ.rst
-   sf.rst
    vegas.rst
-   csv.rst
+   sf.rst
    examples.rst
    gsl-ffi.rst
