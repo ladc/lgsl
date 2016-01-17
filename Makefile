@@ -8,6 +8,7 @@ DEB_PACKAGE = $(PACKAGE_NAME)_$(VERSION)-1_$(ARCH).deb
 ARCH := $(shell dpkg-architecture -qDEB_HOST_ARCH)
 
 PREFIX = /usr/local
+DOCDIR = doc
 DEBIAN = debian_build$(PREFIX)
 
 LUA_SRC = bspline.lua check.lua complex.lua csv.lua eigen.lua fft.lua \
@@ -50,5 +51,9 @@ clean:
 test:
 	$(LUA) test-output.lua
 
+doc: doc-html
 
-.PHONY: clean debian install test
+doc-html:
+	cd $(DOCDIR) && $(MAKE) html
+
+.PHONY: clean debian install test doc
