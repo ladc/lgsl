@@ -1,7 +1,6 @@
 # LGSL: A numerical library for Lua based on GSL
 
-* Copyright (C) 2009-2015 Francesco Abbate and Lesley De Cruz
-* Contributions by Benjamin von Ardenne
+* Copyright (C) 2009-2016 Francesco Abbate, Lesley De Cruz and Benjamin von Ardenne
 * Published under GPL-3
 
 ## About
@@ -27,8 +26,7 @@ Shell](http://www.nongnu.org/gsl-shell/).
 
 ## Usage
 
-Please see the extensive [GSL Shell
-documentation](http://www.nongnu.org/gsl-shell/doc/index.html) for now.
+See the [LGSL Documentation](http://lgsl.duckdns.org/).
 
 To see some demos, fire up LuaJIT and type:
 
