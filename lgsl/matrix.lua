@@ -457,6 +457,9 @@ local function selector(r, s)
    end
 end
 
+local matrix_display = matrix_display_gen(mat_real_get)
+local matrix_complex_display = matrix_display_gen(mat_complex_get)
+
 local function mat_complex_of_real(m)
    local n1, n2 = matrix_dim(m)
    local mc = matrix_calloc(n1, n2)
@@ -735,7 +738,7 @@ local matrix_methods = {
    norm2 = matrix_norm2,
    slice = matrix_slice,
    sort  = matrix_sort,
-   show  = matrix_display_gen(mat_real_get),
+   show  = matrix_display,
 }
 
 local function matrix_index(m, i)
@@ -886,6 +889,8 @@ local matrix_mt = {
 
    __index    = matrix_index,
    __newindex = matrix_newindex,
+
+   __tostring = matrix_display,
 }
 
 ffi.metatype(gsl_matrix, matrix_mt)
@@ -902,7 +907,7 @@ local matrix_complex_methods = {
    norm  = matrix_complex_norm,
    norm2 = matrix_complex_norm2,
    slice = matrix_complex_slice,
-   show  = matrix_display_gen(mat_complex_get),
+   show  = matrix_complex_display,
 }
 
 local function matrix_complex_index(m, i)
@@ -958,6 +963,7 @@ local matrix_complex_mt = {
 
    __index    = matrix_complex_index,
    __newindex = matrix_complex_newindex,
+   __tostring = matrix_complex_display,
 }
 
 ffi.metatype(gsl_matrix_complex, matrix_complex_mt)

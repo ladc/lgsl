@@ -49,7 +49,7 @@ simple indexing as illustrated in the following example::
   >>> -- we define a vector, it is just a matrix with one column
   >>> v = matrix.vec {0, 0.2, 0.4, 7.6, 0.8, 1.0}
 
-  >>> =v:show()
+  >>> =v
   [ 0   ]
   [ 0.2 ]
   [ 0.4 ]
@@ -73,11 +73,11 @@ Here are some simple examples of matrix manipulations::
 
    >>> m = matrix.def {{0.2, 4, -0.5}, {2, 0, 1.1}}
 
-   >>> =m:show()
+   >>> =m
    [  0.2    4 -0.5 ]
    [    2    0  1.1 ]
 
-   >>> =m[1]:show()
+   >>> =m[1]
    [  0.2 ]
    [    4 ]
    [ -0.5 ]
@@ -85,7 +85,7 @@ Here are some simple examples of matrix manipulations::
    >>> -- we change one of the matrix elements
    >>> m[1][2] = -0.7
 
-   >>> =m:show()
+   >>> =m
    [  0.2 -0.7 -0.5 ]
    [    2    0  1.1 ]
 

@@ -127,7 +127,7 @@ Of course, you are not forced to define the function in the same line; you can d
 
 This is the result::
 
-    >>> print(m:show())
+    >>> print(m)
     [  1  0  0  0  0  0  0  0 ]
     [  1  1  0  0  0  0  0  0 ]
     [  1  2  1  0  0  0  0  0 ]
@@ -157,7 +157,7 @@ Let us see how it works by using the matrix ``m`` defined above and taking its i
 
 Then the matrix ``minv`` will be equal to::
 
-   >>> print(minv:show())
+   >>> =minv
    [   1   0   0   0   0   0   0   0 ]
    [  -1   1   0   0   0   0   0   0 ]
    [   1  -2   1   0   0   0   0   0 ]
@@ -169,7 +169,7 @@ Then the matrix ``minv`` will be equal to::
 
 If we want to check that ``minv`` is actually the inverse of ``m``, we can perform the matrix multiplication to check::
 
-   >>> print((minv * m):show())
+   >>> =minv * m
    [ 1 0 0 0 0 0 0 0 ]
    [ 0 1 0 0 0 0 0 0 ]
    [ 0 0 1 0 0 0 0 0 ]
@@ -185,7 +185,7 @@ The matrix inverse can be used to solve a linear system, so let us try that.
 First we define a column vector, for example::
 
    b = matrix.new(8, 1, function(i) return math.sin(2*math.pi*(i-1)/8) end)
-   >>> print(b:show())
+   >>> =b
    [           0 ]
    [  0.70710678 ]
    [           1 ]
@@ -198,7 +198,7 @@ First we define a column vector, for example::
 The we can solve the linear system ``m * x = b`` using the inverse matrix ``minv`` as follows::
 
    x = minv * b
-   >>> =x:show()
+   >>> =x
    [           0 ]
    [  0.70710678 ]
    [ -0.41421356 ]
@@ -228,7 +228,7 @@ The answer is easy, since LGSL always checks the type of the matrix, and the app
 So, to continue the example above, we can define ``b`` as a complex vector as follows::
 
    b = matrix.cnew(8, 1, |i| complex.exp(2i*pi*(i-1)/8))
-   >>> =b:show()
+   >>> =b
    [                       1 ]
    [  0.70710678+0.70710678i ]
    [                       i ]
