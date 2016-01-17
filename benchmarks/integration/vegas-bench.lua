@@ -16,11 +16,11 @@ local function f(x)
 end
 local vegas_result = vegas.integ(f,a,b,calls,{r=r})
 io.write( string.format([[
-==================
-result = %.6f
-sigma  = %.6f
-exact  = %.6f
-error  = %.6f = %.2g sigma
-i      = %d 
+vegas final ==================
+result = % .10f
+sigma  = % .10f
+exact  = % .10f
+error  = % .10f = %.2g sigma
+i      = % d
 ]] ,vegas_result.result,vegas_result.sigma,exact, vegas_result.result - exact,  math.abs(vegas_result.result - exact)/vegas_result.sigma, vegas_result.nruns))
 

@@ -15,10 +15,10 @@ void
 display_results (char *title, double result, double error, int i)
      {
        printf ("%s ==================\n", title);
-       printf ("result = % .6f\n", result);
-       printf ("sigma  = % .6f\n", error);
-       printf ("exact  = % .6f\n", exact);
-       printf ("error  = % .6f = %.2g sigma\n", result - exact,
+       printf ("result = % .10f\n", result);
+       printf ("sigma  = % .10f\n", error);
+       printf ("exact  = % .10f\n", exact);
+       printf ("error  = % .10f = %.2g sigma\n", result - exact,
                fabs (result - exact) / error);
        printf ("i      = % d\n", i);
      }
