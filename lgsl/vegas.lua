@@ -63,24 +63,24 @@ local function getintegrator(state,template_spec)
     state.clear_stage1() -- clear results
     state.rebin_stage2(options and options.warmup or 1e4) -- intialise grid
     state.integrate(f,a_work,rget) -- warmup
-    local nruns = 0
-    local result,sigma
+    local result_state = {}
     -- full integration:
     local function cont(c)
       calls = c or calls
-      nruns = 0
+      result_state.nruns = 0
       repeat
         -- forget previous results, but not the grid
         state.clear_stage1()
         -- rebin grid for (modified) number of calls
         state.rebin_stage2(calls/template_spec.ITERATIONS)
-        result,sigma = state.integrate(f,a_work,rget)
-        nruns = nruns+1
+        result_state.result,result_state.sigma = state.integrate(f,a_work,rget)
+        result_state.nruns = result_state.nruns+1
       until abs(state.chisq() - 1) < chidev
-      return {result=result,sigma=sigma,nruns=nruns,continue=cont}
+      return result_state 
     end
+    result_state.continue = cont
     cont(calls)
-    return {result=result,sigma=sigma,nruns=nruns,continue=cont}
+    return result_state
   end
 end
 
