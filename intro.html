@@ -1,0 +1,532 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LGSL introduction &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Iterators" href="lua-base.html" />
+    <link rel="prev" title="Welcome to the LGSL documentation" href="index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lua-base.html" title="Iterators"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the LGSL documentation"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lgsl-introduction">
+<span id="introduction"></span><h1>LGSL introduction<a class="headerlink" href="#lgsl-introduction" title="Permalink to this headline">¶</a></h1>
+<p>LGSL offers an intuitive interface to the numerical routines of the GNU
+Scientific Library (GSL) using Lua, an easy to learn and powerful programming
+languages. LGSL is based on the numerical modules of <a class="reference external" href="http://www.nongnu.org/gsl-shell/">GSL Shell</a>, and requires LuaJIT.</p>
+<p>With LGSL, you can access the functions provided by the GSL library with great
+ease, without the need to write and compile a stand-alone C application.  In
+addition, the power and expressiveness of the Lua language enables you to
+develop and test complex procedures to process your data and effectively use
+the GSL routines. LGSL combines usability with speed, as LuaJIT provides
+excellent execution speed that can be very competitive with compiled C or C++
+code.</p>
+<p>It is recommended to install the powerful <a class="reference external" href="http://www.github.com/franko/graph-toolkit">graph-toolkit</a> Lua module for creating plots.</p>
+<p>To access a function from LGSL, you can either require the specific module <tt class="xref py py-mod docutils literal"><span class="pre">lgsl.modulename</span></tt>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.matrix&quot;</span><span class="p">)</span>
+<span class="n">A</span> <span class="o">=</span> <span class="n">m</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Alternatively, you can load the entire <tt class="xref py py-mod docutils literal"><span class="pre">lgsl</span></tt> parent module, in which all
+modules are loaded by default:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">lgsl</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl&quot;</span><span class="p">)</span>
+
+<span class="c1">-- access functions directly from lgsl</span>
+<span class="n">B</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">-- list all loaded modules</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">lgsl</span><span class="p">)</span> <span class="k">do</span> <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">end</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">In the examples in this manual, we do not use local variables. This allows all
+examples to be tried out in LuaJIT in interactive mode. However, in
+performance-critical situations, you are strongly encouraged to use local
+variables!</p>
+</div>
+<div class="section" id="real-and-complex-numbers">
+<span id="complex-numbers"></span><h2>Real and complex numbers<a class="headerlink" href="#real-and-complex-numbers" title="Permalink to this headline">¶</a></h2>
+<p>In LuaJIT (or Lua 5.1), all numbers are internally stored in double precision;
+in this manual, we refer to this kind of number as a <em>real</em> number, as opposed
+to a <em>complex</em> number. LuaJIT does not have a distinct type to represent
+integer numbers; in other words, integer numbers are treated just like <em>real</em>
+numbers with all the implications that follow.</p>
+<p>When you need to define a complex number you can use a native syntax like in the following example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">4</span><span class="n">i</span>
+</pre></div>
+</div>
+<p>The rule is that when you write a number followed by an &#8216;i&#8217; it will be considered as a pure imaginary number.
+The imaginary number will be accepted only if the &#8216;i&#8217; follows immediately the number without any interleaving spaces.
+Note also that if you write &#8216;i&#8217; alone this will be not interpreted as the imaginary unit but as the variable &#8216;i&#8217;.
+The imaginary unit can be declared by writing &#8216;1i&#8217;, because the &#8216;1&#8217; at the beginning forces the interpreter to consider it as a number.</p>
+<p>All the functions in <tt class="xref py py-mod docutils literal"><span class="pre">math</span></tt> such as exp, sin, cos etc. work on <em>real</em> numbers.
+If you want to operate on complex numbers, you should use the functions defined in the <a class="reference internal" href="complex.html#module-complex" title="complex"><tt class="xref py py-mod docutils literal"><span class="pre">complex</span></tt></a> module.</p>
+</div>
+<div class="section" id="matrices">
+<span id="id1"></span><h2>Matrices<a class="headerlink" href="#matrices" title="Permalink to this headline">¶</a></h2>
+<p>The other important mathematical types in LGSL are matrices, either of complex or real numbers.
+In addition, Lua offers a native type called &#8220;table&#8221;.
+The latter is very useful for general purpose programming because it can store any kind of data or structures. However, you should be careful to not confuse Lua tables with matrices.
+You can work with both types as far as you understand the difference and use the appropriate functions to operate on them.</p>
+<p>Most of the LGSL functions operate on real or complex matrices because of the nature of the GSL library itself.</p>
+<div class="section" id="creating-matrices">
+<h3>Creating matrices<a class="headerlink" href="#creating-matrices" title="Permalink to this headline">¶</a></h3>
+<p>In order to define a matrix you have basically two options: you can enumerate all the values or you can provide a function that generates the terms of the matrix.
+In the first case you, should use the <a class="reference internal" href="matrices.html#matrix.def" title="matrix.def"><tt class="xref py py-func docutils literal"><span class="pre">matrix.def()</span></tt></a> like in the following example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">matrix</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.matrix&quot;</span><span class="p">)</span>
+<span class="n">th</span> <span class="o">=</span> <span class="nb">math.pi</span><span class="o">/</span><span class="mi">8</span> <span class="c1">-- define the angle &quot;th&quot;</span>
+
+<span class="c1">-- define 2x2 rotation matrix for the given angle &quot;th&quot;</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">def</span> <span class="p">{{</span><span class="nb">math.cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="nb">math.sin</span><span class="p">(</span><span class="n">th</span><span class="p">)},</span> <span class="p">{</span><span class="o">-</span><span class="nb">math.sin</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="nb">math.cos</span><span class="p">(</span><span class="n">th</span><span class="p">)}}</span>
+</pre></div>
+</div>
+<p>You can remark that we have used the <a class="reference internal" href="matrices.html#matrix.def" title="matrix.def"><tt class="xref py py-func docutils literal"><span class="pre">matrix.def()</span></tt></a> function without parentheses to enclose its arguments.
+The reason is that, when a function is called with a single argument which is a literal table or string, you can omit the enclosing parentheses.
+In this case we have therefore omitted the parentheses because <a class="reference internal" href="matrices.html#matrix.def" title="matrix.def"><tt class="xref py py-func docutils literal"><span class="pre">matrix.def()</span></tt></a> has a single argument that is a literal table.</p>
+<p>As a general remark, in performance-sensitive situations, it may be useful to store functions such as <tt class="xref py py-func docutils literal"><span class="pre">math.sin()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">math.cos()</span></tt> in local variables <tt class="docutils literal"><span class="pre">sin</span></tt> and <tt class="docutils literal"><span class="pre">cos</span></tt> instead of accessing the <tt class="docutils literal"><span class="pre">math</span></tt> library every time.</p>
+<p>You can also define a column matrix using the function <a class="reference internal" href="matrices.html#matrix.vec" title="matrix.vec"><tt class="xref py py-func docutils literal"><span class="pre">matrix.vec()</span></tt></a> as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">vec</span> <span class="p">{</span><span class="nb">math.cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="nb">math.sin</span><span class="p">(</span><span class="n">th</span><span class="p">)}</span>
+</pre></div>
+</div>
+<p>The other way to define a matrix is through the <a class="reference internal" href="matrices.html#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">matrix.new()</span></tt></a> function (or <a class="reference internal" href="matrices.html#matrix.cnew" title="matrix.cnew"><tt class="xref py py-func docutils literal"><span class="pre">matrix.cnew()</span></tt></a> to create a complex matrix).
+This function takes the number of rows and columns as the first two arguments and a function as an optional third argument.
+Let us see an example to illustrate how it works:</p>
+<div class="highlight-lua"><div class="highlight"><pre>-- define a matrix whose (i, j) element is 1/(i + j)
+m = matrix.new(4, 4, function(i,j) return 1/(i + j) end)`
+</pre></div>
+</div>
+<p>The function passed to <a class="reference internal" href="matrices.html#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">matrix.new()</span></tt></a> takes two arguments, respectively the row and column number, and returns the value that should be assigned to the corresponding matrix element.
+Of course, you are not forced to define the function in the same line; you can define it before and use it later with the <a class="reference internal" href="matrices.html#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">matrix.new()</span></tt></a> function as in the following example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">sf</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.sf&quot;</span><span class="p">)</span>
+
+<span class="c1">-- define the binomial function</span>
+<span class="k">function</span> <span class="nf">binomial</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="k">then</span>
+      <span class="k">return</span> <span class="n">sf</span><span class="p">.</span><span class="n">choose</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="k">else</span>
+      <span class="k">return</span> <span class="mi">0</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1">-- define a matrix based on the function just defined</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="n">binomial</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is the result:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">2</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">3</span>  <span class="mi">3</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">4</span>  <span class="mi">6</span>  <span class="mi">4</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">5</span> <span class="mi">10</span> <span class="mi">10</span>  <span class="mi">5</span>  <span class="mi">1</span>  <span class="mi">0</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">6</span> <span class="mi">15</span> <span class="mi">20</span> <span class="mi">15</span>  <span class="mi">6</span>  <span class="mi">1</span>  <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mi">1</span>  <span class="mi">7</span> <span class="mi">21</span> <span class="mi">35</span> <span class="mi">35</span> <span class="mi">21</span>  <span class="mi">7</span>  <span class="mi">1</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>An alternative compact writing could have been:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">return</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">sf</span><span class="p">.</span><span class="n">choose</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span> <span class="k">end</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where we have again used the short function notation and the Lua logical operators <tt class="docutils literal"><span class="pre">and</span></tt> and <tt class="docutils literal"><span class="pre">or</span></tt>.</p>
+</div>
+<div class="section" id="matrix-operations">
+<h3>Matrix operations<a class="headerlink" href="#matrix-operations" title="Permalink to this headline">¶</a></h3>
+<p>If we want to obtain the inverse of the matrix defined above we can use the function <a class="reference internal" href="linalg.html#matrix.inv" title="matrix.inv"><tt class="xref py py-func docutils literal"><span class="pre">matrix.inv()</span></tt></a>.
+Let us see how it works by using the matrix <tt class="docutils literal"><span class="pre">m</span></tt> defined above and taking its inverse:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="c1">-- we define the matrix</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">return</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">sf</span><span class="p">.</span><span class="n">choose</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span> <span class="k">end</span><span class="p">)</span>
+
+<span class="c1">-- we obtain the inverse</span>
+<span class="n">minv</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">inv</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then the matrix <tt class="docutils literal"><span class="pre">minv</span></tt> will be equal to:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">minv</span>
+<span class="p">[</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="o">-</span><span class="mi">1</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>   <span class="mi">1</span>  <span class="o">-</span><span class="mi">2</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="o">-</span><span class="mi">1</span>   <span class="mi">3</span>  <span class="o">-</span><span class="mi">3</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>   <span class="mi">1</span>  <span class="o">-</span><span class="mi">4</span>   <span class="mi">6</span>  <span class="o">-</span><span class="mi">4</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="o">-</span><span class="mi">1</span>   <span class="mi">5</span> <span class="o">-</span><span class="mi">10</span>  <span class="mi">10</span>  <span class="o">-</span><span class="mi">5</span>   <span class="mi">1</span>   <span class="mi">0</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>   <span class="mi">1</span>  <span class="o">-</span><span class="mi">6</span>  <span class="mi">15</span> <span class="o">-</span><span class="mi">20</span>  <span class="mi">15</span>  <span class="o">-</span><span class="mi">6</span>   <span class="mi">1</span>   <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="o">-</span><span class="mi">1</span>   <span class="mi">7</span> <span class="o">-</span><span class="mi">21</span>  <span class="mi">35</span> <span class="o">-</span><span class="mi">35</span>  <span class="mi">21</span>  <span class="o">-</span><span class="mi">7</span>   <span class="mi">1</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>If we want to check that <tt class="docutils literal"><span class="pre">minv</span></tt> is actually the inverse of <tt class="docutils literal"><span class="pre">m</span></tt>, we can perform the matrix multiplication to check:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">minv</span> <span class="o">*</span> <span class="n">m</span>
+<span class="p">[</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>and as we should expect, we have actually obtained the unit matrix.</p>
+<p>The matrix inverse can be used to solve a linear system, so let us try that.
+First we define a column vector, for example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">b</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">return</span> <span class="nb">math.sin</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="nb">math.pi</span><span class="o">*</span><span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">8</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">b</span>
+<span class="p">[</span>           <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.70710678</span> <span class="p">]</span>
+<span class="p">[</span>           <span class="mi">1</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.70710678</span> <span class="p">]</span>
+<span class="p">[</span>           <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.70710678</span> <span class="p">]</span>
+<span class="p">[</span>          <span class="o">-</span><span class="mi">1</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.70710678</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>The we can solve the linear system <tt class="docutils literal"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">b</span></tt> using the inverse matrix <tt class="docutils literal"><span class="pre">minv</span></tt> as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">minv</span> <span class="o">*</span> <span class="n">b</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">x</span>
+<span class="p">[</span>           <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.70710678</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.41421356</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.17157288</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.34314575</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.10050506</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.14213562</span> <span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.14213562</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>so that the resulting column matrix x will satisfy the equation <tt class="docutils literal"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.</p>
+<p>The reader familiar with linear algebra computations may argue that using matrix inversion to solve a linear system is inefficient.
+This is actually true and LGSL offers the function <a class="reference internal" href="linalg.html#matrix.solve" title="matrix.solve"><tt class="xref py py-func docutils literal"><span class="pre">matrix.solve()</span></tt></a> to solve a linear system efficiently.
+So in the example above we could have used the function <a class="reference internal" href="linalg.html#matrix.solve" title="matrix.solve"><tt class="xref py py-func docutils literal"><span class="pre">matrix.solve()</span></tt></a> as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">solve</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>to obtain the same result of above.</p>
+</div>
+<div class="section" id="working-with-complex-matrices">
+<h3>Working with complex matrices<a class="headerlink" href="#working-with-complex-matrices" title="Permalink to this headline">¶</a></h3>
+<p>In the example above we have shown how to solve a linear system in the form <tt class="docutils literal"><span class="pre">m</span> <span class="pre">*</span> <span class="pre">x</span> <span class="pre">=</span> <span class="pre">b</span></tt>.
+We may wonder how to manage the case when <tt class="docutils literal"><span class="pre">m</span></tt> or <tt class="docutils literal"><span class="pre">b</span></tt> are complex.
+The answer is easy, since LGSL always checks the type of the matrix, and the appropriate algorithm is selected.</p>
+<p>So, to continue the example above, we can define <tt class="docutils literal"><span class="pre">b</span></tt> as a complex vector as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre>b = matrix.cnew(8, 1, |i| complex.exp(2i*pi*(i-1)/8))
+&gt;&gt;&gt; =b
+[                       1 ]
+[  0.70710678+0.70710678i ]
+[                       i ]
+[ -0.70710678+0.70710678i ]
+[                      -1 ]
+[ -0.70710678-0.70710678i ]
+[                      -i ]
+[  0.70710678-0.70710678i ]
+</pre></div>
+</div>
+<p>and then we can use the function <a class="reference internal" href="linalg.html#matrix.solve" title="matrix.solve"><tt class="xref py py-func docutils literal"><span class="pre">matrix.solve()</span></tt></a> as above and we will obtain a complex matrix that solves the linear system.</p>
+<p>Please note that above we have used the function <a class="reference internal" href="matrices.html#matrix.cnew" title="matrix.cnew"><tt class="xref py py-func docutils literal"><span class="pre">matrix.cnew()</span></tt></a> to create a new complex matrix.
+The reason is that we need to inform LGSL in advance if we want a complex matrix.</p>
+<p>In general, LGSL tries to ensure that all the common matrix operations transparently handle real or complex matrices.</p>
+</div>
+<div class="section" id="matrix-indexing">
+<h3>Matrix indexing<a class="headerlink" href="#matrix-indexing" title="Permalink to this headline">¶</a></h3>
+<p>When indexing the matrix, only one index is permitted, so the syntax <tt class="docutils literal"><span class="pre">m[2]</span></tt> is OK but <tt class="docutils literal"><span class="pre">m[2,3]</span></tt> will not be accepted.
+This is a limitation of the Lua programming language.</p>
+<p>When you write <tt class="docutils literal"><span class="pre">m[2]</span></tt> you will obtain the second row of the matrix <tt class="docutils literal"><span class="pre">m</span></tt> but in <em>column</em> form.
+So, if we use the matrix <tt class="docutils literal"><span class="pre">m</span></tt> defined above we could have:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">4</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">6</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">4</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">0</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>It may seem odd that the row is returned in column form but it is actually convenient because many functions accept a column matrix as input.
+The idea is that in LGSL, column matrices play the role of vectors.</p>
+<p>Following the same logic as above, if you index a column matrix you will just obtain its n-th element (as returning a 1x1 matrix will be not very useful).
+So you can have for example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="mi">4</span><span class="p">]</span>
+<span class="mi">4</span>
+</pre></div>
+</div>
+<p>At this point it should be clear that, in general, you can access the elements of a matrix with the double indexing syntax <tt class="docutils literal"><span class="pre">m[i][j]</span></tt>.</p>
+<p>Something that is important to know about the matrix indexing to obtain a row is that the column matrix refers to the same underlying data as the original matrix.
+As a consequence, any change to the elements of the derived matrix will also be effective for the original matrix.</p>
+<p>The indexing method that we have explained above can be used not only for retrieving the matrix elements or an entire row, but it can be equally used for assignment.
+This means that you can use double indexing to change an element of a matrix.
+If you use single indexing, you can assign the content of a whole row all at once.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Regarding efficiency: the double indexing method can be slow and should be probably avoided in a tight loop where the performance is important.
+In this case you should use the methods <a class="reference internal" href="matrices.html#Matrix.get" title="Matrix.get"><tt class="xref py py-meth docutils literal"><span class="pre">get()</span></tt></a> and <a class="reference internal" href="matrices.html#Matrix.set" title="Matrix.set"><tt class="xref py py-meth docutils literal"><span class="pre">set()</span></tt></a>.
+Another opportunity is to directly address matrix data by using its <tt class="docutils literal"><span class="pre">data</span></tt> field, but this requires particular attention since these kinds of operations are not safe and could easily crash the application.</p>
+</div>
+<p>You can find more details in the chapter about <a class="reference internal" href="gsl-ffi.html#gsl-ffi-interface"><em>GSL FFI interface</em></a>.</p>
+</div>
+</div>
+<div class="section" id="an-example">
+<h2>An Example<a class="headerlink" href="#an-example" title="Permalink to this headline">¶</a></h2>
+<p>To illustrate most of the key features of LGSL, let us write a short script to calculate the volume of an <cite>n</cite>-dimensional unit sphere and compare it with the analytical solution of <span class="math">\(V_n=\pi^{n/2}/ \Gamma(1+n/2)\)</span>.</p>
+<p>For the integration in high dimensions, we will use the <a class="reference internal" href="vegas.html#monte-carlo"><em>Monte Carlo VEGAS</em></a> implementation, that is included in LGSL.</p>
+<p>You must require the necessary modules before you can use them:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">vegas</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.vegas&quot;</span><span class="p">)</span>
+
+<span class="n">sf</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.sf&quot;</span><span class="p">)</span> <span class="c1">-- for the analytical solution, see below</span>
+<span class="n">iter</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.iter&quot;</span><span class="p">)</span> <span class="c1">-- for defining the integration boundaries</span>
+</pre></div>
+</div>
+<p>Now we need to define the integrand function. Since we want to calculate the volume of an <cite>n</cite>-dimensional sphere, the function should accept an <cite>n</cite>-tuple of coordinates and return 1 if the sampling point is inside the unit sphere or 0 otherwise.
+To work correctly, the VEGAS algorithm assumes that the integrand function takes a single argument that is a table with the <cite>n</cite> coordinates.
+Since the computation depends on the dimension <cite>n</cite> of the space, we need to take this into account.
+The solution is to define a function that we can call <cite>getunitsphere</cite>, that returns the integrand function for the <cite>n</cite>-dimension space.</p>
+<p>The <cite>n</cite>-dimensional integrand function itself calculates the summed square of the table values for a given size which equals <span class="math">\(R^2=\sum_{i=1}^nx_i^2\)</span>.
+So <cite>getunitsphere</cite> can be defined as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="k">function</span> <span class="nf">getunitsphere</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+   <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">for</span> <span class="n">k</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span> <span class="k">end</span>
+      <span class="k">return</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="mi">0</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>This is the function we will use to integrate later.</p>
+<p>For visualising our results, we will use the <a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#module-graph" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">graph</span></tt></a> module, which can be required as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we can prepare a graph path that will hold all calculated values (<a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#graph.path" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-func docutils literal"><span class="pre">graph.path()</span></tt></a>):</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">ln</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">-- 1-sphere = [-1, 1] (length 2)</span>
+</pre></div>
+</div>
+<p>Now, we can start to calculate the volume of the unit sphere of the first 14 dimensions:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">max_dim</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="k">for</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_dim</span> <span class="k">do</span>
+
+   <span class="kd">local</span> <span class="n">a</span> <span class="o">=</span> <span class="n">iter</span><span class="p">.</span><span class="n">ilist</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="k">return</span> <span class="mi">0</span> <span class="k">end</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">b</span> <span class="o">=</span> <span class="n">iter</span><span class="p">.</span><span class="n">ilist</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="k">return</span> <span class="mi">1</span> <span class="k">end</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">calls</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="mf">1e4</span><span class="p">,</span><span class="mi">1</span>
+
+   <span class="c1">-- Obtaining monte carlo vegas state object</span>
+   <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="n">vegas</span><span class="p">.</span><span class="n">integ</span><span class="p">(</span><span class="n">getunitsphere</span><span class="p">(</span><span class="n">d</span><span class="p">),</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">calls</span><span class="p">)</span>
+
+   <span class="c1">--Increasing the number of calls to reach a satisfying result</span>
+   <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">sigma</span><span class="o">/</span><span class="n">s</span><span class="p">.</span><span class="n">result</span> <span class="o">&gt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="k">do</span>
+      <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">continue</span><span class="p">(</span><span class="n">calls</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="n">n</span><span class="p">))</span>
+      <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">end</span>
+
+   <span class="n">ln</span><span class="p">:</span><span class="n">line_to</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">result</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>The loop consists of three major parts.
+In the first part, we initialize the important variables with the <a class="reference internal" href="lua-base.html#iter.ilist" title="iter.ilist"><tt class="xref py py-func docutils literal"><span class="pre">iter.ilist()</span></tt></a> function, which conveniently creates vectors of any size with a value provided by the function.
+In this case <cite>a</cite> and <cite>b</cite> contain the lower and the upper boundaries for the integration.</p>
+<p>The Monte Carlo VEGAS integrator <a class="reference internal" href="vegas.html#vegas.integ" title="vegas.integ"><tt class="xref py py-func docutils literal"><span class="pre">vegas.integ()</span></tt></a> derives the number of dimensions from the length of the bounds vector, <tt class="docutils literal"><span class="pre">#a</span></tt>. By calling <a class="reference internal" href="vegas.html#vegas.integ" title="vegas.integ"><tt class="xref py py-func docutils literal"><span class="pre">vegas.integ()</span></tt></a> with the desired unitsphere function, an integrator is created for this number of dimensions, and the Monte Carlo VEGAS algorithm is being invoked.
+It returns a state table <tt class="docutils literal"><span class="pre">s</span></tt> with the <tt class="docutils literal"><span class="pre">result</span></tt> itself, the precision <tt class="docutils literal"><span class="pre">sigma</span></tt>, the number of iterations <tt class="docutils literal"><span class="pre">calls</span></tt> it took, and a continuation function <tt class="docutils literal"><span class="pre">continue</span></tt> that can be called to recalculate the result with higher precision.</p>
+<p>Depending on the relative precision <tt class="docutils literal"><span class="pre">s.sigma/s.result</span></tt>, we continue to recalculate the integral with increasing numbers of iterations.
+When it is done, we add the dimension and the result to our given path by <tt class="xref py py-func docutils literal"><span class="pre">line_to()</span></tt>.</p>
+<p>We can now proceed to compare the data with analytical solutions and plot these results.
+First we need to initialize a <a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#graph.plot" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-func docutils literal"><span class="pre">graph.plot()</span></tt></a> object.
+Then we can add the data to the plot with <tt class="xref py py-func docutils literal"><span class="pre">add()</span></tt> and the result of the analytical solution with <tt class="xref py py-meth docutils literal"><span class="pre">addline()</span></tt>.
+Note that you can change the appearance of the data points at this moment. We are going for markers with size 8.
+The plot is created as follows:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">p</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Volume of a unit n-sphere&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">clip</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">pad</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span>
+<span class="n">analytic</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="k">return</span> <span class="nb">math.pi</span><span class="o">^</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sf</span><span class="p">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">p</span><span class="p">:</span><span class="n">addline</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">fxline</span><span class="p">(</span><span class="n">analytic</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">))</span>
+<span class="n">p</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">ln</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">blue&quot;</span><span class="p">,</span> <span class="p">{{</span><span class="s1">&#39;</span><span class="s">marker&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">}})</span>
+<span class="n">p</span><span class="p">.</span><span class="n">xtitle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">n&quot;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">ytitle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">V&quot;</span>
+<span class="n">p</span><span class="p">:</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Also note that we use <a class="reference internal" href="sf.html#sf.gamma" title="sf.gamma"><tt class="xref py py-func docutils literal"><span class="pre">sf.gamma()</span></tt></a> from the special functions section, which offers all such functions that you can find in the GSL library.
+After setting the axis-names with <tt class="xref py py-func docutils literal"><span class="pre">xtitle()</span></tt> and <tt class="xref py py-func docutils literal"><span class="pre">ytitle()</span></tt>, we are ready to show the plot with <tt class="xref py py-func docutils literal"><span class="pre">show()</span></tt>:</p>
+<div class="figure">
+<img alt="_images/vegas.png" src="_images/vegas.png" />
+</div>
+<p>Here is the code as a whole (which uses local variables):</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="kd">local</span> <span class="n">vegas</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.vegas&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">sf</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.sf&quot;</span><span class="p">)</span> <span class="c1">-- for the analytical solution, see below</span>
+<span class="kd">local</span> <span class="n">iter</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.iter&quot;</span><span class="p">)</span> <span class="c1">-- for defining the integration boundaries</span>
+
+<span class="kd">local</span> <span class="k">function</span> <span class="nf">getunitsphere</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+   <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+      <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">for</span> <span class="n">k</span><span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span> <span class="k">do</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">x</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">^</span><span class="mi">2</span> <span class="k">end</span>
+      <span class="k">return</span> <span class="n">s</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="mi">0</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kd">local</span> <span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">ln</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c1">-- 1-sphere = [-1, 1] (length 2)</span>
+<span class="kd">local</span> <span class="n">max_dim</span> <span class="o">=</span> <span class="mi">14</span>
+
+<span class="c1">--Calculating the volume of d-dimensional sphere</span>
+<span class="k">for</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">max_dim</span> <span class="k">do</span>
+   <span class="c1">--Intializing work varaibles</span>
+   <span class="kd">local</span> <span class="n">a</span> <span class="o">=</span> <span class="n">iter</span><span class="p">.</span><span class="n">ilist</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="k">return</span> <span class="mi">0</span> <span class="k">end</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">b</span> <span class="o">=</span> <span class="n">iter</span><span class="p">.</span><span class="n">ilist</span><span class="p">(</span><span class="k">function</span><span class="p">()</span> <span class="k">return</span> <span class="mi">1</span> <span class="k">end</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">calls</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">d</span><span class="o">*</span><span class="mf">1e4</span><span class="p">,</span><span class="mi">1</span>
+
+   <span class="c1">--Obtaining monte carlo vegas callback</span>
+   <span class="kd">local</span> <span class="n">s</span> <span class="o">=</span> <span class="n">vegas</span><span class="p">.</span><span class="n">integ</span><span class="p">(</span><span class="n">getunitsphere</span><span class="p">(</span><span class="n">d</span><span class="p">),</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">calls</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="s">Volume = %.3f +/- %.3f &quot;</span>
+   <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">result</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">sigma</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">))</span>
+
+   <span class="c1">--Increasing the number of calls to reach a satisfying result</span>
+   <span class="k">while</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">sigma</span><span class="o">/</span><span class="n">s</span><span class="p">.</span><span class="n">result</span> <span class="o">&gt;</span> <span class="mf">0.005</span><span class="p">)</span> <span class="k">do</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Increasing accuracy, doubling number of calls...&quot;</span><span class="p">)</span>
+      <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="n">continue</span><span class="p">(</span><span class="n">calls</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">^</span><span class="n">n</span><span class="p">))</span>
+      <span class="nb">print</span><span class="p">(</span><span class="nb">string.format</span><span class="p">(</span><span class="n">fmt</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">result</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">sigma</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">))</span>
+      <span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">end</span>
+   <span class="n">ln</span><span class="p">:</span><span class="n">line_to</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">result</span><span class="o">*</span><span class="mi">2</span><span class="o">^</span><span class="n">d</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1">--plotting a comparison of the numerical result with the analytical solution</span>
+<span class="kd">local</span> <span class="n">p</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Volume of a unit n-sphere&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="p">.</span><span class="n">clip</span><span class="p">,</span> <span class="n">p</span><span class="p">.</span><span class="n">pad</span> <span class="o">=</span> <span class="kc">false</span><span class="p">,</span> <span class="kc">true</span>
+<span class="kd">local</span> <span class="n">analytic</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> 
+  <span class="k">return</span> <span class="nb">math.pi</span><span class="o">^</span><span class="p">(</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sf</span><span class="p">.</span><span class="n">gamma</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="n">p</span><span class="p">:</span><span class="n">addline</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">fxline</span><span class="p">(</span><span class="n">analytic</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">max_dim</span><span class="p">))</span>
+<span class="n">p</span><span class="p">:</span><span class="n">add</span><span class="p">(</span><span class="n">ln</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s">blue&quot;</span><span class="p">,</span> <span class="p">{{</span><span class="s1">&#39;</span><span class="s">marker&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">8</span><span class="p">}})</span>
+<span class="n">p</span><span class="p">.</span><span class="n">xtitle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">n&quot;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">ytitle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s">V&quot;</span>
+<span class="n">p</span><span class="p">:</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This rather simple example showed quite a lot of important features of LGSL and graph-toolkit.
+Creating data structures with <cite>iterators</cite> is very common.</p>
+<p>With the function <tt class="xref py py-func docutils literal"><span class="pre">getunitsphere()</span></tt>, we have shown that some problems can be solved in an elegant way by returning a function.
+These kinds of functions are called closures because they refer to local variables declared outside of the function body itself.
+In this particular case, the function returned by <tt class="xref py py-func docutils literal"><span class="pre">getunitsphere()</span></tt> is a closure because it refers to the variable <cite>n</cite> defined outside its body.
+The function <tt class="xref py py-func docutils literal"><span class="pre">s.continue()</span></tt> returned by <a class="reference internal" href="vegas.html#vegas.integ" title="vegas.integ"><tt class="xref py py-func docutils literal"><span class="pre">vegas.integ()</span></tt></a> is also another example of closure since it refers to the current state of the VEGAS integration.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">LGSL introduction</a><ul>
+<li><a class="reference internal" href="#real-and-complex-numbers">Real and complex numbers</a></li>
+<li><a class="reference internal" href="#matrices">Matrices</a><ul>
+<li><a class="reference internal" href="#creating-matrices">Creating matrices</a></li>
+<li><a class="reference internal" href="#matrix-operations">Matrix operations</a></li>
+<li><a class="reference internal" href="#working-with-complex-matrices">Working with complex matrices</a></li>
+<li><a class="reference internal" href="#matrix-indexing">Matrix indexing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#an-example">An Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="index.html"
+                        title="previous chapter">Welcome to the LGSL documentation</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="lua-base.html"
+                        title="next chapter">Iterators</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/intro.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="lua-base.html" title="Iterators"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to the LGSL documentation"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

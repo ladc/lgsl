@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Ordinary Differential Equations &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Numerical Integration" href="integ.html" />
+    <link rel="prev" title="Fast Fourier Transform" href="fft.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="integ.html" title="Numerical Integration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="fft.html" title="Fast Fourier Transform"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-ode"></span><div class="section" id="ordinary-differential-equations">
+<h1>Ordinary Differential Equations<a class="headerlink" href="#ordinary-differential-equations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes functions for solving ordinary differential equation (ODE) initial value problems.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>The ODE integration routines in LGSL are based on GSL routines, but they are completely rewritten in Lua.
+Only a few integration methods are actually available for the moment such as Runge-Kutta-Fehlberg and Price-Dormand methods.</p>
+<p class="last">The actual interface is also likely to be changed in the near future to handle ODE systems in array form.</p>
+</div>
+<p>In LGSL, an ODE system is integrated by using an ODE solver object.
+The ODE solver internally stores the state of the solver, and you can advance the solution step-by-step until, eventually, the desired value of <cite>t</cite> is reached.</p>
+</div>
+<div class="section" id="creating-a-ode-system-solver">
+<h2>Creating a ODE system solver<a class="headerlink" href="#creating-a-ode-system-solver" title="Permalink to this headline">¶</a></h2>
+<p>An ODE solver allows users to obtain a numerical solution of an Ordinary
+Differential Equation (ODE) system. The ODE solver lets you solve the
+general n-dimensional first-order system,</p>
+<div class="math">
+\[\frac{\textrm{d}y_i(t)}{\textrm{d}t} = f_i(t, y_1(t), ..., y_n(t))\]</div>
+<p>for <span class="math">\(i = 1, \dots, n\)</span>.
+The stepping functions rely on the vector of derivatives <span class="math">\(f_i\)</span> and, for some methods, also on the Jacobian matrix,</p>
+<div class="math">
+\[J_{ij} = \frac{\partial f_i}{\partial y_j}\left(t,y(t)\right)\]</div>
+<p>For the moment, none of the methods implemented in LGSL use the Jacobian matrix.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The current implementation is limited to systems with a few number of variables.
+It is not recommended to use the current implementation if you have more than 20 variables.
+An implementation for ODE systems in array form should be available in the near future.</p>
+</div>
+</div>
+<div class="section" id="ode-solver-usage-example">
+<h2>ODE solver usage example<a class="headerlink" href="#ode-solver-usage-example" title="Permalink to this headline">¶</a></h2>
+<p>The following example illustrates the usage of an ODE solver. The differential equation that we want to integrate is:</p>
+<blockquote>
+<div><div class="math">
+\[\begin{split}\begin{array}{ll}
+   x' = &amp; -y - x^2 \\
+   y' = &amp; 2 x - y^3
+\end{array}\end{split}\]</div>
+</div></blockquote>
+<p>and this is the code that we can write to implement it:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">ode</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.ode&quot;</span><span class="p">)</span>
+<span class="c1">-- define the ODE function</span>
+<span class="k">function</span> <span class="nf">odef</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+   <span class="k">return</span> <span class="o">-</span><span class="n">y</span><span class="o">-</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">x</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">3</span>
+<span class="k">end</span>
+
+<span class="c1">-- create the ODE solver</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">ode</span><span class="p">{</span><span class="n">N</span><span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">eps_abs</span><span class="o">=</span> <span class="mf">1e-8</span><span class="p">}</span>
+
+<span class="c1">-- we define initial values</span>
+<span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">h0</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.04</span>
+<span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+
+<span class="c1">-- we initialize the ODE solver</span>
+<span class="n">s</span><span class="p">:</span><span class="n">init</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">h0</span><span class="p">,</span> <span class="n">odef</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span>
+
+<span class="c1">-- the ODE solver is iterated till the time t1 is reached</span>
+<span class="k">while</span> <span class="n">s</span><span class="p">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t1</span> <span class="k">do</span>
+   <span class="n">s</span><span class="p">:</span><span class="n">step</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Alternatively, you may want to make a plot of the curve that you obtain. This requires the package <a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#graphics-chapter" title="(in Lua Graphics Toolkit v1.0)"><em class="xref std std-ref">graph-toolkit</em></a>. In the following example, we create a &#8220;path&#8221; to describe the curve that we want to plot. We iterate with the ODE solver and we add all points with the &#8220;line_to&#8221; method. Then we create an empty plot and we add the line that we have just created:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+
+<span class="c1">-- we create a line and add the points obtained by integrating the ODE</span>
+<span class="n">ln</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">s</span><span class="p">.</span><span class="n">t</span> <span class="o">&lt;</span> <span class="n">t1</span> <span class="k">do</span>
+   <span class="n">s</span><span class="p">:</span><span class="n">step</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+   <span class="n">ln</span><span class="p">:</span><span class="n">line_to</span><span class="p">(</span><span class="n">s</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">s</span><span class="p">.</span><span class="n">y</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="k">end</span>
+
+<span class="c1">-- we create the plot by adding the line</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">ODE integration example&#39;</span><span class="p">)</span>
+<span class="n">p</span><span class="p">:</span><span class="n">addline</span><span class="p">(</span><span class="n">ln</span><span class="p">)</span>
+<span class="n">p</span><span class="p">:</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This the plot with the curve obtained by integration of the above ODE system:</p>
+<div class="figure">
+<img alt="_images/ode-integration-quasi-spiral.png" src="_images/ode-integration-quasi-spiral.png" />
+</div>
+</div>
+<div class="section" id="a-slightly-improved-example">
+<h2>A Slightly Improved Example<a class="headerlink" href="#a-slightly-improved-example" title="Permalink to this headline">¶</a></h2>
+<p>In the example given above we have used the <a class="reference internal" href="#ode.ODE.step" title="ode.ODE.step"><tt class="xref py py-meth docutils literal"><span class="pre">step()</span></tt></a> method to advance the ODE integrator.
+When you use <a class="reference internal" href="#ode.ODE.step" title="ode.ODE.step"><tt class="xref py py-meth docutils literal"><span class="pre">ODE.step()</span></tt></a>, the ODE integrator will adapt at each step the step size in order to respect the maximum absolute and relative error that you requested.
+This is a quite convenient behaviour but it can have a drawback since the sampling points can be very tightly packed or very largely spaced depending on the ODE system and the integration method.
+In some cases this is undesirable and you may want to obtain the values with a fixed sampling size.
+In this case you can use the <a class="reference internal" href="#ode.ODE.evolve" title="ode.ODE.evolve"><tt class="xref py py-meth docutils literal"><span class="pre">evolve()</span></tt></a> method to obtain the values with a given sampling step.</p>
+<p>So, in the example above you can change the while loop and use the <a class="reference internal" href="#ode.ODE.evolve" title="ode.ODE.evolve"><tt class="xref py py-meth docutils literal"><span class="pre">evolve()</span></tt></a> method instead:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="c1">-- we create a line and add the points obtained by integrating the ODE</span>
+<span class="n">ln</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">path</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="k">in</span> <span class="n">s</span><span class="p">:</span><span class="n">evolve</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span> <span class="k">do</span>
+   <span class="n">ln</span><span class="p">:</span><span class="n">line_to</span><span class="p">(</span><span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>to obtain values sampled with a spacing of 0.1 for the t values.</p>
+<p>You can see that the <a class="reference internal" href="#ode.ODE.evolve" title="ode.ODE.evolve"><tt class="xref py py-meth docutils literal"><span class="pre">evolve()</span></tt></a> method works actually as a Lua iterator.</p>
+<p>You may also note that the <a class="reference internal" href="#ode.ODE.evolve" title="ode.ODE.evolve"><tt class="xref py py-meth docutils literal"><span class="pre">evolve()</span></tt></a> iterator provides at each iteration the value t and each of the system variables in the standard order.</p>
+</div>
+<div class="section" id="ode-solver-class-definition">
+<h2>ODE Solver Class Definition<a class="headerlink" href="#ode-solver-class-definition" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="ode.ODE">
+<em class="property">class </em><tt class="descclassname">ode.</tt><tt class="descname">ODE</tt><a class="headerlink" href="#ode.ODE" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solver for an ODE system.</p>
+<dl class="function">
+<dt id="ode.ODE.ode">
+<tt class="descname">ode</tt><big>(</big><em>spec</em><big>)</big><a class="headerlink" href="#ode.ODE.ode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new solver for an ODE system. The <tt class="docutils literal"><span class="pre">spec</span></tt> should be a table
+containing the following fields:</p>
+<dl class="docutils">
+<dt>N</dt>
+<dd>The dimension or number of variables of the ODE system.</dd>
+<dt>eps_abs</dt>
+<dd>The maximum absolute error in the solution <tt class="docutils literal"><span class="pre">y</span></tt> that should be tolerated.</dd>
+<dt>eps_rel, <em>optional</em></dt>
+<dd>The maximum relative error in the solution <tt class="docutils literal"><span class="pre">y</span></tt> that should be tolerated.</dd>
+<dt>method, <em>optional</em></dt>
+<dd><p class="first">The low-level integration method used. Can be chosen between:</p>
+<ul class="last simple">
+<li><tt class="docutils literal"><span class="pre">&quot;rkf45&quot;</span></tt>, Embedded Runge-Kutta-Fehlberg (4, 5) method. This method is a good general-purpose integrator.</li>
+<li><tt class="docutils literal"><span class="pre">&quot;rk8pd&quot;</span></tt>, Embedded Runge-Kutta Prince-Dormand (8,9) method.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ode.ODE.init">
+<tt class="descname">init</tt><big>(</big><em>t0</em>, <em>h0</em>, <em>f</em>, <em>y0_1</em>, <em>y0_2</em>, <em>...</em>, <em>y0_N</em><big>)</big><a class="headerlink" href="#ode.ODE.init" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the state of the solver to the time <tt class="docutils literal"><span class="pre">t0</span></tt>.
+The second argument <tt class="docutils literal"><span class="pre">h0</span></tt> is the initial step size that the integrator will try.
+The function <tt class="docutils literal"><span class="pre">f</span></tt> is the function that defines the ODE system.
+It will be called as follows: <tt class="docutils literal"><span class="pre">f(t,</span> <span class="pre">y_1,</span> <span class="pre">y_2,</span> <span class="pre">...,</span> <span class="pre">y_N)</span></tt> where <tt class="docutils literal"><span class="pre">t</span></tt> is the time and <tt class="docutils literal"><span class="pre">y_1,</span> <span class="pre">y_2,</span> <span class="pre">...</span></tt> are the values of the N independent variables conventionally denoted here by &#8216;y&#8217;.
+The function <tt class="docutils literal"><span class="pre">f</span></tt> should return N values that correspond to values <tt class="docutils literal"><span class="pre">f_i(t,</span> <span class="pre">y_1,</span> <span class="pre">...,</span> <span class="pre">y_N)</span></tt> for each component <tt class="docutils literal"><span class="pre">f_i</span></tt> of the ODE system function.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ode.ODE.step">
+<tt class="descname">step</tt><big>(</big><em>t1</em><big>)</big><a class="headerlink" href="#ode.ODE.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Advance the solution of the system by a step chosen adaptively based on the previous step size.
+The new values (t, y) are stored internally by the solver and can be retrieved as properties with the name <tt class="docutils literal"><span class="pre">t</span></tt> and <tt class="docutils literal"><span class="pre">y</span></tt> where the latter is a column matrix of size N.
+The new values of <tt class="docutils literal"><span class="pre">t</span></tt> will be less than or equal to the value given <tt class="docutils literal"><span class="pre">t1</span></tt>.
+If the value <tt class="docutils literal"><span class="pre">s.t</span></tt> is less then <tt class="docutils literal"><span class="pre">t1</span></tt>, then the function evolve should be called again by the user.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ode.ODE.evolve">
+<tt class="descname">evolve</tt><big>(</big><em>t1</em>, <em>t_step</em><big>)</big><a class="headerlink" href="#ode.ODE.evolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a Lua iterator that advances the ODE system at each iteration of a step <tt class="docutils literal"><span class="pre">t_step</span></tt> until the value <tt class="docutils literal"><span class="pre">t1</span></tt> is reached.
+The iterators returns the value <tt class="docutils literal"><span class="pre">t</span></tt> itself and all the system variables <tt class="docutils literal"><span class="pre">y0</span></tt>, <tt class="docutils literal"><span class="pre">y1</span></tt>, ... in the standard order.</p>
+<p>Example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="c1">-- we suppose an ODE system &#39;s&#39; is already defined and initialized</span>
+<span class="n">t1</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span> <span class="k">in</span> <span class="n">s</span><span class="p">:</span><span class="n">evolve</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span> <span class="k">do</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">y2</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Ordinary Differential Equations</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#creating-a-ode-system-solver">Creating a ODE system solver</a></li>
+<li><a class="reference internal" href="#ode-solver-usage-example">ODE solver usage example</a></li>
+<li><a class="reference internal" href="#a-slightly-improved-example">A Slightly Improved Example</a></li>
+<li><a class="reference internal" href="#ode-solver-class-definition">ODE Solver Class Definition</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="fft.html"
+                        title="previous chapter">Fast Fourier Transform</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="integ.html"
+                        title="next chapter">Numerical Integration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/ode.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="integ.html" title="Numerical Integration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="fft.html" title="Fast Fourier Transform"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

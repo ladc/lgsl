@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LGSL Examples &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="GSL FFI interface" href="gsl-ffi.html" />
+    <link rel="prev" title="Special functions" href="sf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gsl-ffi.html" title="GSL FFI interface"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="sf.html" title="Special functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lgsl-examples">
+<span id="id1"></span><h1>LGSL Examples<a class="headerlink" href="#lgsl-examples" title="Permalink to this headline">¶</a></h1>
+<p>In this chapter we give some usage examples of LGSL.</p>
+<div class="section" id="home-made-bessel-functions">
+<h2>Home-made Bessel Functions<a class="headerlink" href="#home-made-bessel-functions" title="Permalink to this headline">¶</a></h2>
+<p>The Bessel function <span class="math">\(J_n\)</span> for integer values of n can be defined with the following integral:</p>
+<div class="math">
+\[J_n(x) = {1 \over \pi} \int_0^\pi \cos(n \tau - x \sin \tau) \textrm{d}\tau\]</div>
+<p>We can use this definition to define our home-made Bessel function.
+To perform the integral we need to use the <a class="reference internal" href="integ.html#integ.integ" title="integ.integ"><tt class="xref py py-func docutils literal"><span class="pre">integ.integ()</span></tt></a> function and provide the function to integrate.
+This is easy like eating a piece of cake:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">integ</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.integ&quot;</span><span class="p">).</span><span class="n">integ</span>
+<span class="k">function</span> <span class="nf">bessJ</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">epsabs</span><span class="p">,</span> <span class="n">epsrel</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span> <span class="mf">1e-4</span>
+   <span class="c1">-- we define the function to integrate</span>
+   <span class="kd">local</span> <span class="n">f</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">return</span> <span class="nb">math.cos</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">x</span><span class="o">*</span><span class="nb">math.sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">end</span>
+   <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="nb">math.pi</span> <span class="o">*</span> <span class="n">integ</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">math.pi</span><span class="p">,</span> <span class="n">epsabs</span><span class="p">,</span> <span class="n">epsrel</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>The definition of <tt class="docutils literal"><span class="pre">bessJ</span></tt> takes x and n as arguments and calculates the definite integral between 0 and <span class="math">\(\pi\)</span>. Using the <a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#module-graph" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">graph</span></tt></a> module from the package <a class="reference external" href="http://franko.github.io/graph-toolkit/graphics.html#graphics-chapter" title="(in Lua Graphics Toolkit v1.0)"><em class="xref std std-ref">graph-toolkit</em></a>, we can plot the results for various values of n:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Bessel Functions Jn, n=0 ... 5&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span> <span class="k">do</span>
+   <span class="n">p</span><span class="p">:</span><span class="n">addline</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">fxline</span><span class="p">(</span><span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">return</span> <span class="n">bessJ</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="k">end</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="n">graph</span><span class="p">.</span><span class="n">rainbow</span><span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+<span class="k">end</span>
+<span class="n">p</span><span class="p">:</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>to obtain the following result:</p>
+<div class="figure">
+<img alt="_images/example-bessJ-plot.png" src="_images/example-bessJ-plot.png" />
+</div>
+<p>Then we can also calculate a matrix with the tabulated values. For example, we can use the columns of the matrix to span different values of n. We write:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">matrix</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.matrix&quot;</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">n</span><span class="p">)</span> <span class="n">bessJ</span><span class="p">((</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">10</span><span class="p">,</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And we obtain the following matrix:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="p">[</span>           <span class="mi">1</span>           <span class="mi">0</span>           <span class="mi">0</span>           <span class="mi">0</span>           <span class="mi">0</span>           <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.997502</span>   <span class="mf">0.0499375</span>  <span class="mf">0.00124896</span> <span class="mf">2.08203e-05</span> <span class="mf">2.60286e-07</span>           <span class="mi">0</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.990025</span>   <span class="mf">0.0995008</span>  <span class="mf">0.00498335</span>  <span class="mf">0.00016625</span> <span class="mf">4.15834e-06</span> <span class="mf">8.31945e-08</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.977626</span>    <span class="mf">0.148319</span>   <span class="mf">0.0111659</span> <span class="mf">0.000559343</span>  <span class="mf">2.0999e-05</span> <span class="mf">6.30443e-07</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.960398</span>    <span class="mf">0.196027</span>   <span class="mf">0.0197347</span>  <span class="mf">0.00132005</span> <span class="mf">6.61351e-05</span> <span class="mf">2.64894e-06</span> <span class="p">]</span>
+<span class="p">[</span>     <span class="mf">0.93847</span>    <span class="mf">0.242268</span>    <span class="mf">0.030604</span>  <span class="mf">0.00256373</span> <span class="mf">0.000160736</span> <span class="mf">8.05363e-06</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.912005</span>    <span class="mf">0.286701</span>   <span class="mf">0.0436651</span>  <span class="mf">0.00439966</span>  <span class="mf">0.00033147</span> <span class="mf">1.99482e-05</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.881201</span>    <span class="mf">0.328996</span>   <span class="mf">0.0587869</span>  <span class="mf">0.00692965</span> <span class="mf">0.000610097</span> <span class="mf">4.28824e-05</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.846287</span>    <span class="mf">0.368842</span>   <span class="mf">0.0758178</span>   <span class="mf">0.0102468</span>  <span class="mf">0.00103298</span> <span class="mf">8.30836e-05</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.807524</span>     <span class="mf">0.40595</span>   <span class="mf">0.0945863</span>    <span class="mf">0.014434</span>  <span class="mf">0.00164055</span> <span class="mf">0.000148658</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mf">0.765198</span>    <span class="mf">0.440051</span>    <span class="mf">0.114903</span>   <span class="mf">0.0195634</span>  <span class="mf">0.00247664</span> <span class="mf">0.000249758</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="zernike-polynomials">
+<h2>Zernike Polynomials<a class="headerlink" href="#zernike-polynomials" title="Permalink to this headline">¶</a></h2>
+<p><em>Taken from Wikipedia</em></p>
+<p>In mathematics, the Zernike polynomials are a sequence of polynomials that are orthogonal on the unit disk. Named after Frits Zernike, they play an important role in beam optics.</p>
+<div class="section" id="definitions">
+<h3>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h3>
+<p>There are even and odd Zernike polynomials. The even ones are defined as</p>
+<div class="math">
+\[Z_n^m(\rho, \phi) = R_n^m(\rho) \cos(m \phi)\]</div>
+<p>and the odd ones as</p>
+<div class="math">
+\[Z_n^{-m}(\rho, \phi) = R_n^m(\rho) \sin(m \phi)\]</div>
+<p>where m and n are nonnegative integers with <span class="math">\(n \ge m\)</span>,:math:<cite>phi</cite> is the azimuthal angle, and <span class="math">\(\rho\)</span> is the radial distance. The radial polynomials <span class="math">\(R_n^m\)</span> are defined as</p>
+<div class="math">
+\[R_n^m(\rho) = \sum_{k=0}^{(n-m)/2} \frac{(-1)^k (n-k)!}{k! ((n+m)/2-k)! ((n-m)/2 - k)!} \rho^{n - 2 k}\]</div>
+<p>for <span class="math">\(n - m\)</span> even, and are identically 0 for <span class="math">\(n - m\)</span> odd.
+For <span class="math">\(m = 0\)</span>, the even definition is used which reduces to <span class="math">\(R_n^0 (\rho)\)</span>.</p>
+</div>
+<div class="section" id="implementation">
+<h3>Implementation<a class="headerlink" href="#implementation" title="Permalink to this headline">¶</a></h3>
+<p>The above formula can be implemented quite straightforwardly in LGSL with only a subtle point about the factorials in the denominator. The problem is that in some cases you can have the factorial of a negative number and if you feed a negative number to the <tt class="xref py py-func docutils literal"><span class="pre">fact()</span></tt> function, you will get an error.</p>
+<p>Actually the meaning of the formula is that the factorial of a negative number is <span class="math">\(\infty\)</span> and so, since it appears in the denominator, its contribution to the sum is null. So, in order to implement this behavior we just define an auxiliary function that returns the inverse of the factorial and zero when the argument is negative.</p>
+<p>So here is the code for the radial part:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">fact</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.sf&quot;</span><span class="p">).</span><span class="n">fact</span>
+
+<span class="c1">-- inverse factorial function definition</span>
+<span class="n">invf</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">1</span><span class="o">/</span><span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">or</span> <span class="mi">0</span>
+<span class="k">end</span>
+
+<span class="c1">-- radial part of Zernike&#39;s polynomial</span>
+<span class="k">function</span> <span class="nf">zerR</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">ip</span><span class="p">,</span> <span class="n">im</span> <span class="o">=</span> <span class="p">(</span><span class="n">n</span><span class="o">+</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span>
+   <span class="kd">local</span> <span class="n">z</span> <span class="o">=</span> <span class="mi">0</span>
+   <span class="k">for</span> <span class="n">k</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">im</span> <span class="k">do</span>
+      <span class="kd">local</span> <span class="n">f</span> <span class="o">=</span> <span class="n">fact</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">invf</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">invf</span><span class="p">(</span><span class="n">ip</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">invf</span><span class="p">(</span><span class="n">im</span><span class="o">-</span><span class="n">k</span><span class="p">))</span>
+      <span class="k">if</span> <span class="n">f</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">z</span> <span class="o">=</span> <span class="n">z</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">^</span><span class="n">k</span> <span class="o">*</span> <span class="n">f</span> <span class="o">*</span> <span class="n">p</span><span class="o">^</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span> <span class="k">end</span>
+   <span class="k">end</span>
+   <span class="k">return</span> <span class="n">z</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Next, we define Zernike&#8217;s function completed with the angular part:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="k">function</span> <span class="nf">zernicke</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">even</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">pf</span> <span class="o">=</span> <span class="n">even</span> <span class="ow">and</span> <span class="nb">math.cos</span><span class="p">(</span><span class="n">m</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">math.sin</span><span class="p">(</span><span class="o">-</span><span class="n">m</span><span class="o">*</span><span class="n">phi</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">zerR</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span> <span class="o">*</span> <span class="n">pf</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Now we are ready to compute our function. The only missing piece is the relation between <span class="math">\(\rho\)</span>, <span class="math">\(\phi\)</span> and the Cartesian coordinates but this is trivial:</p>
+<div class="math">
+\[\begin{split}\begin{array}{ll}
+  \rho = &amp; \sqrt{x^2 + y^2} \\
+  \phi = &amp; \tan^{-1}(y, x)
+\end{array}\end{split}\]</div>
+<p>To visualise the functions, we will use the <a class="reference external" href="http://franko.github.io/graph-toolkit/contour.html#module-contour" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-mod docutils literal"><span class="pre">contour</span></tt></a> module of the graph-toolkit package.
+Let us define our sample function in terms of <cite>x</cite> and <cite>y</cite> and use it to call the function <a class="reference external" href="http://franko.github.io/graph-toolkit/contour.html#contour.polar_plot" title="(in Lua Graphics Toolkit v1.0)"><tt class="xref py py-func docutils literal"><span class="pre">contour.polar_plot()</span></tt></a>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">contour</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph.contour&quot;</span><span class="p">)</span>
+<span class="n">N</span><span class="p">,</span> <span class="n">M</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span>
+<span class="n">f</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="k">return</span> <span class="n">zernicke</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="nb">math.sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="o">+</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="p">),</span> <span class="nb">math.atan2</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">x</span><span class="p">))</span> <span class="k">end</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">contour</span><span class="p">.</span><span class="n">polar_plot</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="p">{</span><span class="n">gridx</span><span class="o">=</span> <span class="mi">81</span><span class="p">,</span> <span class="n">gridy</span><span class="o">=</span> <span class="mi">81</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span> <span class="mi">10</span><span class="p">})</span>
+<span class="n">p</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="nb">string.format</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Zernike polynomial (N=%i, M=%i)&#39;</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We show a few screenshots of the contour plot for various N and M.</p>
+<div class="figure">
+<img alt="_images/zernicke-contour-3-1.png" src="_images/zernicke-contour-3-1.png" />
+</div>
+<div class="figure">
+<img alt="_images/zernicke-contour-5-1.png" src="_images/zernicke-contour-5-1.png" />
+</div>
+<div class="figure">
+<img alt="_images/zernicke-contour-5-5.png" src="_images/zernicke-contour-5-5.png" />
+</div>
+<div class="figure">
+<img alt="_images/zernicke-contour-8-2.png" src="_images/zernicke-contour-8-2.png" />
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">LGSL Examples</a><ul>
+<li><a class="reference internal" href="#home-made-bessel-functions">Home-made Bessel Functions</a></li>
+<li><a class="reference internal" href="#zernike-polynomials">Zernike Polynomials</a><ul>
+<li><a class="reference internal" href="#definitions">Definitions</a></li>
+<li><a class="reference internal" href="#implementation">Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="sf.html"
+                        title="previous chapter">Special functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="gsl-ffi.html"
+                        title="next chapter">GSL FFI interface</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/examples.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="gsl-ffi.html" title="GSL FFI interface"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="sf.html" title="Special functions"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

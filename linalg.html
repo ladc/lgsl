@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear Algebra &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Eigensystems" href="eigen.html" />
+    <link rel="prev" title="Matrices" href="matrices.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eigen.html" title="Eigensystems"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="linear-algebra">
+<h1>Linear Algebra<a class="headerlink" href="#linear-algebra" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<p>LGSL gives access to linear algebra functions based on GSL itself or on the BLAS routines.</p>
+<dl class="function">
+<dt id="matrix.inv">
+<tt class="descclassname">matrix.</tt><tt class="descname">inv</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.inv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the inverse of the matrix <span class="math">\(m\)</span>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.det">
+<tt class="descclassname">matrix.</tt><tt class="descname">det</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.det" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the determinant of a matrix <span class="math">\(m\)</span> from its LU decomposition, <span class="math">\(L U\)</span>.
+The determinant is internally computed as the product of the diagonal elements of <span class="math">\(U\)</span> and the sign of the row permutation signum.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.solve">
+<tt class="descclassname">matrix.</tt><tt class="descname">solve</tt><big>(</big><em>A</em>, <em>b</em><big>)</big><a class="headerlink" href="#matrix.solve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solve the square system :math: <cite>A x = b</cite> where <span class="math">\(A\)</span> is a square matrix, <span class="math">\(b\)</span>
+is a column matrix. It returns the solution <span class="math">\(x\)</span> of the system.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.svd">
+<tt class="descclassname">matrix.</tt><tt class="descname">svd</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.svd" title="Permalink to this definition">¶</a></dt>
+<dd><p>A general rectangular M-by-N matrix <span class="math">\(A\)</span> has a singular value
+decomposition (SVD) into the product of an M-by-N orthogonal matrix <span class="math">\(U\)</span>,
+an N-by-N diagonal matrix of singular values <span class="math">\(S\)</span> and the transpose of an
+N-by-N orthogonal square matrix <span class="math">\(V\)</span>,</p>
+<div class="math">
+\[A = U S V^T\]</div>
+<p>The singular values <span class="math">\(\sigma_i= S_{ii}\)</span>
+are all non-negative and are
+generally chosen to form a non-increasing sequence
+<span class="math">\(\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_N \geq 0\)</span>.</p>
+<p>The singular value decomposition of a matrix has many practical uses.
+The condition number of the matrix is given by the ratio of the largest
+singular value to the smallest singular value. The presence of a zero
+singular value indicates that the matrix is singular. The number of
+non-zero singular values indicates the rank of the matrix.  In practice
+singular value decomposition of a rank-deficient matrix will not produce
+exact zeroes for singular values, due to finite numerical precision.
+Small singular values should be edited by choosing a suitable tolerance.</p>
+<p>For a rank-deficient matrix, the null space of <span class="math">\(A\)</span> is given by the
+columns of <span class="math">\(V\)</span> corresponding to the zero singular values.  Similarly, the
+range of <span class="math">\(A\)</span> is given by columns of U corresponding to the non-zero
+singular values.</p>
+<p>Note that the routines here compute the &#8220;thin&#8221; version of the SVD
+with <span class="math">\(U\)</span> as M-by-N orthogonal matrix. This allows in-place computation
+and is the most commonly-used form in practice.  Mathematically, the
+&#8220;full&#8221; SVD is defined with <span class="math">\(U\)</span> as an M-by-M orthogonal matrix and <span class="math">\(S\)</span> as an
+M-by-N diagonal matrix (with additional rows of zeros).</p>
+<p>This function returns three values, in the order, <span class="math">\(U\)</span>, <span class="math">\(S\)</span>, <span class="math">\(V\)</span>. So you can
+write something like this:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">svd</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.lu">
+<tt class="descclassname">matrix.</tt><tt class="descname">lu</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.lu" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function factorizes the square matrix <span class="math">\(A\)</span> into the LU decomposition <span class="math">\(PA = LU\)</span>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">L</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">lu</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.qr">
+<tt class="descclassname">matrix.</tt><tt class="descname">qr</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.qr" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function factorizes the M-by-N matrix <span class="math">\(A\)</span> into the QR decomposition <span class="math">\(A = Q R\)</span>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">Q</span><span class="p">,</span> <span class="n">R</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">qr</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.cholesky">
+<tt class="descclassname">matrix.</tt><tt class="descname">cholesky</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.cholesky" title="Permalink to this definition">¶</a></dt>
+<dd><p>A symmetric, positive definite square matrix <span class="math">\(A\)</span> has a Cholesky decomposition into a product of a
+lower triangular matrix <span class="math">\(L\)</span> and its transpose <span class="math">\(L^T\)</span>,</p>
+<p>real: <span class="math">\(A = L L^T\)</span></p>
+<p>complex: <span class="math">\(A = L L^\star\)</span></p>
+<p>This is sometimes referred to as taking the square-root of a matrix.
+The Cholesky decomposition can only be carried out when all the eigenvalues of the matrix are positive.
+This decomposition can be used to convert the linear system <span class="math">\(A x = b\)</span> into a pair of triangular systems (<span class="math">\(L y = b, L^T x = y\)</span>),
+which can be solved by forward and back-substitution.</p>
+<p>This function factorizes the symmetric, positive-definite square matrix <span class="math">\(A\)</span> into the Cholesky decomposition:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">L</span><span class="p">,</span> <span class="n">LT</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On input, the values from the diagonal and lower-triangular part of the matrix <span class="math">\(A\)</span> are used (the upper triangular part is ignored).
+If the matrix is not positive-definite then the decomposition will fail.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.td_decomp">
+<tt class="descclassname">matrix.</tt><tt class="descname">td_decomp</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.td_decomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A matrix <span class="math">\(A\)</span> can be factorized by similarity transformations into the form,</p>
+<p>real: <span class="math">\(A = Q T Q^T\)</span></p>
+<p>complex: <span class="math">\(A = U T U^T\)</span></p>
+<p>where</p>
+<p>real: <span class="math">\(Q\)</span> is an orthogonal matrix and <span class="math">\(T\)</span> is a symmetric tridiagonal matrix.</p>
+<p>complex: <span class="math">\(U\)</span> is a unitary matrix and <span class="math">\(T\)</span> is a real symmetric tridiagonal matrix.</p>
+<p>This function calculates this decomposition and returns <span class="math">\(Q\)</span> or <cite>U</cite>, the diagonal vector and the sub-diagonal vector:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">Q</span><span class="p">,</span> <span class="n">Tdiag</span><span class="p">,</span> <span class="n">Tsdiag</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">td_decomp</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.hessenberg_decomp">
+<tt class="descclassname">matrix.</tt><tt class="descname">hessenberg_decomp</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.hessenberg_decomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A general real matrix <span class="math">\(A\)</span> can be decomposed by orthogonal similarity transformations into the form</p>
+<p><span class="math">\(A = U H U^T\)</span></p>
+<p>where <span class="math">\(U\)</span> is orthogonal and <span class="math">\(H\)</span> is an upper Hessenberg matrix, meaning that it has zeros below the first subdiagonal.
+The Hessenberg reduction is the first step in the Schur decomposition for the nonsymmetric eigenvalue problem,
+but has applications in other areas as well.
+The function returns <tt class="docutils literal"><span class="pre">H</span></tt> and <tt class="docutils literal"><span class="pre">U</span></tt>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">H</span><span class="p">,</span> <span class="n">U</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">hessenberg_decomp</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.hesstri_decomp">
+<tt class="descclassname">matrix.</tt><tt class="descname">hesstri_decomp</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#matrix.hesstri_decomp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A general real matrix pair <span class="math">\((A, B)\)</span> can be decomposed by orthogonal similarity transformations into the form</p>
+<blockquote>
+<div>A = U H V^T
+B = U R V^T</div></blockquote>
+<p>where U and V are orthogonal, H is an upper Hessenberg matrix, and R is upper triangular.
+The Hessenberg-Triangular reduction is the first step in the generalized Schur decomposition for the generalized eigenvalue problem.
+The function returns H, R, U and V:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">H</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">U</span><span class="p">,</span> <span class="n">V</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">hesstri_decomp</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Linear Algebra</a><ul>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="matrices.html"
+                        title="previous chapter">Matrices</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="eigen.html"
+                        title="next chapter">Eigensystems</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/linalg.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="eigen.html" title="Eigensystems"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="matrices.html" title="Matrices"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

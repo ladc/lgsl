@@ -1,0 +1,220 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Iterators &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Complex Numbers" href="complex.html" />
+    <link rel="prev" title="LGSL introduction" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="Complex Numbers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="LGSL introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-iter"></span><div class="section" id="iterators">
+<span id="lua-base"></span><h1>Iterators<a class="headerlink" href="#iterators" title="Permalink to this headline">¶</a></h1>
+<p>LGSL provides a number of simple functions to perform some common tasks related to iterators.
+These functions allow you to write more simple and compact code and to improve the readability.
+The functions described below are available in the module <a class="reference internal" href="#module-iter" title="iter"><tt class="xref py py-mod docutils literal"><span class="pre">iter</span></tt></a>.</p>
+<dl class="function">
+<dt id="iter.sequence">
+<tt class="descclassname">iter.</tt><tt class="descname">sequence</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#iter.sequence" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">iter.</tt><tt class="descname">sequence</tt><big>(</big><em>f</em>, <em>b</em><big>)</big></dt>
+<dd><p>Return an &#8220;iterator&#8221; that gives the value (or the values) returned by the evaluation of <tt class="docutils literal"><span class="pre">f(i)</span></tt> where <tt class="docutils literal"><span class="pre">i</span></tt> is an integer that goes from <tt class="docutils literal"><span class="pre">a</span></tt> to <tt class="docutils literal"><span class="pre">b</span></tt>. In the second form, the generated values start from one.</p>
+<p>Generally, an iterator is a function that, each time that it is called, returns one value from a sequence. The sequence is considered to be terminated when the iterator returns <tt class="docutils literal"><span class="pre">nil</span></tt>. An iterator can be used directly in a <tt class="docutils literal"><span class="pre">for</span></tt> loop with the following syntax:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">...</span> <span class="k">in</span> <span class="n">f</span> <span class="k">do</span>
+   <span class="c1">-- [ some code here]</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>where <tt class="docutils literal"><span class="pre">f</span></tt> is the iterator.  If <tt class="docutils literal"><span class="pre">f</span></tt> returns multiple values they will be all returned by the iterator.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iter.sample">
+<tt class="descclassname">iter.</tt><tt class="descname">sample</tt><big>(</big><em>f</em>, <em>xi</em>, <em>xs</em>, <em>n</em><big>)</big><a class="headerlink" href="#iter.sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an iterator that gives the couple <tt class="docutils literal"><span class="pre">x,</span> <span class="pre">f(x)</span></tt> for <tt class="docutils literal"><span class="pre">x</span></tt> going from <tt class="docutils literal"><span class="pre">xi</span></tt> to <tt class="docutils literal"><span class="pre">xs</span></tt> with <tt class="docutils literal"><span class="pre">n</span></tt> uniformly spaced intervals. If <tt class="docutils literal"><span class="pre">f</span></tt> returns multiple values, only the first one is retained.</p>
+<p>Example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">iter</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.iter&quot;</span><span class="p">)</span>
+<span class="c1">-- print (x, sin(x)) for x going from 0 to 2*pi with 16 sampling points</span>
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="k">in</span> <span class="n">iter</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="nb">math.sin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="nb">math.pi</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="k">do</span>
+   <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="iter.isample">
+<tt class="descclassname">iter.</tt><tt class="descname">isample</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#iter.isample" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">iter.</tt><tt class="descname">isample</tt><big>(</big><em>f</em>, <em>b</em><big>)</big></dt>
+<dd><p>Return an iterator that gives the couple <tt class="docutils literal"><span class="pre">i,</span> <span class="pre">f(i)</span></tt> where <tt class="docutils literal"><span class="pre">i</span></tt> is an integer going from <tt class="docutils literal"><span class="pre">a</span></tt> to <tt class="docutils literal"><span class="pre">b</span></tt>. In the second form, the sequence will start from one. If <tt class="docutils literal"><span class="pre">f</span></tt> returns multiple values, only the first one is retained.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iter.ilist">
+<tt class="descclassname">iter.</tt><tt class="descname">ilist</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#iter.ilist" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">iter.</tt><tt class="descname">ilist</tt><big>(</big><em>f</em>, <em>b</em><big>)</big></dt>
+<dd><p>Returns a list with the elements <tt class="docutils literal"><span class="pre">f(i)</span></tt> where <tt class="docutils literal"><span class="pre">i</span></tt> is an integer going from a to b.
+In the second form, the sequence will start from one.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="iter.isum">
+<tt class="descclassname">iter.</tt><tt class="descname">isum</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#iter.isum" title="Permalink to this definition">¶</a></dt>
+<dt>
+<tt class="descclassname">iter.</tt><tt class="descname">isum</tt><big>(</big><em>f</em>, <em>b</em><big>)</big></dt>
+<dd><p>Returns the sum of <tt class="docutils literal"><span class="pre">f(i)</span></tt> for all integers <tt class="docutils literal"><span class="pre">i</span></tt> from a to b.
+In the second form, the sequence will start from one.</p>
+</dd></dl>
+
+<div class="section" id="more-complex-iterators">
+<h2>More complex iterators<a class="headerlink" href="#more-complex-iterators" title="Permalink to this headline">¶</a></h2>
+<p>Actually the more general form of an iterator is the following:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="o">...</span> <span class="k">in</span> <span class="n">f</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">i0</span> <span class="k">do</span>
+   <span class="c1">-- [ some code here]</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>In this latter form, the iterator f is called in the form <tt class="docutils literal"><span class="pre">f(s,</span> <span class="pre">i)</span></tt>, where <tt class="docutils literal"><span class="pre">s</span></tt> is the value provided in the <tt class="docutils literal"><span class="pre">for</span></tt> loop. The value of <tt class="docutils literal"><span class="pre">i</span></tt> changes every time, the value taken is the first value returned by the function <tt class="docutils literal"><span class="pre">f</span></tt> the last times it was called or, for the first time only, <tt class="docutils literal"><span class="pre">i0</span></tt>.</p>
+<p>We give an example to build a stateless row &#8220;iterator&#8221; over the rows of a matrix.:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="c1">-- we define the stateless iterator</span>
+<span class="k">function</span> <span class="nf">my_row_iter</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">m</span><span class="p">:</span><span class="n">dim</span><span class="p">()</span>
+   <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">r</span> <span class="k">then</span>
+      <span class="k">return</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span><span class="n">row</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+   <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1">-- how it can be used</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="k">in</span> <span class="n">my_row_iter</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="mi">1</span> <span class="k">do</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Row number&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;</span><span class="s">:&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>Note that in this case we have to provide the &#8220;iterator&#8221;, its &#8220;state&#8221; and the initial &#8220;index&#8221; value <tt class="docutils literal"><span class="pre">i0</span></tt> explicitly. You may avoid that by using an &#8220;iterator builder&#8221; like in the following example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="k">function</span> <span class="nf">make_row_iter</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">my_row_iter</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="c1">-- then we can write</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="k">in</span> <span class="n">make_row_iter</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">do</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Row number&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="s1">&#39;</span><span class="s">:&#39;</span><span class="p">,</span> <span class="n">row</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+</div>
+<p>To summarize, this example shows how to create an iterator to iterate over the rows of a matrix. The iterator builder is a function that returns three values, the first is a function (the iterator itself), the second is the state and the third argument is the first value of the index.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Iterators</a><ul>
+<li><a class="reference internal" href="#more-complex-iterators">More complex iterators</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">LGSL introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="complex.html"
+                        title="next chapter">Complex Numbers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/lua-base.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="Complex Numbers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="LGSL introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

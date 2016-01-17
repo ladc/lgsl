@@ -1,0 +1,397 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Matrices &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Linear Algebra" href="linalg.html" />
+    <link rel="prev" title="Complex Numbers" href="complex.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linalg.html" title="Linear Algebra"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="Complex Numbers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="matrices">
+<h1>Matrices<a class="headerlink" href="#matrices" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>LGSL&#8217;s main data types are <em>real</em> and <em>complex</em> matrices and many of the GSL routines work on these data types.
+LGSL does not have a separate type to represent a vector; instead, column matrices are used for this purpose.</p>
+<p>With <a class="reference internal" href="#module-matrix" title="matrix"><tt class="xref py py-mod docutils literal"><span class="pre">matrix</span></tt></a> you can do basic arithmetic operations with the usual mathematical meaning provided that the dimensions of the matrices are compatible.
+You can also freely mix scalars with matrices, LGSL will perform the appropriate operation in each case.
+In general you can also mix real and complex valued numbers or matrices in arithmetic operations and the result will be complex if at least one of the operands is complex.
+The only arithmetic operation that is not allowed is the division where the right operand is a matrix.
+The reason is that this operation does not have a well-defined mathematical meaning.
+In general the inversion of a matrix can be performed using the function <a class="reference internal" href="linalg.html#matrix.inv" title="matrix.inv"><tt class="xref py py-func docutils literal"><span class="pre">matrix.inv()</span></tt></a> or the function <a class="reference internal" href="linalg.html#matrix.solve" title="matrix.solve"><tt class="xref py py-func docutils literal"><span class="pre">matrix.solve()</span></tt></a> to solve a linear system efficiently.</p>
+<p>In general most of the matrix-related functions can operate on both real or complex matrices and return the appropriate result.</p>
+<p>In order to create a new matrix you should use the <a class="reference internal" href="#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">matrix.new()</span></tt></a> function to define a <em>real</em> matrix and <a class="reference internal" href="#matrix.cnew" title="matrix.cnew"><tt class="xref py py-func docutils literal"><span class="pre">matrix.cnew()</span></tt></a> for a <em>complex</em> matrix. If you want to create a matrix by explicitly listing all of its elements you can instead use the function <a class="reference internal" href="#matrix.def" title="matrix.def"><tt class="xref py py-func docutils literal"><span class="pre">matrix.def()</span></tt></a>, or <a class="reference internal" href="#matrix.vec" title="matrix.vec"><tt class="xref py py-func docutils literal"><span class="pre">matrix.vec()</span></tt></a> in the case of a vector (column matrix).</p>
+<p>The <a class="reference internal" href="#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">matrix.new()</span></tt></a> function takes two mandatory arguments, the number of rows and the number of columns, and an optional third argument. If the third argument is not given, all the elements of the matrix are initialized to zero. Otherwise, if you provide a function of two variables, let&#8217;s say i and j, it will be used to initialize the elements of the matrix. The provided function will be called for each element of the matrix with the index of row and column as an argument. This provides a very useful way to initialize matrices. As an example, let us suppose that we want to define a matrix <tt class="docutils literal"><span class="pre">m</span></tt> of dimension <span class="math">\(n \times n\)</span> whose elements are given by <span class="math">\(m_{jk} = \textrm{exp} (2 \pi i j k / n)\)</span>.</p>
+<p>Using LGSL, we can define the matrix with the following command:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">matrix</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.matrix&quot;</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1">-- we define a complex matrix that operates a Fourier transform</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">cnew</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">j</span><span class="p">,</span><span class="n">k</span><span class="p">)</span> <span class="k">return</span> <span class="n">complex</span><span class="p">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">2</span><span class="n">i</span><span class="o">*</span><span class="nb">math.pi</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">n</span><span class="p">)</span> <span class="k">end</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where you have previously defined <tt class="docutils literal"><span class="pre">n</span></tt> to be a small integer number.</p>
+</div>
+<div class="section" id="accessing-matrix-elements">
+<h2>Accessing Matrix Elements<a class="headerlink" href="#accessing-matrix-elements" title="Permalink to this headline">¶</a></h2>
+<p>To access an element of a matrix placed at the i-th row and the j-th column you can either index the matrix as you would a Lua table, <tt class="docutils literal"><span class="pre">m[i][j]</span></tt>, or use the syntax <tt class="docutils literal"><span class="pre">m:get(i,</span> <span class="pre">j)</span></tt>, where <tt class="docutils literal"><span class="pre">m</span></tt> is the matrix.
+You can also change the value with the following syntax <tt class="docutils literal"><span class="pre">m:set(i,</span> <span class="pre">j,</span> <span class="pre">x)</span></tt> to set the element to the value <tt class="docutils literal"><span class="pre">x</span></tt>.</p>
+<p>In LGSL&#8217;s indexing convention the first row or column of a matrix in identified by the number one.
+This is the same indexing convention used in FORTRAN and also in standard mathematical notation and is also coherent with the Lua indexing of a table.</p>
+<p>In LGSL, matrices with only one column are considered as vectors, and you can reference their elements just by indexing the vector like in <tt class="docutils literal"><span class="pre">v[i]</span></tt>.
+You can therefore read or set a specific element of a vector using
+simple indexing as illustrated in the following example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="c1">-- we define a vector, it is just a matrix with one column</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">vec</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">7.6</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">v</span>
+<span class="p">[</span> <span class="mi">0</span>   <span class="p">]</span>
+<span class="p">[</span> <span class="mf">0.2</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mf">0.4</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mf">7.6</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mf">0.8</span> <span class="p">]</span>
+<span class="p">[</span> <span class="mi">1</span>   <span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="mf">7.6</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">v</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
+<p>If you index a matrix with more than one column, you will obtain a row of the matrix, but in column form.
+The resulting column matrix will refer to the same underlying data of the original matrix.
+Since the two matrices refer to the same data, any change to the content of one matrix will affect both of them.</p>
+<p>Here are some simple examples of matrix manipulations:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">def</span> <span class="p">{{</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">}}</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">m</span>
+<span class="p">[</span>  <span class="mf">0.2</span>    <span class="mi">4</span> <span class="o">-</span><span class="mf">0.5</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mi">2</span>    <span class="mi">0</span>  <span class="mf">1.1</span> <span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span>  <span class="mf">0.2</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mi">4</span> <span class="p">]</span>
+<span class="p">[</span> <span class="o">-</span><span class="mf">0.5</span> <span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="c1">-- we change one of the matrix elements</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">m</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.7</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="o">=</span><span class="n">m</span>
+<span class="p">[</span>  <span class="mf">0.2</span> <span class="o">-</span><span class="mf">0.7</span> <span class="o">-</span><span class="mf">0.5</span> <span class="p">]</span>
+<span class="p">[</span>    <span class="mi">2</span>    <span class="mi">0</span>  <span class="mf">1.1</span> <span class="p">]</span>
+</pre></div>
+</div>
+<p>In general, the aliasing between matrices can be useful in many circumstances to refer to an original matrix by using a submatrix.
+In case you really need a submatrix which is an independent copy of its parent matrix you can just use the <a class="reference internal" href="#matrix.copy" title="matrix.copy"><tt class="xref py py-func docutils literal"><span class="pre">matrix.copy()</span></tt></a> function to obtain a copy.</p>
+<p>You may have noticed that when you index a matrix with multiple columns, you obtain the row corresponding to the index, but in column form.
+If you want to obtain a row in the form of a row matrix, you can use the <a class="reference internal" href="#Matrix.row" title="Matrix.row"><tt class="xref py py-meth docutils literal"><span class="pre">row()</span></tt></a> method.
+Alternatively, you can use the <a class="reference internal" href="#Matrix.slice" title="Matrix.slice"><tt class="xref py py-meth docutils literal"><span class="pre">slice()</span></tt></a> method that lets you extract any submatrix of contiguous rows and columns.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">It is possible to index a matrix as you would a Lua table in order to access or modify matrix elements, as shown above. However, in performance-sensitive situations, such as an inner loop, it is advised to use the <a class="reference internal" href="#Matrix.set" title="Matrix.set"><tt class="xref py py-meth docutils literal"><span class="pre">set()</span></tt></a> and <a class="reference internal" href="#Matrix.get" title="Matrix.get"><tt class="xref py py-meth docutils literal"><span class="pre">get()</span></tt></a> methods, which are faster.</p>
+</div>
+<div class="section" id="matrix-dimensions">
+<h3>Matrix Dimensions<a class="headerlink" href="#matrix-dimensions" title="Permalink to this headline">¶</a></h3>
+<p>To obtain the dimension of a matrix you should use the <a class="reference internal" href="#Matrix.dim" title="Matrix.dim"><tt class="xref py py-meth docutils literal"><span class="pre">dim()</span></tt></a> method that returns the number of rows and columns of a matrix. Here an example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="c1">-- we define a matrix</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">def</span> <span class="p">{{</span><span class="mf">0.2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">},</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">}}</span>
+
+<span class="c1">-- we obtain the number of rows and columns, r and c respectively</span>
+<span class="n">r</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">m</span><span class="p">:</span><span class="n">dim</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can also use the length operator <tt class="docutils literal"><span class="pre">#</span></tt> with a matrix to obtain just the number of rows.</p>
+</div>
+</div>
+</div>
+<div class="section" id="matrix-methods">
+<h2>Matrix methods<a class="headerlink" href="#matrix-methods" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="Matrix">
+<em class="property">class </em><tt class="descname">Matrix</tt><a class="headerlink" href="#Matrix" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="Matrix.copy">
+<tt class="descname">copy</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of the matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.dim">
+<tt class="descname">dim</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dimensions of the matrix, i.e. the numbers of rows and the number of columns, in that order.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.get">
+<tt class="descname">get</tt><big>(</big><em>i</em>, <em>j</em><big>)</big><a class="headerlink" href="#Matrix.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function returns the <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th element of a matrix. As a general
+convention in LGSL the index of the first element is 1.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.set">
+<tt class="descname">set</tt><big>(</big><em>i</em>, <em>j</em>, <em>v</em><big>)</big><a class="headerlink" href="#Matrix.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function sets the value of the <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th element of the matrix to <tt class="docutils literal"><span class="pre">v</span></tt>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.slice">
+<tt class="descname">slice</tt><big>(</big><em>k0</em>, <em>k1</em>, <em>n0</em>, <em>n1</em><big>)</big><a class="headerlink" href="#Matrix.slice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a sub-matrix obtained from the original matrix by starting
+at the element (k0, k1) and taking n0 rows and n1 columns. The
+matrix that is returned is a &#8220;view&#8221; of the existing matrix in the
+sense that it makes reference to the same underlying matrix. So if
+you modify the submatrix you will implicitly modify the original
+matrix and vice versa.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.norm">
+<tt class="descname">norm</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix.norm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Frobenius norm of the matrix. It is defined as:</p>
+<div class="math">
+\[\|a\| = \sqrt{\sum_i \sum_j | a_{ij} |^2}\]</div>
+<p>where a<sub>ij</sub> are the elements of the matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.row">
+<tt class="descname">row</tt><big>(</big><em>i</em><big>)</big><a class="headerlink" href="#Matrix.row" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the submatrix given by the i-th row of the matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.col">
+<tt class="descname">col</tt><big>(</big><em>j</em><big>)</big><a class="headerlink" href="#Matrix.col" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the submatrix given by the j-th column of the matrix.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-matrix">
+<span id="matrix-functions"></span><h2>Matrix Functions<a class="headerlink" href="#module-matrix" title="Permalink to this headline">¶</a></h2>
+<p>All the functions described in this section have an equivalent function for complex valued matrices. The functions for complex matrices are obtained by adding the &#8216;c&#8217; prefix to the name. So for example the function <tt class="xref py py-func docutils literal"><span class="pre">mul()</span></tt> has an equivalent for complex matrix whose name is <tt class="xref py py-func docutils literal"><span class="pre">cmul()</span></tt>.</p>
+<dl class="function">
+<dt id="matrix.new">
+<tt class="descclassname">matrix.</tt><tt class="descname">new</tt><big>(</big><em>r</em>, <em>c</em><span class="optional">[</span>, <em>finit</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#matrix.new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new matrix of <tt class="docutils literal"><span class="pre">r</span></tt> rows and <tt class="docutils literal"><span class="pre">c</span></tt> columns. If <tt class="docutils literal"><span class="pre">finit</span></tt>
+is not given, the matrix is initialized to 0. If <tt class="docutils literal"><span class="pre">finit</span></tt> is
+provided, the function <tt class="docutils literal"><span class="pre">finit(i,</span> <span class="pre">j)</span></tt> is called for all the
+elements, with the i arguments equal to the row index and j equal to
+the column index. Then the value returned by the function is assigned
+to the matrix elements.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.cnew">
+<tt class="descclassname">matrix.</tt><tt class="descname">cnew</tt><big>(</big><em>r</em>, <em>c</em><span class="optional">[</span>, <em>finit</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#matrix.cnew" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new complex matrix. The meaning of its arguments is the
+same of the function <a class="reference internal" href="#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">new()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.def">
+<tt class="descclassname">matrix.</tt><tt class="descname">def</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#matrix.def" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the table <tt class="docutils literal"><span class="pre">t</span></tt> into a matrix. The table should be in the form <tt class="docutils literal"><span class="pre">{{row1_v1,</span> <span class="pre">row1_v2,</span> <span class="pre">...},</span> <span class="pre">{row2_v1,</span> <span class="pre">row2_v2,</span> <span class="pre">...},</span> <span class="pre">...}</span></tt> where each term is a number. You should also ensure that all the lines contain the same number of elements. Example:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">th</span> <span class="o">=</span> <span class="nb">math.pi</span><span class="o">/</span><span class="mi">6</span>
+<span class="c1">-- create a 2x2 rotation matrix using the angle th</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">.</span><span class="n">def</span> <span class="p">{{</span><span class="nb">math.cos</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="nb">math.sin</span><span class="p">(</span><span class="n">th</span><span class="p">)},</span> <span class="p">{</span><span class="o">-</span><span class="nb">math.sin</span><span class="p">(</span><span class="n">th</span><span class="p">),</span> <span class="nb">math.cos</span><span class="p">(</span><span class="n">th</span><span class="p">)}}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.vec">
+<tt class="descclassname">matrix.</tt><tt class="descname">vec</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#matrix.vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the table <tt class="docutils literal"><span class="pre">t</span></tt> into a column matrix. In LGSL, column matrices are considered vectors. The table should be in the form <tt class="docutils literal"><span class="pre">{v1,</span> <span class="pre">v2,</span> <span class="pre">v3,</span> <span class="pre">...}</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.dim">
+<tt class="descclassname">matrix.</tt><tt class="descname">dim</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns two values: the number of rows and the number of columns of the matrix, in that order.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.copy">
+<tt class="descclassname">matrix.</tt><tt class="descname">copy</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a copy of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.transpose">
+<tt class="descclassname">matrix.</tt><tt class="descname">transpose</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.transpose" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the transpose of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.hc">
+<tt class="descclassname">matrix.</tt><tt class="descname">hc</tt><big>(</big><em>m</em><big>)</big><a class="headerlink" href="#matrix.hc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the hermitian conjugate of the matrix.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.diag">
+<tt class="descclassname">matrix.</tt><tt class="descname">diag</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#matrix.diag" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a table or column vector <tt class="docutils literal"><span class="pre">t</span></tt> of length <tt class="docutils literal"><span class="pre">n</span></tt>, returns a diagonal matrix whose diagonal elements are equal to the elements of <tt class="docutils literal"><span class="pre">t</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.unit">
+<tt class="descclassname">matrix.</tt><tt class="descname">unit</tt><big>(</big><em>n</em><big>)</big><a class="headerlink" href="#matrix.unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the unit matrix of dimension nxn.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.set">
+<tt class="descclassname">matrix.</tt><tt class="descname">set</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#matrix.set" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the matrix <tt class="docutils literal"><span class="pre">a</span></tt> to be equal to the matrix <tt class="docutils literal"><span class="pre">b</span></tt>. It raises an
+error if the dimensions of the matrices are different. Please note
+that it is different than the statement:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="n">b</span>
+</pre></div>
+</div>
+<p>because the latter simply makes the variable <tt class="docutils literal"><span class="pre">a</span></tt> refer to the
+same matrix as <tt class="docutils literal"><span class="pre">b</span></tt>. With the <a class="reference internal" href="#matrix.set" title="matrix.set"><tt class="xref py py-func docutils literal"><span class="pre">set()</span></tt></a> function, you set each
+element of an existing matrix <tt class="docutils literal"><span class="pre">a</span></tt> to the same value as the
+corresponding element of <tt class="docutils literal"><span class="pre">b</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.fset">
+<tt class="descclassname">matrix.</tt><tt class="descname">fset</tt><big>(</big><em>m</em>, <em>f</em><big>)</big><a class="headerlink" href="#matrix.fset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the elements of the matrix <tt class="docutils literal"><span class="pre">m</span></tt> to the value given by
+<tt class="docutils literal"><span class="pre">f(i,</span> <span class="pre">j)</span></tt> where <tt class="docutils literal"><span class="pre">i</span></tt> and <tt class="docutils literal"><span class="pre">j</span></tt> are, respectively, the row and column
+indices of the matrix. Note that this function has the same
+semantics as the <a class="reference internal" href="#matrix.new" title="matrix.new"><tt class="xref py py-func docutils literal"><span class="pre">new()</span></tt></a> function with the difference that <a class="reference internal" href="#matrix.fset" title="matrix.fset"><tt class="xref py py-func docutils literal"><span class="pre">fset()</span></tt></a>
+operates on a matrix that already exists instead of creating a new one.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Matrices</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#accessing-matrix-elements">Accessing Matrix Elements</a><ul>
+<li><a class="reference internal" href="#matrix-dimensions">Matrix Dimensions</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#matrix-methods">Matrix methods</a></li>
+<li><a class="reference internal" href="#module-matrix">Matrix Functions</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="complex.html"
+                        title="previous chapter">Complex Numbers</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="linalg.html"
+                        title="next chapter">Linear Algebra</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/matrices.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linalg.html" title="Linear Algebra"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="complex.html" title="Complex Numbers"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

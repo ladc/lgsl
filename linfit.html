@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Linear Least Squares fit &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Nonlinear Least Squares fit" href="nlinfit.html" />
+    <link rel="prev" title="Probability Distribution Functions" href="pdf.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nlinfit.html" title="Nonlinear Least Squares fit"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pdf.html" title="Probability Distribution Functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="linear-least-squares-fit">
+<h1>Linear Least Squares fit<a class="headerlink" href="#linear-least-squares-fit" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>This chapter describes routines for performing least squares fits to experimental data using linear combinations of functions. The data may be weighted or unweighted, i.e. with known or unknown errors.  For weighted data, the functions compute the best fit parameters and their associated covariance matrix.  For unweighted data, the covariance matrix is estimated from the scatter of the points, giving a variance-covariance matrix.</p>
+</div>
+<div class="section" id="linear-fit-functions">
+<h2>Linear Fit Functions<a class="headerlink" href="#linear-fit-functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="linfit">
+<tt class="descname">linfit</tt><big>(</big><em>X</em>, <em>y</em><span class="optional">[</span>, <em>w</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#linfit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform a linear fit for the observations <tt class="docutils literal"><span class="pre">y</span></tt> using the model matrix <tt class="docutils literal"><span class="pre">X</span></tt>. It returns a vector with the coefficients of the fit, the residual chi square and the covariance matrix. You can optionally provide the weights <tt class="docutils literal"><span class="pre">w</span></tt> of the observations to obtain a weighted linear fit. The argument <tt class="docutils literal"><span class="pre">y</span></tt> should be a column matrix of length N while the model <tt class="docutils literal"><span class="pre">X</span></tt> should be a N x M matrix where M is the number of basis in the linear model.</p>
+<dl class="docutils">
+<dt><em>Example</em></dt>
+<dd><p class="first">Let us suppose that we have two column matrices, x and y, and we want to make a linear fit of y versus x. We first build the model matrix and then we use it to perform the linear fit:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">X</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">return</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">end</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">chisq</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">linfit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">The function returns the fit coefficients, the residual chi square and the covariance matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<span class="target" id="module-linfit"></span></div>
+<div class="section" id="complete-example">
+<h2>Complete Example<a class="headerlink" href="#complete-example" title="Permalink to this headline">¶</a></h2>
+<p>We give a complete example where a set of (x, y) observations are simulated and a linear fit is done:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">lgsl</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl&quot;</span><span class="p">)</span>
+
+<span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">12.5</span><span class="p">,</span> <span class="mi">32</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.55</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.4</span>
+<span class="n">xsmp</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">return</span> <span class="p">(</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">x1</span> <span class="k">end</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">rng</span><span class="p">.</span><span class="n">new</span><span class="p">()</span>
+<span class="n">yobs</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="n">xsmp</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">rnd</span><span class="p">.</span><span class="n">gaussian</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span> <span class="k">end</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xsmp</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">yobs</span><span class="p">)</span>
+
+<span class="c1">-- model matrix for the linear fit</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">matrix</span><span class="p">.</span><span class="n">new</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="k">function</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)</span> <span class="k">return</span> <span class="n">j</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">end</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="s">Linear fit coefficients: &#39;</span><span class="p">)</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">chisq</span><span class="p">,</span> <span class="n">cov</span> <span class="o">=</span> <span class="n">lgsl</span><span class="p">.</span><span class="n">linfit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+<span class="n">fit</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">return</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">*</span><span class="n">x</span> <span class="k">end</span>
+
+<span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">graph</span><span class="p">.</span><span class="n">fxplot</span><span class="p">(</span><span class="n">fit</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
+<span class="n">p</span><span class="p">:</span><span class="n">addline</span><span class="p">(</span><span class="n">graph</span><span class="p">.</span><span class="n">xyline</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="s1">&#39;</span><span class="s">blue&#39;</span><span class="p">,</span> <span class="p">{{</span><span class="s1">&#39;</span><span class="s">marker&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">5</span><span class="p">}})</span>
+<span class="n">p</span><span class="p">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="s">Linear Fit&#39;</span>
+</pre></div>
+</div>
+<div class="figure">
+<img alt="_images/example-linfit.png" src="_images/example-linfit.png" />
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Linear Least Squares fit</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#linear-fit-functions">Linear Fit Functions</a></li>
+<li><a class="reference internal" href="#complete-example">Complete Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pdf.html"
+                        title="previous chapter">Probability Distribution Functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nlinfit.html"
+                        title="next chapter">Nonlinear Least Squares fit</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/linfit.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="nlinfit.html" title="Nonlinear Least Squares fit"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pdf.html" title="Probability Distribution Functions"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

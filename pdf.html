@@ -1,0 +1,380 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Probability Distribution Functions &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Linear Least Squares fit" href="linfit.html" />
+    <link rel="prev" title="Random Number Distributions" href="randist.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linfit.html" title="Linear Least Squares fit"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="randist.html" title="Random Number Distributions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-randist"></span><div class="section" id="probability-distribution-functions">
+<span id="pdf"></span><h1>Probability Distribution Functions<a class="headerlink" href="#probability-distribution-functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The module <a class="reference internal" href="#module-randist" title="randist"><tt class="xref py py-mod docutils literal"><span class="pre">randist</span></tt></a> offers a set of functions that mirrors those available from the module <a class="reference internal" href="randist.html#module-rnd" title="rnd"><tt class="xref py py-mod docutils literal"><span class="pre">rnd</span></tt></a>.
+Generally, for each kind of distribution, a few functions are available to calculate the <strong>probability density function</strong>, the <strong>cumulative distribution function</strong> and the <strong>inverse cumulative distribution function</strong>.</p>
+<p>The cumulative distribution functions and their
+inverses are computed separately for the upper and lower tails of the
+distribution, allowing full accuracy to be retained for small results.</p>
+<p><em>Continuous</em> random number distributions are defined by a probability density function, <span class="math">\(p(x)\)</span>, such that the probability of <span class="math">\(x\)</span> occurring in the infinitesimal range <span class="math">\(x\)</span> to <span class="math">\(x+dx\)</span> is <span class="math">\(p(x) dx\)</span>.</p>
+<p>The cumulative distribution function for the lower tail <span class="math">\(P(x)\)</span> is defined by the integral,</p>
+<div class="math">
+\[P(x) = \int_{-\infty}^{x} dx' p(x')\]</div>
+<p>and gives the probability of a variate taking a value <em>less than</em> <span class="math">\(x\)</span>.</p>
+<p>The cumulative distribution function for the upper tail <span class="math">\(Q(x)\)</span> is defined by the integral,</p>
+<div class="math">
+\[Q(x) = \int_{x}^{+\infty} dx' p(x')\]</div>
+<p>and gives the probability of a variate taking a value <em>greater than</em> <span class="math">\(x\)</span>.</p>
+<p>The upper and lower cumulative distribution functions are related by <span class="math">\(P(x) + Q(x) = 1\)</span> and satisfy <span class="math">\(0 \le P(x) \le 1\)</span>, <span class="math">\(0 \le Q(x) \le 1\)</span>.</p>
+<p>The inverse cumulative distribution functions, <span class="math">\(x = P^{-1}(p)\)</span> and <span class="math">\(x = Q^{-1}(q)\)</span> give the values of <span class="math">\(x\)</span> which correspond to a specific value of <span class="math">\(p\)</span> or <span class="math">\(q\)</span>.
+They can be used to find confidence limits from probability values.</p>
+<p>For <em>discrete</em> distributions, the probability of sampling the integer value <span class="math">\(k\)</span> is given by <span class="math">\(p(k)\)</span>, where <span class="math">\(\sum_k p(k) = 1\)</span>.  The cumulative distribution function for the lower tail <span class="math">\(P(k)\)</span> of a discrete distribution is defined as,</p>
+<div class="math">
+\[P(k) = \sum_{i \le k} p(i)\]</div>
+<p>where the sum is over the allowed range of the distribution <em>less than or equal to</em> <span class="math">\(k\)</span>.</p>
+<p>The cumulative distribution function for the upper tail of a discrete distribution <span class="math">\(Q(k)\)</span> is defined as</p>
+<div class="math">
+\[\begin{split}Q(k) = \sum_{i &gt; k} p(i)\end{split}\]</div>
+<p>giving the sum of probabilities for all values <em>greater</em> than <span class="math">\(k\)</span>.
+These two definitions satisfy the identity <span class="math">\(P(k) + Q(k) = 1\)</span>.</p>
+<p>If the range of the distribution is 1 to <span class="math">\(n\)</span> inclusive, then <span class="math">\(P(n)=1\)</span>,
+<span class="math">\(Q(n)=0\)</span> while <span class="math">\(P(1) = p(1)\)</span>, <span class="math">\(Q(1)=1-p(1)\)</span>.</p>
+<div class="section" id="naming-conventions">
+<h3>Naming Conventions<a class="headerlink" href="#naming-conventions" title="Permalink to this headline">¶</a></h3>
+<p>The probability functions are named following an uniform naming convention.
+The probability density function end with the suffix <tt class="docutils literal"><span class="pre">_pdf</span></tt>.
+The cumulative distribution functions <span class="math">\(P(x)\)</span> and <span class="math">\(Q(x)\)</span> end with the suffix <tt class="docutils literal"><span class="pre">_P</span></tt> and <tt class="docutils literal"><span class="pre">_Q</span></tt>, respectively.
+The inverse cumulative distribution functions <span class="math">\(P^{-1}(x)\)</span> and <span class="math">\(Q^{-1}(x)\)</span> end with the suffix <tt class="docutils literal"><span class="pre">_Pinv</span></tt> and <tt class="docutils literal"><span class="pre">_Qinv</span></tt>, respectively.</p>
+</div>
+<div class="section" id="functions-index">
+<h3>Functions Index<a class="headerlink" href="#functions-index" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>We present here the list of the available probability functions.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Actually LGSL implements all the functions provided by the GSL library but some of them are not listed here.
+Please consult the GSL reference manual if you need a complete list of all the distributions available.</p>
+</div>
+</div></blockquote>
+<dl class="function">
+<dt id="randist.gaussian_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_pdf</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_P">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_P</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_Q</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_Pinv</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_Qinv</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-gaussian"><em>Gaussian distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.exponential_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">exponential_pdf</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.exponential_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exponential_P">
+<tt class="descclassname">randist.</tt><tt class="descname">exponential_P</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.exponential_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exponential_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">exponential_Q</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.exponential_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exponential_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">exponential_Pinv</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.exponential_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exponential_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">exponential_Qinv</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.exponential_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-exponential"><em>Exponential  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.chisq_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">chisq_pdf</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.chisq_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.chisq_P">
+<tt class="descclassname">randist.</tt><tt class="descname">chisq_P</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.chisq_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.chisq_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">chisq_Q</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.chisq_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.chisq_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">chisq_Pinv</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.chisq_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.chisq_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">chisq_Qinv</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.chisq_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-chisq"><em>Chi square  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.laplace_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">laplace_pdf</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.laplace_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.laplace_P">
+<tt class="descclassname">randist.</tt><tt class="descname">laplace_P</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.laplace_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.laplace_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">laplace_Q</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.laplace_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.laplace_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">laplace_Pinv</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.laplace_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.laplace_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">laplace_Qinv</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.laplace_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-fdist"><em>Laplace  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.tdist_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">tdist_pdf</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.tdist_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.tdist_P">
+<tt class="descclassname">randist.</tt><tt class="descname">tdist_P</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.tdist_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.tdist_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">tdist_Q</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.tdist_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.tdist_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">tdist_Pinv</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.tdist_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.tdist_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">tdist_Qinv</tt><big>(</big><em>x</em>, <em>nu</em><big>)</big><a class="headerlink" href="#randist.tdist_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-tdist"><em>t- Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.cauchy_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">cauchy_pdf</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.cauchy_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.cauchy_P">
+<tt class="descclassname">randist.</tt><tt class="descname">cauchy_P</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.cauchy_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.cauchy_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">cauchy_Q</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.cauchy_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.cauchy_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">cauchy_Pinv</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.cauchy_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.cauchy_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">cauchy_Qinv</tt><big>(</big><em>x</em>, <em>a</em><big>)</big><a class="headerlink" href="#randist.cauchy_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-cauchy"><em>Cauchy  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.rayleigh_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">rayleigh_pdf</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.rayleigh_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.rayleigh_P">
+<tt class="descclassname">randist.</tt><tt class="descname">rayleigh_P</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.rayleigh_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.rayleigh_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">rayleigh_Q</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.rayleigh_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.rayleigh_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">rayleigh_Pinv</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.rayleigh_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.rayleigh_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">rayleigh_Qinv</tt><big>(</big><em>x</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.rayleigh_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-rayleigh"><em>Rayleigh  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.fdist_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">fdist_pdf</tt><big>(</big><em>x</em>, <em>nu1</em>, <em>nu2</em><big>)</big><a class="headerlink" href="#randist.fdist_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.fdist_P">
+<tt class="descclassname">randist.</tt><tt class="descname">fdist_P</tt><big>(</big><em>x</em>, <em>nu1</em>, <em>nu2</em><big>)</big><a class="headerlink" href="#randist.fdist_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.fdist_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">fdist_Q</tt><big>(</big><em>x</em>, <em>nu1</em>, <em>nu2</em><big>)</big><a class="headerlink" href="#randist.fdist_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.fdist_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">fdist_Pinv</tt><big>(</big><em>x</em>, <em>nu1</em>, <em>nu2</em><big>)</big><a class="headerlink" href="#randist.fdist_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.fdist_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">fdist_Qinv</tt><big>(</big><em>x</em>, <em>nu1</em>, <em>nu2</em><big>)</big><a class="headerlink" href="#randist.fdist_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-fdist"><em>F- Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.gamma_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">gamma_pdf</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.gamma_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gamma_P">
+<tt class="descclassname">randist.</tt><tt class="descname">gamma_P</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.gamma_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gamma_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">gamma_Q</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.gamma_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gamma_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gamma_Pinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.gamma_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gamma_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gamma_Qinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.gamma_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-gamma"><em>Gamma  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.beta_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">beta_pdf</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.beta_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.beta_P">
+<tt class="descclassname">randist.</tt><tt class="descname">beta_P</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.beta_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.beta_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">beta_Q</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.beta_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.beta_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">beta_Pinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.beta_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.beta_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">beta_Qinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.beta_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-beta"><em>Beta  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.gaussian_tail_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_tail_pdf</tt><big>(</big><em>x</em>, <em>a</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_tail_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_tail_P">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_tail_P</tt><big>(</big><em>x</em>, <em>a</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_tail_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_tail_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_tail_Q</tt><big>(</big><em>x</em>, <em>a</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_tail_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_tail_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_tail_Pinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_tail_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.gaussian_tail_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">gaussian_tail_Qinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.gaussian_tail_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-gaussian-tail"><em>Gaussian tail  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.exppow_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">exppow_pdf</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.exppow_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exppow_P">
+<tt class="descclassname">randist.</tt><tt class="descname">exppow_P</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.exppow_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exppow_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">exppow_Q</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.exppow_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exppow_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">exppow_Pinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.exppow_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.exppow_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">exppow_Qinv</tt><big>(</big><em>x</em>, <em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#randist.exppow_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-exppow"><em>Exponential Power  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.lognormal_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">lognormal_pdf</tt><big>(</big><em>x</em>, <em>zeta</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.lognormal_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.lognormal_P">
+<tt class="descclassname">randist.</tt><tt class="descname">lognormal_P</tt><big>(</big><em>x</em>, <em>zeta</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.lognormal_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.lognormal_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">lognormal_Q</tt><big>(</big><em>x</em>, <em>zeta</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.lognormal_Q" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.lognormal_Pinv">
+<tt class="descclassname">randist.</tt><tt class="descname">lognormal_Pinv</tt><big>(</big><em>x</em>, <em>zeta</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.lognormal_Pinv" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.lognormal_Qinv">
+<tt class="descclassname">randist.</tt><tt class="descname">lognormal_Qinv</tt><big>(</big><em>x</em>, <em>zeta</em>, <em>sigma</em><big>)</big><a class="headerlink" href="#randist.lognormal_Qinv" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-lognormal"><em>Lognormal  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.binomial_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">binomial_pdf</tt><big>(</big><em>x</em>, <em>p</em>, <em>n</em><big>)</big><a class="headerlink" href="#randist.binomial_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.binomial_P">
+<tt class="descclassname">randist.</tt><tt class="descname">binomial_P</tt><big>(</big><em>x</em>, <em>p</em>, <em>n</em><big>)</big><a class="headerlink" href="#randist.binomial_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.binomial_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">binomial_Q</tt><big>(</big><em>x</em>, <em>p</em>, <em>n</em><big>)</big><a class="headerlink" href="#randist.binomial_Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-binomial"><em>Binomial  Distribution</em></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="randist.poisson_pdf">
+<tt class="descclassname">randist.</tt><tt class="descname">poisson_pdf</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.poisson_pdf" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.poisson_P">
+<tt class="descclassname">randist.</tt><tt class="descname">poisson_P</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.poisson_P" title="Permalink to this definition">¶</a></dt>
+<dt id="randist.poisson_Q">
+<tt class="descclassname">randist.</tt><tt class="descname">poisson_Q</tt><big>(</big><em>x</em>, <em>mu</em><big>)</big><a class="headerlink" href="#randist.poisson_Q" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="randist.html#rnd-poisson"><em>Poisson  Distribution</em></a>.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Probability Distribution Functions</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a><ul>
+<li><a class="reference internal" href="#naming-conventions">Naming Conventions</a></li>
+<li><a class="reference internal" href="#functions-index">Functions Index</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="randist.html"
+                        title="previous chapter">Random Number Distributions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="linfit.html"
+                        title="next chapter">Linear Least Squares fit</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/pdf.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="linfit.html" title="Linear Least Squares fit"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="randist.html" title="Random Number Distributions"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

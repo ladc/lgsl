@@ -1,0 +1,250 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Eigensystems &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Random Numbers" href="random.html" />
+    <link rel="prev" title="Linear Algebra" href="linalg.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="random.html" title="Random Numbers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="linalg.html" title="Linear Algebra"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-eigen"></span><div class="section" id="eigensystems">
+<h1>Eigensystems<a class="headerlink" href="#eigensystems" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes functions for computing eigenvalues and eigenvectors of matrices.
+There are routines for real symmetric, real nonsymmetric, complex hermitian, real generalized symmetric-definite, complex generalized hermitian-definite, and real generalized nonsymmetric eigensystems.
+Eigenvalues can be computed with or without eigenvectors.
+The hermitian and real symmetric matrix algorithms are symmetric bidiagonalization followed by QR reduction.
+The nonsymmetric algorithm is the Francis QR double-shift. The generalized nonsymmetric algorithm is the QZ method due to Moler and Stewart.</p>
+<div class="section" id="real-symmetric-matrices">
+<h2>Real Symmetric Matrices<a class="headerlink" href="#real-symmetric-matrices" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="eigen.symm">
+<tt class="descclassname">eigen.</tt><tt class="descname">symm</tt><big>(</big><em>A</em><span class="optional">[</span>, <em>order</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#eigen.symm" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function computes the eigenvalues and eigenvectors of the real symmetric matrix <span class="math">\(A\)</span>. The default ordering of the eigenvalues and eigenvectors is descending order in numerical value.
+You can however choose from the following sorting shemes for the eigenvalues:</p>
+<dl class="docutils">
+<dt>&#8216;desc&#8217;</dt>
+<dd>descending order in numerical value</dd>
+<dt>&#8216;asc&#8217;</dt>
+<dd>ascending order in numerical value</dd>
+<dt>&#8216;abs_asc&#8217;</dt>
+<dd>ascending order in magnitude</dd>
+<dt>&#8216;abs_desc&#8217;</dt>
+<dd>descending order in magnitude</dd>
+<dt>&#8216;none&#8217;</dt>
+<dd>eigenvalue sorting</dd>
+</dl>
+<p>The function returns:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">eval</span><span class="p">,</span> <span class="n">evec</span> <span class="o">=</span> <span class="n">symm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="s1">&#39;</span><span class="s">abs_asc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>while the first eigenvalue correpsonds to the first eigenvector stored in the first column of the eigenvectors matrix.
+For real symmetric matrices, the library uses the symmetric bidiagonalization and QR reduction method.
+This is described in Golub &amp; van Loan, section 8.3. The computed eigenvalues are accurate to an absolute accuracy of <span class="math">\(\epsilon ||m||_2\)</span>, where <span class="math">\(\epsilon\)</span> is the machine precision.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="real-nonsymmetric-matrices">
+<h2>Real Nonsymmetric Matrices<a class="headerlink" href="#real-nonsymmetric-matrices" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="eigen.non_symm">
+<tt class="descclassname">eigen.</tt><tt class="descname">non_symm</tt><big>(</big><em>A [, order ] ]</em><big>)</big><a class="headerlink" href="#eigen.non_symm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The solution of the real nonsymmetric eigensystem problem for a matrix <span class="math">\(A\)</span> involves computing the Schur decomposition</p>
+<p><span class="math">\(A = Z T Z^T\)</span></p>
+<p>where <span class="math">\(Z\)</span> is an orthogonal matrix of Schur vectors and <span class="math">\(T\)</span>, the Schur form, is quasi upper triangular with diagonal 1-by-1 blocks which are real eigenvalues of <span class="math">\(A\)</span>,
+and diagonal 2-by-2 blocks whose eigenvalues are complex conjugate eigenvalues of <span class="math">\(A\)</span>. The algorithm used is the double-shift Francis method.</p>
+<p>This function computes eigenvalues and right eigenvectors of the n-by-n real nonsymmetric matrix <span class="math">\(A\)</span>.
+The computed eigenvectors are normalized to have unit magnitude. On output, the upper portion of <span class="math">\(A\)</span> contains the Schur form <span class="math">\(T\)</span>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">eval</span><span class="p">,</span> <span class="n">evec</span><span class="p">,</span> <span class="n">A</span> <span class="o">=</span> <span class="n">non_symm</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="s1">&#39;</span><span class="s">abs_asc&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</div>
+<div class="section" id="complex-hermitian-matrices">
+<h2>Complex Hermitian Matrices<a class="headerlink" href="#complex-hermitian-matrices" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="real-generalized-symmetric-definite-eigensystems">
+<h2>Real Generalized Symmetric-Definite Eigensystems<a class="headerlink" href="#real-generalized-symmetric-definite-eigensystems" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="eigen.gensymm">
+<tt class="descclassname">eigen.</tt><tt class="descname">gensymm</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#eigen.gensymm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The real generalized symmetric-definite eigenvalue problem is to find eigenvalues <span class="math">\(\lambda\)</span> and eigenvectors <span class="math">\(x\)</span> such that</p>
+<div class="math">
+\[A x = \lambda B x\]</div>
+<p>where <span class="math">\(A\)</span> and <span class="math">\(B\)</span> are symmetric matrices, and <span class="math">\(B\)</span> is positive-definite.
+This problem reduces to the standard symmetric eigenvalue problem by applying the Cholesky decomposition to <span class="math">\(B\)</span>:</p>
+<div class="math">
+\[A x = \lambda B x\]\[                     A x = \lambda L L^t x\]\[( L^{-1} A L^{-t} ) L^t x = \lambda L^t x\]</div>
+<p>Therefore, the problem becomes <span class="math">\(C y = \lambda y\)</span> where <span class="math">\(C = L^{-1} A L^{-t}\)</span> is symmetric, and <span class="math">\(y = L^t x\)</span>.
+The standard symmetric eigensolver can be applied to the matrix <span class="math">\(C\)</span>.
+The resulting eigenvectors are backtransformed to find the vectors of the original problem.
+The eigenvalues and eigenvectors of the generalized symmetric-definite eigenproblem are always real.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="complex-generalized-hermitian-definite-eigensystems">
+<h2>Complex Generalized Hermitian-Definite Eigensystems<a class="headerlink" href="#complex-generalized-hermitian-definite-eigensystems" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="eigen.genherm">
+<tt class="descclassname">eigen.</tt><tt class="descname">genherm</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#eigen.genherm" title="Permalink to this definition">¶</a></dt>
+<dd><p>The complex generalized hermitian-definite eigenvalue problem is to find eigenvalues <span class="math">\(\lambda\)</span> and eigenvectors <span class="math">\(x\)</span> such that</p>
+<div class="math">
+\[A x = \lambda B x\]</div>
+<p>where <span class="math">\(A\)</span> and <span class="math">\(B\)</span> are hermitian matrices, and <span class="math">\(B\)</span> is positive-definite.
+Similarly to the real case, this can be reduced to <span class="math">\(C y = \lambda y\)</span> where <span class="math">\(C = L^{-1} A L^{-H}\)</span> is hermitian,
+and <span class="math">\(y = L^H x\)</span>. The standard hermitian eigensolver can be applied to the matrix <span class="math">\(C\)</span>.
+The resulting eigenvectors are backtransformed to find the vectors of the original problem.
+The eigenvalues of the generalized hermitian-definite eigenproblem are always real.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="real-generalized-nonsymmetric-eigensystems">
+<h2>Real Generalized Nonsymmetric Eigensystems<a class="headerlink" href="#real-generalized-nonsymmetric-eigensystems" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="eigen.gen">
+<tt class="descclassname">eigen.</tt><tt class="descname">gen</tt><big>(</big><em>a</em>, <em>b</em><big>)</big><a class="headerlink" href="#eigen.gen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given two square matrices <span class="math">\((A, B)\)</span>, the generalized nonsymmetric eigenvalue problem is to find eigenvalues <span class="math">\(\lambda\)</span> and eigenvectors <span class="math">\(x\)</span> such that</p>
+<div class="math">
+\[A x = \lambda B x\]</div>
+<p>We may also define the problem as finding eigenvalues <span class="math">\(\mu\)</span> and eigenvectors <span class="math">\(y\)</span> such that</p>
+<div class="math">
+\[\mu A y = B y\]</div>
+<p>Note that these two problems are equivalent (with <span class="math">\(\lambda = 1/\mu\)</span>) if neither <span class="math">\(\lambda\)</span> nor <span class="math">\(\mu\)</span> is zero. If say, <span class="math">\(\lambda\)</span> is zero, then it is still a well defined eigenproblem, but its alternate problem involving <span class="math">\(\mu\)</span> is not. Therefore, to allow for zero (and infinite) eigenvalues, the problem which is actually solved is</p>
+<div class="math">
+\[\beta A x = \alpha B x\]</div>
+<p>The eigensolver routines below will return two values <span class="math">\(\alpha\)</span> and <span class="math">\(\beta\)</span> and leave it to the user
+to perform the divisions <span class="math">\(\lambda = \alpha / \beta\)</span> and <span class="math">\(\mu = \beta / \alpha\)</span>.</p>
+<p>If the determinant of the matrix pencil <span class="math">\(A - \lambda B\)</span> is zero for all <span class="math">\(\lambda\)</span>,
+the problem is said to be singular; otherwise it is called regular.
+Singularity normally leads to some <span class="math">\(\alpha = \beta = 0\)</span> which means the eigenproblem is ill-conditioned
+and generally does not have well defined eigenvalue solutions.
+The routines below are intended for regular matrix pencils and could yield unpredictable results when applied to singular pencils.</p>
+<p>The solution of the real generalized nonsymmetric eigensystem problem for a matrix pair <span class="math">\((A, B)\)</span>
+involves computing the generalized Schur decomposition</p>
+<div class="math">
+\[A = Q S Z^T\]\[B = Q T Z^T\]</div>
+<p>where <span class="math">\(Q\)</span> and <span class="math">\(Z\)</span> are orthogonal matrices of left and right Schur vectors respectively,
+and <span class="math">\((S, T)\)</span> is the generalized Schur form whose diagonal elements give the <span class="math">\(\alpha\)</span> and <span class="math">\(\beta\)</span> values.
+The algorithm used is the QZ method due to Moler and Stewart (see references).</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Eigensystems</a><ul>
+<li><a class="reference internal" href="#real-symmetric-matrices">Real Symmetric Matrices</a></li>
+<li><a class="reference internal" href="#real-nonsymmetric-matrices">Real Nonsymmetric Matrices</a></li>
+<li><a class="reference internal" href="#complex-hermitian-matrices">Complex Hermitian Matrices</a></li>
+<li><a class="reference internal" href="#real-generalized-symmetric-definite-eigensystems">Real Generalized Symmetric-Definite Eigensystems</a></li>
+<li><a class="reference internal" href="#complex-generalized-hermitian-definite-eigensystems">Complex Generalized Hermitian-Definite Eigensystems</a></li>
+<li><a class="reference internal" href="#real-generalized-nonsymmetric-eigensystems">Real Generalized Nonsymmetric Eigensystems</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="linalg.html"
+                        title="previous chapter">Linear Algebra</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="random.html"
+                        title="next chapter">Random Numbers</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/eigen.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="random.html" title="Random Numbers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="linalg.html" title="Linear Algebra"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

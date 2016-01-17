@@ -1,0 +1,218 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Numerical Integration &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Monte Carlo Integration" href="vegas.html" />
+    <link rel="prev" title="Ordinary Differential Equations" href="ode.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vegas.html" title="Monte Carlo Integration"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ode.html" title="Ordinary Differential Equations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="numerical-integration">
+<h1>Numerical Integration<a class="headerlink" href="#numerical-integration" title="Permalink to this headline">¶</a></h1>
+<p>This chapter describes routines for performing numerical integration
+(quadrature) of a function in one dimension. For the integration of functions in multiple dimensions, please see the section on <a class="reference internal" href="vegas.html#monte-carlo"><em>Monte Carlo Integration</em></a>.
+LGSL re-implements the the algorithms used in QUADPACK, a numerical integration package written by Piessens, Doncker-Kapenga, Uberhuber and Kahaner.
+FORTRAN code for QUADPACK is available on Netlib.</p>
+<p>Currently only two integration methods are available in LGSL.
+Both of them are based on Gauss-Kronrod integration rules.
+The first method is non-adaptive and is called QNG while the second one, QAG, is adaptive.
+The adaptive method QAG is suitable as a general-purpose integrator, whereas the QNG method should be used only in particular cases where the function has a simple known smooth behavior.</p>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Each algorithm computes an approximation to a definite integral of the form,</p>
+<div class="math">
+\[I = \int_a^b f(x) \textrm{d}x\]</div>
+<p>The user provides absolute and relative error bounds (epsabs, epsrel)
+which specify the following accuracy requirement,</p>
+<div class="math">
+\[| \textrm{Result} - I |  \le \max(\epsilon_{\textrm{abs}}, \epsilon_{\textrm{abs}} |I|)\]</div>
+<p>where Result is the numerical approximation obtained by the
+algorithm. The algorithm attempts to estimate the absolute error
+AbsErr = | Result - I | in such a way that the following inequality
+holds,</p>
+<div class="math">
+\[| \textrm{Result} - I | \le \textrm{AbsErr} \le \max(\epsilon_{\textrm{abs}}, \epsilon_{\textrm{rel}} |I|)\]</div>
+<p>In short, the routines return the first approximation which has an
+absolute error smaller than epsabs or a relative error smaller than
+epsrel.</p>
+<p>Note that this is an either-or constraint, not simultaneous. To
+compute to a specified absolute error, set epsrel to zero. To compute
+to a specified relative error, set epsabs to zero. The routines will
+fail to converge if the error bounds are too stringent, but always
+return the best approximation obtained up to that stage.</p>
+</div>
+<div class="section" id="module-integ">
+<span id="functions"></span><h2>Functions<a class="headerlink" href="#module-integ" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="integ.integ">
+<tt class="descclassname">integ.</tt><tt class="descname">integ</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em>, <em>epsabs</em>, <em>epsrel</em><big>)</big><a class="headerlink" href="#integ.integ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the definite integral of the function <tt class="docutils literal"><span class="pre">f</span></tt> in the interval specified by <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> within the requested precision given by <tt class="docutils literal"><span class="pre">epsabs</span></tt> and <tt class="docutils literal"><span class="pre">epsrel</span></tt>.
+This function always uses the adaptive QAG algorithm internally.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="integ.prepare">
+<tt class="descclassname">integ.</tt><tt class="descname">prepare</tt><big>(</big><em>spec</em><big>)</big><a class="headerlink" href="#integ.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a function that can perform a numeric integration based on the options <tt class="docutils literal"><span class="pre">spec</span></tt>.
+The argument <tt class="docutils literal"><span class="pre">spec</span></tt> is used to choose the quadrature algorithm, the order and the limits for the adaptive search if applicable.
+The fields of <tt class="docutils literal"><span class="pre">spec</span></tt> that you should give are:</p>
+<dl class="docutils">
+<dt><em>method</em></dt>
+<dd>The quadrature algorithm. Available algorithms are <tt class="docutils literal"><span class="pre">qng</span></tt> and <tt class="docutils literal"><span class="pre">qag</span></tt>, the default is <tt class="docutils literal"><span class="pre">qag</span></tt>.</dd>
+<dt><em>order</em></dt>
+<dd>The order of the integration rule.
+The default value is 21.</dd>
+<dt><em>limits</em></dt>
+<dd>The maximum number of subdivisions for adaptive algorithms.
+The default value is 64.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="usage-example">
+<h2>Usage Example<a class="headerlink" href="#usage-example" title="Permalink to this headline">¶</a></h2>
+<p>Here a simple example that shows how to plot the Bessel function using its integral definition:</p>
+<div class="math">
+\[J_n(x) = {1 \over \pi} \int_0^\pi \cos(n \tau - x \sin \tau) \textrm{d}\tau\]</div>
+<p>The function <a class="reference internal" href="#integ.prepare" title="integ.prepare"><tt class="xref py py-func docutils literal"><span class="pre">integ.prepare()</span></tt></a> is used to prepare the quadrature function.
+The function returned is then called many times to obtain <span class="math">\(J_n(x)\)</span>:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">integ</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.integ&quot;</span><span class="p">)</span>
+
+<span class="n">epsabs</span><span class="p">,</span> <span class="n">epsrel</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span> <span class="mf">0.01</span>
+
+<span class="k">function</span> <span class="nf">bessel_gen</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+   <span class="kd">local</span> <span class="n">xs</span>
+   <span class="kd">local</span> <span class="n">fint</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">return</span> <span class="nb">math.cos</span><span class="p">(</span><span class="n">n</span><span class="o">*</span><span class="n">t</span> <span class="o">-</span> <span class="n">xs</span><span class="o">*</span><span class="nb">math.sin</span><span class="p">(</span><span class="n">t</span><span class="p">))</span> <span class="k">end</span>
+   <span class="k">return</span> <span class="k">function</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+             <span class="n">xs</span> <span class="o">=</span> <span class="n">x</span>
+             <span class="k">return</span> <span class="n">q</span><span class="p">(</span><span class="n">fint</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">math.pi</span><span class="p">,</span> <span class="n">epsabs</span><span class="p">,</span> <span class="n">epsrel</span><span class="p">)</span> <span class="o">/</span> <span class="nb">math.pi</span>
+          <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1">-- we get the &#39;qag&#39; integration rule with default options</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">integ</span><span class="p">.</span><span class="n">prepare</span> <span class="p">{</span><span class="n">method</span><span class="o">=</span> <span class="s1">&#39;</span><span class="s">qag&#39;</span><span class="p">}</span>
+
+<span class="n">J7</span> <span class="o">=</span> <span class="n">bessel_gen</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+
+<span class="c1">-- plot the resulting home-brewn Bessel function (requires the graph-toolkit package)</span>
+<span class="n">graph</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">graph&quot;</span><span class="p">)</span>
+<span class="n">graph</span><span class="p">.</span><span class="n">fxplot</span><span class="p">(</span><span class="n">J7</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Numerical Integration</a><ul>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#module-integ">Functions</a></li>
+<li><a class="reference internal" href="#usage-example">Usage Example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="ode.html"
+                        title="previous chapter">Ordinary Differential Equations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="vegas.html"
+                        title="next chapter">Monte Carlo Integration</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/integ.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="vegas.html" title="Monte Carlo Integration"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ode.html" title="Ordinary Differential Equations"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

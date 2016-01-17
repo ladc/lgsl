@@ -1,0 +1,264 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Monte Carlo Integration &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1-beta1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="next" title="Special functions" href="sf.html" />
+    <link rel="prev" title="Numerical Integration" href="integ.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sf.html" title="Special functions"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="integ.html" title="Numerical Integration"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <span class="target" id="module-vegas"></span><div class="section" id="monte-carlo-integration">
+<span id="monte-carlo"></span><h1>Monte Carlo Integration<a class="headerlink" href="#monte-carlo-integration" title="Permalink to this headline">¶</a></h1>
+<p>In addition to the <em>one-dimensional</em> integrators in <a class="reference internal" href="integ.html#module-integ" title="integ"><tt class="xref py py-mod docutils literal"><span class="pre">integ</span></tt></a>, LGSL currently
+provides a <em>multidimensional</em> integrator which uses the VEGAS algorithm in
+<a class="reference internal" href="#module-vegas" title="vegas"><tt class="xref py py-mod docutils literal"><span class="pre">vegas</span></tt></a>.  This integrator is a Monte Carlo integration method,
+which means that the points at which the integrand is evaluated are chosen at
+random by a random number generator.</p>
+<div class="section" id="description-of-the-vegas-algorithm">
+<h2>Description of the VEGAS algorithm<a class="headerlink" href="#description-of-the-vegas-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>The VEGAS algorithm of Lepage is based on importance sampling. It samples points from the probability distribution described by the function <span class="math">\(|f|\)</span>, so that the points are concentrated in the regions that make the largest contribution to the integral.</p>
+<p>In general, if the Monte Carlo integral of <span class="math">\(f\)</span> is sampled with points distributed according to a probability distribution described by the function <span class="math">\(g\)</span>, we obtain an estimate <span class="math">\(E_g(f; N)\)</span>,</p>
+<div class="math">
+\[E_g(f; N) = E(f/g; N)\]</div>
+<p>with a corresponding variance,</p>
+<div class="math">
+\[\textrm{Var}_g(f; N) = \textrm{Var}(f/g; N).\]</div>
+<p>If the probability distribution is chosen as <span class="math">\(g = |f|/\int(|f|)\)</span> then it can be shown that the variance <cite>textrm{Var}_g(f; N)</cite> vanishes, and the error in the estimate will be zero. In practice it is not possible to sample from the exact distribution g for an arbitrary function, so importance sampling algorithms aim to produce efficient approximations to the desired distribution.
+The VEGAS algorithm uses a fixed number of calls to evaluate the integral.
+The VEGAS algorithm approximates the exact distribution by making a number of passes over the integration region while histogramming the function <span class="math">\(f\)</span>. Each histogram is used to define a sampling distribution for the next pass. Asymptotically this procedure converges to the desired distribution. In order to avoid the number of histogram bins growing like <span class="math">\(K^d\)</span> the probability distribution is approximated by a separable function: <span class="math">\(g(x_1, x_2, ...) = g_1(x_1) g_2(x_2) ...\)</span> so that the number of bins required is only <span class="math">\(Kd\)</span>. This is equivalent to locating the peaks of the function from the projections of the integrand onto the coordinate axes. The efficiency of VEGAS depends on the validity of this assumption. It is most efficient when the peaks of the integrand are well-localized. If an integrand can be rewritten in a form which is approximately separable this will increase the efficiency of integration with VEGAS.</p>
+<p>VEGAS incorporates a number of additional features, and combines both stratified sampling and importance sampling. The integration region is divided into a number of “boxes”, with each box getting a fixed number of points (the goal is 2). Each box can then have a fractional number of bins, but if the ratio of bins-per-box is less than two, VEGAS switches to a kind variance reduction (rather than importance sampling).</p>
+</div>
+<div class="section" id="errors-and-consistency">
+<h2>Errors and consistency<a class="headerlink" href="#errors-and-consistency" title="Permalink to this headline">¶</a></h2>
+<p>The VEGAS algorithm computes a number of independent estimates of the integral internally, and returns their weighted average. Random sampling of the integrand can occasionally produce an estimate where the error is zero, particularly if the function is constant in some regions. An estimate with zero error causes the weighted average to break down and must be handled separately. In the original FORTRAN implementations of VEGAS, the error estimate is made non-zero by substituting a small value (typically 1e-30). The implementation in GSL differs from this and avoids the use of an arbitrary constant &#8211; it either assigns the value a weight which is the average weight of the preceding estimates or discards it according to the following procedure,</p>
+<ul>
+<li><p class="first">current estimate has zero error, weighted average has finite error</p>
+<blockquote>
+<div><p>The current estimate is assigned a weight which is the average weight of the preceding estimates.</p>
+</div></blockquote>
+</li>
+<li><p class="first">current estimate has finite error, previous estimates had zero error</p>
+<blockquote>
+<div><p>The previous estimates are discarded and the weighted averaging procedure begins with the current estimate.</p>
+</div></blockquote>
+</li>
+<li><p class="first">current estimate has zero error, previous estimates had zero error</p>
+<blockquote>
+<div><p>The estimates are averaged using the arithmetic mean, but no error is computed.</p>
+</div></blockquote>
+</li>
+</ul>
+<p>The convergence of the algorithm can be tested using the overall chi-squared value of the results. A value which differs significantly from 1 indicates that the values from different iterations are inconsistent. In this case the weighted error will be underestimated, and further iterations of the algorithm are needed to obtain reliable results.</p>
+<p>The VEGAS algorithm uses a fixed number of calls to evaluate the integral. It is possible to call the continuation function, which is returned by <a class="reference internal" href="#vegas.integ" title="vegas.integ"><tt class="xref py py-func docutils literal"><span class="pre">vegas.integ()</span></tt></a>, with a higher number of calls to increase the accuracy of the result. Keep in mind that reducing <span class="math">\(\sigma\)</span> by a certain factor typically increases the number of calls quadratically, because <span class="math">\(\sigma \propto 1/\sqrt{n}\)</span>.</p>
+</div>
+<div class="section" id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="vegas.prepare">
+<tt class="descclassname">vegas.</tt><tt class="descname">prepare</tt><big>(</big><em>spec</em><big>)</big><a class="headerlink" href="#vegas.prepare" title="Permalink to this definition">¶</a></dt>
+<dd><p>Prepare a custom VEGAS Monte Carlo integrator. <tt class="docutils literal"><span class="pre">spec</span></tt> is a table which can contain the following fields:</p>
+<p><em>N</em> (required)
+Number of dimensions of the function you want to integrate.</p>
+<p><em>K</em> (optional, default: 50)
+Maximum number of bins, which should be an even, positive number.</p>
+<p><em>MODE</em> (optional, default: 1)
+Integration mode, which can be any of 1) importance (dynamic switching to  stratified), 2) importance only and 3) stratified sampling.</p>
+<p><em>ITERATIONS</em> (optional, default: 5)
+The result of the integration is based on a weighted average of <tt class="docutils literal"><span class="pre">ITERATIONS</span></tt> independent samples. For each integration, the number of function calls used is <tt class="docutils literal"><span class="pre">calls/ITERATIONS</span></tt>.</p>
+<p><em>ALPHA</em> (optional, default: 1.5)
+Grid flexibility for rebinning, typically between 1 and 2. Higher is more adaptive, 0 is rigid.</p>
+<p>The function <a class="reference internal" href="#vegas.prepare" title="vegas.prepare"><tt class="xref py py-func docutils literal"><span class="pre">vegas.prepare()</span></tt></a> returns an integrator with the same interface as <a class="reference internal" href="#vegas.integ" title="vegas.integ"><tt class="xref py py-func docutils literal"><span class="pre">vegas.integ()</span></tt></a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="vegas.integ">
+<tt class="descclassname">vegas.</tt><tt class="descname">integ</tt><big>(</big><em>f</em>, <em>a</em>, <em>b</em><span class="optional">[</span>, <em>calls</em>, <em>options</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#vegas.integ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use the VEGAS Monte Carlo algorithm to integrate the function <tt class="docutils literal"><span class="pre">f</span></tt> over the <tt class="docutils literal"><span class="pre">N</span></tt>-dimensional hypercubic region defined by the lower and upper limits in the vectors <tt class="docutils literal"><span class="pre">a</span></tt> and <tt class="docutils literal"><span class="pre">b</span></tt> (assuming 1-based indexing). The integration uses a fixed number of function calls <tt class="docutils literal"><span class="pre">calls</span></tt>, as opposed to a target precision.  The optional <tt class="docutils literal"><span class="pre">options</span></tt> table can contain the fields</p>
+<dl class="docutils">
+<dt><em>r</em></dt>
+<dd>The VEGAS integrator obtains random sampling points using the <a class="reference internal" href="random.html#module-rng" title="rng"><tt class="xref py py-mod docutils literal"><span class="pre">rng</span></tt></a> random number generator <tt class="docutils literal"><span class="pre">r</span></tt>. By default, the built-in math.random() of LuaJIT2 is used.</dd>
+<dt><em>chidev</em> (default: 0.5)</dt>
+<dd><tt class="docutils literal"><span class="pre">chidev</span></tt> is the tolerated deviation from 1 of the chi-squared per degree of freedom for the weighted average. This quantity must be consistent with 1 for the weighted average to be reliable.</dd>
+<dt><em>warmup</em> (default: 1e4)</dt>
+<dd>Number of function calls that is used to &#8220;warm up&#8221; the grid; i.e. to do a first estimate of the ideal probability distribution.</dd>
+</dl>
+<p>It returns a <tt class="docutils literal"><span class="pre">state</span></tt> table containing:</p>
+<blockquote>
+<div><dl class="docutils">
+<dt><em>result</em></dt>
+<dd>The result of the integration.</dd>
+<dt><em>sigma</em></dt>
+<dd>The error estimate.</dd>
+<dt><em>calls</em></dt>
+<dd>The number of runs needed to reach the desired chi-squared.</dd>
+<dt><em>cont([ncalls])</em></dt>
+<dd>The continuation function that takes a number of calls as an optional
+argument. This function can be invoked to recalculate the integral with a
+higher number of calls, to increase precision.  The continuation function
+returns a new <tt class="docutils literal"><span class="pre">state</span></tt> table.
+Note that this function discards the previous results, but retains the
+optimized grid. Typically the continuation function is called with a
+multiple of the original number of calls, to reduce the error.</dd>
+</dl>
+</div></blockquote>
+</dd></dl>
+
+</div>
+<div class="section" id="usage-example">
+<h2>Usage example<a class="headerlink" href="#usage-example" title="Permalink to this headline">¶</a></h2>
+<p>The subject of statistical physics features many intractable multiple integrals. One example of such an integral is the partition function of a real (interacting) gas. The partition function is an essential quantity in statistical physics, from which other quantities such as the free energy and the pressure can be derived. In the case of an ideal (non-interacting) gas, the partition function factorizes to a product of single integrals. In a real gas, the interactions introduce correlations between the particles, and the multiple integral no longer factorizes. The partition function for a system with a temperature <span class="math">\(T\)</span>, a volume <span class="math">\(V\)</span> and a number of particles <span class="math">\(N\)</span> assumes the following form:</p>
+<div class="math">
+\[\begin{split}\mathcal{Z}(T,V,N) &amp;= \frac{1}{N! h^{3N}} \int dp_1 dp_2 ... dp_N \int dr_1 dr_2 ... dr_N exp(-E/kT) \\
+                   &amp;= \frac{1}{N! h^{3N}} \int \exp( -\frac{1}{kT} \frac{1}{2m} (p_1^2 + p_2^2 + ... + p_N^2)) dp_1 dp_2 ... dp_N \\
+                   &amp;\times \int \exp( -\frac{1}{kT} \frac{1}{2}\sum_{i,j}^{N} U(r_i,r_j)) dr_1 dr_2 ... dr_N.\end{split}\]</div>
+<p>The integral over the momenta <span class="math">\(p_i\)</span> factorizes, but the presence of the potential <span class="math">\(U(r_i,r_j)\)</span> prevents the integral over the coordinates to be written as a product of single integrals. This integral is called the configurational partition function:</p>
+<div class="math">
+\[\begin{split}Q(T,V,N) = \frac{1}{V^N} \int \exp( -\frac{1}{kT} \sum_{i&gt;j}^{N} U(r_i,r_j)) dr_1 dr_2 ... dr_N\end{split}\]</div>
+<p>so that <span class="math">\(\mathcal{Z}(T,V,N) = \mathcal{Z}_{\textrm{ideal}}(T,V,N) \times Q(T,V,N)\)</span>.</p>
+<p>Using the VEGAS algorithm, we can perform a naive calculation of <span class="math">\(Q(T,V,N)\)</span> for a one-dimensional box containing 5 particles with a Gaussian repulsive interaction:</p>
+<div class="highlight-lua"><div class="highlight"><pre><span class="n">vegas</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">lgsl.vegas&quot;</span><span class="p">)</span>
+<span class="n">T</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="n">N</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">5</span>
+
+<span class="c1">-- the potential between two particles</span>
+<span class="n">U</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">r1</span><span class="p">,</span><span class="n">r2</span><span class="p">)</span>
+  <span class="k">return</span> <span class="mf">0.1</span><span class="o">*</span><span class="nb">math.exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">r1</span><span class="o">-</span><span class="n">r2</span><span class="p">)</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1">-- the Boltzmann factor exp(-E/kT)</span>
+<span class="n">boltzmann</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+  <span class="kd">local</span> <span class="n">Epot</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span> <span class="k">do</span>
+    <span class="k">for</span> <span class="n">j</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="k">do</span> <span class="c1">-- i&gt;j avoids counting pairs twice</span>
+      <span class="n">Epot</span> <span class="o">=</span> <span class="n">Epot</span> <span class="o">+</span> <span class="n">U</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+  <span class="k">return</span> <span class="nb">math.exp</span><span class="p">(</span><span class="o">-</span><span class="n">Epot</span><span class="o">/</span><span class="n">T</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1">-- set the lower and upper boundaries</span>
+<span class="n">lo</span><span class="p">,</span><span class="n">hi</span> <span class="o">=</span> <span class="p">{},{}</span>
+<span class="k">for</span> <span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">N</span> <span class="k">do</span> <span class="n">lo</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">hi</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span><span class="n">V</span> <span class="k">end</span>
+
+<span class="c1">-- calculate the integral and print the results</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">vegas</span><span class="p">.</span><span class="n">integ</span><span class="p">(</span><span class="n">boltzmann</span><span class="p">,</span><span class="n">lo</span><span class="p">,</span><span class="n">hi</span><span class="p">,</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;</span><span class="s">Q(T=&quot;</span><span class="p">,</span><span class="n">T</span><span class="p">,</span><span class="s2">&quot;</span><span class="s">,V=&quot;</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="s2">&quot;</span><span class="s">,N=&quot;</span><span class="p">,</span><span class="n">N</span><span class="p">,</span><span class="s2">&quot;</span><span class="s">) = &quot;</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">result</span><span class="o">/</span><span class="n">V</span><span class="o">^</span><span class="n">N</span><span class="p">,</span><span class="s2">&quot;</span><span class="s"> +/- &quot;</span><span class="p">,</span><span class="n">s</span><span class="p">.</span><span class="n">sigma</span><span class="o">/</span><span class="n">V</span><span class="o">^</span><span class="n">N</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Monte Carlo Integration</a><ul>
+<li><a class="reference internal" href="#description-of-the-vegas-algorithm">Description of the VEGAS algorithm</a></li>
+<li><a class="reference internal" href="#errors-and-consistency">Errors and consistency</a></li>
+<li><a class="reference internal" href="#functions">Functions</a></li>
+<li><a class="reference internal" href="#usage-example">Usage example</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="integ.html"
+                        title="previous chapter">Numerical Integration</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="sf.html"
+                        title="next chapter">Special functions</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/vegas.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="sf.html" title="Special functions"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="integ.html" title="Numerical Integration"
+             >previous</a> |</li>
+        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2016, Francesco Abbate, Lesley De Cruz, Benjamin von Ardenne.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
