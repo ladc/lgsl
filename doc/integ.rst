@@ -55,7 +55,7 @@ Functions
    Compute the definite integral of the function ``f`` in the interval specified by ``a`` and ``b`` within the requested precision given by ``epsabs`` and ``epsrel``.
    This function always uses the adaptive QAG algorithm internally.
 
-.. function:: quad_prepare(spec)
+.. function:: prepare(spec)
 
    Returns a function that can perform a numeric integration based on the options ``spec``.
    The argument ``spec`` is used to choose the quadrature algorithm, the order and the limits for the adaptive search if applicable.
@@ -80,7 +80,7 @@ Here a simple example that shows how to plot the Bessel function using its integ
 .. math::
    J_n(x) = {1 \over \pi} \int_0^\pi \cos(n \tau - x \sin \tau) \textrm{d}\tau
 
-The function :func:`integ.quad_prepare` is used to prepare the quadrature function.
+The function :func:`integ.prepare` is used to prepare the quadrature function.
 The function returned is then called many times to obtain :math:`J_n(x)`::
 
    integ = require("lgsl.integ")
@@ -97,7 +97,7 @@ The function returned is then called many times to obtain :math:`J_n(x)`::
    end
 
    -- we get the 'qag' integration rule with default options
-   q = integ.quad_prepare {method= 'qag'}
+   q = integ.prepare {method= 'qag'}
 
    J7 = bessel_gen(7, q)
 

@@ -297,7 +297,7 @@ For the integration in high dimensions, we will use the :ref:`Monte Carlo VEGAS 
 
 You must require the necessary modules before you can use them::
   
-  vegas_prepare = require("lgsl.vegas_prepare")
+  vegas = require("lgsl.vegas")
 
   sf = require("lgsl.sf") -- for the analytical solution, see below
   iter = require("lgsl.iter") -- for defining the integration boundaries
@@ -320,7 +320,7 @@ So `getunitsphere` can be defined as follows::
 
 This is the function we will use to integrate later.
 
-For visualising our results, we will use the ``graph-toolkit`` module, which can be required as follows::
+For visualising our results, we will use the :mod:`graph` module, which can be required as follows::
 
    graph = require("graph")
 
@@ -336,10 +336,9 @@ Now, we can start to calculate the volume of the unit sphere of the first 14 dim
       local a = iter.ilist(function() return 0 end, d)
       local b = iter.ilist(function() return 1 end, d)
       local calls, n = d*1e4,1
-      local vegas_integ = vegas_prepare({N=d})
 
       -- Obtaining monte carlo vegas state object
-      local s = vegas_integ(getunitsphere(d),a,b,calls)
+      local s = vegas.integ(getunitsphere(d),a,b,calls)
       
       --Increasing the number of calls to reach a satisfying result
       while(s.sigma/s.result > 0.005) do
@@ -354,7 +353,7 @@ The loop consists of three major parts.
 In the first part, we initialize the important variables with the :func:`iter.ilist` function, which conveniently creates vectors of any size with a value provided by the function.
 In this case `a` and `b` contain the lower and the upper boundaries for the integration.
 
-The Monte Carlo VEGAS integrator :func:`vegas_integ` with the correct number of dimensions is obtained with :func:`vegas_prepare`. By calling :func:`vegas_integ` with the desired unitsphere function, the Monte Carlo VEGAS algorithm is being invoked for the first time.
+The Monte Carlo VEGAS integrator :func:`vegas.integ` derives the number of dimensions from the length of the bounds vector, ``#a``. By calling :func:`vegas.integ` with the desired unitsphere function, an integrator is created for this number of dimensions, and the Monte Carlo VEGAS algorithm is being invoked.
 It returns a state table ``s`` with the ``result`` itself, the precision ``sigma``, the number of iterations ``calls`` it took, and a continuation function ``continue`` that can be called to recalculate the result with higher precision.
 
 Depending on the relative precision ``s.sigma/s.result``, we continue to recalculate the integral with increasing numbers of iterations.
@@ -393,5 +392,5 @@ Creating data structures with `iterators` is very common.
 With the function :func:`getunitsphere`, we have shown that some problems can be solved in an elegant way by returning a function.
 These kinds of functions are called closures because they refer to local variables declared outside of the function body itself.
 In this particular case, the function returned by :func:`getunitsphere` is a closure because it refers to the variable `n` defined outside its body.
-The function :func:`s.continue` returned by :func:`vegas_integ` is also another example of closure since it refers to the current state of the VEGAS integration.
+The function :func:`s.continue` returned by :func:`vegas.integ` is also another example of closure since it refers to the current state of the VEGAS integration.
 

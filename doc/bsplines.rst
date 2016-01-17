@@ -1,5 +1,6 @@
 .. highlight:: lua
 
+
 Basis Splines
 =============
 
@@ -56,6 +57,8 @@ B-Splines functions
    .. method:: model(x)
 
       Takes a column matrix of dimension N and returns a matrix of M columns and N rows where M = nbreak + order - 1. The matrix will contain, for each column, the value of the corresponding basis function evaluated in all the N position given by ``x``.
+
+.. module:: bspline 
 
 B-splines Example
 ------------------

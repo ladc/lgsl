@@ -1,5 +1,7 @@
 .. highlight:: lua
 
+.. module:: vegas
+
 .. _monte-carlo:
 
 Monte Carlo Integration
@@ -7,7 +9,7 @@ Monte Carlo Integration
 
 In addition to the *one-dimensional* integrators in :mod:`integ`, LGSL currently
 provides a *multidimensional* integrator which uses the VEGAS algorithm in
-:mod:`vegas_prepare`.  This integrator is a Monte Carlo integration method,
+:mod:`vegas`.  This integrator is a Monte Carlo integration method,
 which means that the points at which the integrand is evaluated are chosen at
 random by a random number generator. 
 
@@ -49,14 +51,13 @@ The VEGAS algorithm computes a number of independent estimates of the integral i
 
 The convergence of the algorithm can be tested using the overall chi-squared value of the results. A value which differs significantly from 1 indicates that the values from different iterations are inconsistent. In this case the weighted error will be underestimated, and further iterations of the algorithm are needed to obtain reliable results.
 
-The VEGAS algorithm uses a fixed number of calls to evaluate the integral. It is possible to call the continuation function, which is returned by :func:`num.vegas_integ`, with a higher number of calls to increase the accuracy of the result. Keep in mind that reducing :math:`\sigma` by a certain factor typically increases the number of calls quadratically, because :math:`\sigma \propto 1/\sqrt{n}`.
+The VEGAS algorithm uses a fixed number of calls to evaluate the integral. It is possible to call the continuation function, which is returned by :func:`vegas.integ`, with a higher number of calls to increase the accuracy of the result. Keep in mind that reducing :math:`\sigma` by a certain factor typically increases the number of calls quadratically, because :math:`\sigma \propto 1/\sqrt{n}`.
 
 Functions
 ---------
+.. function:: prepare(spec)
 
-.. function:: vegas_prepare(spec)
-
- Prepare a VEGAS Monte Carlo integrator, :func:`vegas_integ`. ``spec`` is a table which can contain the following fields:
+ Prepare a custom VEGAS Monte Carlo integrator. ``spec`` is a table which can contain the following fields:
 
  *N* (required)
  Number of dimensions of the function you want to integrate.
@@ -73,10 +74,9 @@ Functions
  *ALPHA* (optional, default: 1.5)
  Grid flexibility for rebinning, typically between 1 and 2. Higher is more adaptive, 0 is rigid.
 
+ The function :func:`vegas.prepare` returns an integrator with the same interface as :func:`vegas.integ`.
 
-The function :func:`vegas_prepare` returns an integrator with the following interface:
-
-.. function:: vegas_integ(f, a, b[, calls, options])
+.. function:: integ(f, a, b[, calls, options])
 
    Use the VEGAS Monte Carlo algorithm to integrate the function ``f`` over the ``N``-dimensional hypercubic region defined by the lower and upper limits in the vectors ``a`` and ``b`` (assuming 1-based indexing). The integration uses a fixed number of function calls ``calls``, as opposed to a target precision.  The optional ``options`` table can contain the fields
 
@@ -129,7 +129,7 @@ so that :math:`\mathcal{Z}(T,V,N) = \mathcal{Z}_{\textrm{ideal}}(T,V,N) \times Q
 
 Using the VEGAS algorithm, we can perform a naive calculation of :math:`Q(T,V,N)` for a one-dimensional box containing 5 particles with a Gaussian repulsive interaction::
 
-  vegas_prepare = require("lgsl.vegas_prepare")
+  vegas = require("lgsl.vegas")
   T,V,N = 2,100,5
 
   -- the potential between two particles
@@ -152,10 +152,7 @@ Using the VEGAS algorithm, we can perform a naive calculation of :math:`Q(T,V,N)
   lo,hi = {},{}
   for i=1,N do lo[i],hi[i] = 0,V end
 
-  -- prepare integrator
-  vegas_integ = vegas_prepare({N=N})
-
   -- calculate the integral and print the results
-  s = vegas_integ(boltzmann,lo,hi,1e5)
+  s = vegas.integ(boltzmann,lo,hi,1e5)
   io.write("Q(T=",T,",V=",V,",N=",N,") = ",s.result/V^N," +/- ",s.sigma/V^N,"\n")
 

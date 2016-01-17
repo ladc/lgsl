@@ -2,7 +2,7 @@ local integ = require("lgsl.integ")
 local sf = require("lgsl.sf")
 local graph = require("graph")
 
-local qag = integ.quad_prepare({method='qag', limit=64, order=21})
+local qag = integ.prepare({method='qag', limit=64, order=21})
 local cos, sin, pi = math.cos, math.sin, math.pi
 local epsabs, epsrel = 1e-6, 0.01
 

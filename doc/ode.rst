@@ -76,7 +76,7 @@ and this is the code that we can write to implement it::
       s:step(t1)
    end
 
-Alternatively, you may want to make a plot of the curve that you obtain. This requires the package graph-toolkit. In the following example, we create a "path" to describe the curve that we want to plot. We iterate with the ODE solver and we add all points with the "line_to" method. Then we create an empty plot and we add the line that we have just created::
+Alternatively, you may want to make a plot of the curve that you obtain. This requires the package :ref:`graph-toolkit <graphics-chapter>`. In the following example, we create a "path" to describe the curve that we want to plot. We iterate with the ODE solver and we add all points with the "line_to" method. Then we create an empty plot and we add the line that we have just created::
 
    graph = require("graph")
 

@@ -1,7 +1,7 @@
 -- integ.lua
 --
 -- integ: Function that performs a 1D numeric integration.
--- quad_prepare: Create a function that can perform a 1D numeric integration.
+-- prepare: Create a function that can perform a 1D numeric integration.
 -- 
 -- Copyright (C) 2009-2015 Francesco Abbate
 -- 
@@ -61,5 +61,5 @@ end
 
 return {
   integ = integ,
-  quad_prepare = quad_prepare
+  prepare = quad_prepare
 }

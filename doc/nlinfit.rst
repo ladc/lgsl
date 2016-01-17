@@ -1,7 +1,5 @@
 .. highlight:: lua
 
-.. currentmodule:: nlinfit
-
 Nonlinear Least Squares fit
 ===========================
 
@@ -192,3 +190,6 @@ Solver class definition
    .. attribute:: f
 
       Returns a vector with the fit residuals.
+
+.. module:: nlinfit
+

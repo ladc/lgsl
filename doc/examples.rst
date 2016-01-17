@@ -27,7 +27,7 @@ This is easy like eating a piece of cake::
       return 1/math.pi * integ(f, 0, math.pi, epsabs, epsrel)
    end
 
-The definition of ``bessJ`` takes x and n as arguments and calculates the definite integral between 0 and :math:`\pi`. Then we can plot the results for various values of n::
+The definition of ``bessJ`` takes x and n as arguments and calculates the definite integral between 0 and :math:`\pi`. Using the :mod:`graph` module from the package :ref:`graph-toolkit <graphics-chapter>`, we can plot the results for various values of n::
    
    graph = require("graph")
    p = graph.plot('Bessel Functions Jn, n=0 ... 5')

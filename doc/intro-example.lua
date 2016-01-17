@@ -1,5 +1,5 @@
 
-local vegas_prepare = require("lgsl.vegas_prepare")
+local vegas = require("lgsl.vegas")
 local sf = require("lgsl.sf") -- for the analytical solution, see below
 local iter = require("lgsl.iter") -- for defining the integration boundaries
 
@@ -21,10 +21,9 @@ for d=2, max_dim do
    local a = iter.ilist(function() return 0 end, d)
    local b = iter.ilist(function() return 1 end, d)
    local calls, n = d*1e4,1
-   local vegas_integ = vegas_prepare({N=d})
 
    --Obtaining monte carlo vegas callback
-   local s = vegas_integ(getunitsphere(d),a,b,calls)
+   local s = vegas.integ(getunitsphere(d),a,b,calls)
    local fmt = "Volume = %.3f +/- %.3f "
    print(string.format(fmt,s.result*2^d,s.sigma*2^d))
 

@@ -1,7 +1,5 @@
 .. highlight:: lua
 
-.. currentmodule:: linfit
-
 Linear Least Squares fit
 ===========================
 
@@ -24,6 +22,8 @@ Linear Fit Functions
           c, chisq, cov = lgsl.linfit(X, y)
 
        The function returns the fit coefficients, the residual chi square and the covariance matrix.
+
+.. module:: linfit
 
 Complete Example
 ----------------

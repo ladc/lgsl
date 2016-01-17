@@ -1,6 +1,6 @@
 local iter = require("lgsl.iter")
 
-local vegas_prepare = require("lgsl.vegas_prepare")
+local vegas = require("lgsl.vegas")
 local ilist = iter.ilist
 
 local graph = require("graph")
@@ -17,8 +17,7 @@ local function testdim(n)
   local a, b = ilist(function() return lo end, n), ilist(function() return hi end, n)
   print("Integrating SUM_(k=1,"..n..") k*x[k]^2")
   local calls = 1e4*n
-  local vegas_integ = vegas_prepare({N=n})
-  local vegas_result = vegas_integ(integrand,a,b,calls)
+  local vegas_result = vegas.integ(integrand,a,b,calls)
   print( string.format([[
 result = %.6f
 sigma  = %.6f
@@ -62,8 +61,7 @@ local function demo2()
     print("Calculating the volume of a unit "..d.."-sphere.")
     local a, b = ilist(function() return 0 end, d), ilist(function() return 1 end, d)
     local calls, n = d*1e4,1
-    local vegas_integ = vegas_prepare({N=d})
-    local vegas_result = vegas_integ(getunitsphere(d),a,b,calls)
+    local vegas_result = vegas.integ(getunitsphere(d),a,b,calls)
     local res,sig,num,cont = vegas_result.result, vegas_result.sigma, vegas_result.nruns, vegas_result.continue
     local fmt = "Volume = %.3f +/- %.3f "
     print(string.format(fmt,res*2^d,sig*2^d))

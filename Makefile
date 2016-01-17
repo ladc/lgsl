@@ -14,7 +14,7 @@ DEBIAN = debian_build$(PREFIX)
 LUA_SRC = bspline.lua check.lua complex.lua csv.lua eigen.lua fft.lua \
 	gsl-check.lua gsl.lua integ.lua iter.lua linfit.lua \
 	matrix.lua nlinfit.lua ode.lua randist.lua rnd.lua \
-	rng.lua sf.lua sort.lua template.lua vegas_prepare.lua
+	rng.lua sf.lua sort.lua template.lua vegas.lua
 
 LUA_TEMPLATES_SRC = gauss-kronrod-x-wgs.lua.in lmfit.lua.in \
 	ode-defs.lua.in qag.lua.in qng.lua.in rk4.lua.in rk8pd.lua.in \

@@ -1,4 +1,4 @@
--- vegas_prepare.lua
+-- vegas.lua
 -- 
 -- Create a function that can perform a VEGAS Monte Carlo multidimensional
 -- numerical integration.
@@ -105,5 +105,24 @@ local function vegas_prepare(spec)
   local state = template.load('lgsl.templates.vegas-defs', template_spec)
   return getintegrator(state,template_spec)
 end
+  
+--- perform VEGAS Monte Carlo integration of f with default specs; determine N
+-- from bound vector.
+-- @param f function of an N-dimensional vector (/table/ffi-array...)
+-- @param a lower bound vector (1-based indexing)
+-- @param b upper bound vector (1-based indexing)
+-- @param calls number of function calls (will be rounded down to fit grid)
+-- @param options table of parameters (optional), of which:
+--   r random number generator (default random)
+--   chidev deviation tolerance for the integrals' chi^2 value
+--         integration will be repeated until chi^2 < chidev
+--   warmup number of calls for warmup phase (default 1e4)
+local function vegas_integ(f,a,b,calls,options)
+  local integrator = vegas_prepare({N=#a})
+  return integrator(f,a,b,calls,options)
+end
 
-return vegas_prepare
+return {
+  prepare = vegas_prepare,
+  integ = vegas_integ,
+}

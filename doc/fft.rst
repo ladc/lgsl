@@ -1,6 +1,6 @@
 .. highlight:: lua
 
-.. currentmodule:: fft 
+.. module:: fft 
 
 Fast Fourier Transform
 ==============================
@@ -145,7 +145,7 @@ So, first we define our square pulse in the time domain. Actually it will be a m
    -- we create a pulse signal in the time domain
    y = matrix.new(n, 1, function(i) return  i < n/3 and 0 or (i < 2*n/3 and 1 or 0) end )
 
-If we have graph-toolkit available, we can create two new plots, one for the Fourier transform and one for the signal itself::
+If we have :ref:`graph-toolkit <graphics-chapter>` available, we can create two new plots, one for the Fourier transform and one for the signal itself::
 
    graph = require("graph")
    pt = graph.plot('Original signal / reconstructed')
