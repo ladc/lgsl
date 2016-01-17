@@ -1,5 +1,7 @@
 .. highlight:: lua
 
+.. _gsl-ffi-interface:
+
 GSL FFI interface
 =================
 
@@ -19,10 +21,12 @@ For the ODE systems LuaJIT is in general comparable to C in terms of speed.
 Another module re-implemented in Lua is the module for numerical integration, where the QAG adaptive routine has been ported with excellent results.
 
 The non-linear fit module reimplemented in Lua has been checked for correctness using a subset of the `NIST datasets <http://www.itl.nist.gov/div898/strd/nls/nls_main.shtml>`_.
-You can run the tests yourself by giving the following command:: 
- 
- todo
 
+You can run the tests yourself by giving the following command.
+
+.. todo::
+   Add NIST tests; add comparison between C and LGSL versions of VEGAS and root finders.
+ 
 Then you can compare the results and the plots to the official results published in the NIST website.
 
 Here is an example of the plot produced for the ENSO dataset:

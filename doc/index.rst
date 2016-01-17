@@ -28,9 +28,9 @@ Contents:
    :maxdepth: 2
 
    intro.rst
+   lua-base.rst
    complex.rst
    matrices.rst
-   lua-base.rst
    linalg.rst
    eigen.rst
    random.rst
