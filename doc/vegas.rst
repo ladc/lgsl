@@ -97,10 +97,10 @@ Functions
     *sigma*
      The error estimate.
      
-    *calls*
+    *nruns*
      The number of runs needed to reach the desired chi-squared. 
      
-    *cont([ncalls])* 
+    *continue([ncalls])* 
      The continuation function that takes a number of calls as an optional
      argument. This function can be invoked to recalculate the integral with a
      higher number of calls, to increase precision.  The continuation function
