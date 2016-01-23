@@ -19,7 +19,7 @@ Lua to get the most out of LuaJIT.
 
 .. _Lua: http://www.lua.org
 .. _GNU Scientific Library (GSL): http://www.gnu.org/software/gsl
-.. _GSL Shell: http://http://www.nongnu.org/gsl-shell
+.. _GSL Shell: http://www.nongnu.org/gsl-shell
 .. _LuaJIT: http://luajit.org
 
 Contents:
