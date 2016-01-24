@@ -173,9 +173,7 @@ compare(sf.hypergU(10, 2.5, 50)          ,  2.4098720076596087125e-18, "hypergU(
 compare(sf.hypergU(-10.5, 1.1, 1)        ,      -3.990841457734147e+6, "hypergU(-10.5, 1.1, 1)", TEST_TOL2)
 compare(sf.hypergU(-10.5, 1.1, 10)       ,       1.307472052129343e+8, "hypergU(-10.5, 1.1, 10)", TEST_TOL1)
 compare(sf.hypergU(-10.5, 1.1, 50)       ,      3.661978424114088e+16, "hypergU(-10.5, 1.1, 50)", TEST_TOL0)
---[[ strscan bug?
 compare(sf.hypergU(-10.5, 1.1, 90)       ,       8.09469542130868e+19, "hypergU(-10.5, 1.1, 90)", TEST_TOL1)
---]]
 compare(sf.hypergU(-10.5, 1.1, 99)       ,      2.546328328942063e+20, "hypergU(-10.5, 1.1, 99)", TEST_TOL1)
 compare(sf.hypergU(-10.5, 1.1, 100)      ,      2.870463201832814e+20, "hypergU(-10.5, 1.1, 100)", TEST_TOL1)
 compare(sf.hypergU(-10.5, 1.1, 200)      ,       8.05143453769373e+23, "hypergU(-10.5, 1.1, 200)", TEST_TOL2)
