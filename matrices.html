@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Matrices &mdash; LGSL Documentation 0.1-beta1 documentation</title>
+    <title>Matrices &mdash; Documentation for LGSL v0.1</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1-beta1',
+        VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="LGSL Documentation 0.1-beta1 documentation" href="index.html" />
+    <link rel="top" title="Documentation for LGSL v0.1" href="index.html" />
     <link rel="next" title="Linear Algebra" href="linalg.html" />
     <link rel="prev" title="Complex Numbers" href="complex.html" /> 
   </head>
@@ -44,7 +44,7 @@
         <li class="right" >
           <a href="complex.html" title="Complex Numbers"
              accesskey="P">previous</a> |</li>
-        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Documentation for LGSL v0.1</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -174,6 +174,18 @@ Alternatively, you can use the <a class="reference internal" href="#Matrix.slice
 </dd></dl>
 
 <dl class="method">
+<dt id="Matrix.rows">
+<tt class="descname">rows</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix.rows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of rows of the matrix.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="Matrix.cols">
+<tt class="descname">cols</tt><big>(</big><big>)</big><a class="headerlink" href="#Matrix.cols" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of columns of the matrix.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Matrix.get">
 <tt class="descname">get</tt><big>(</big><em>i</em>, <em>j</em><big>)</big><a class="headerlink" href="#Matrix.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function returns the <tt class="docutils literal"><span class="pre">(i,j)</span></tt>-th element of a matrix. As a general
@@ -257,6 +269,15 @@ same of the function <a class="reference internal" href="#matrix.new" title="mat
 <dt id="matrix.vec">
 <tt class="descclassname">matrix.</tt><tt class="descname">vec</tt><big>(</big><em>t</em><big>)</big><a class="headerlink" href="#matrix.vec" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the table <tt class="docutils literal"><span class="pre">t</span></tt> into a column matrix. In LGSL, column matrices are considered vectors. The table should be in the form <tt class="docutils literal"><span class="pre">{v1,</span> <span class="pre">v2,</span> <span class="pre">v3,</span> <span class="pre">...}</span></tt>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="matrix.stack">
+<tt class="descclassname">matrix.</tt><tt class="descname">stack</tt><big>(</big><em>layout</em><big>)</big><a class="headerlink" href="#matrix.stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a new matrix by stacking together, horizontally and vertically, more matrices as specified in the <tt class="docutils literal"><span class="pre">layout</span></tt> argument.</p>
+<p>The argument <tt class="docutils literal"><span class="pre">layout</span></tt> should be in the form <tt class="docutils literal"><span class="pre">{{A1,</span> <span class="pre">A2,</span> <span class="pre">...},</span> <span class="pre">{B1,</span> <span class="pre">B2,</span> <span class="pre">...},</span> <span class="pre">...}</span></tt> to indicate the layout of the matrices to be composed.
+Each of the layout terms can be a matrix or a scalar.
+If a scalar is given it will be transformed into a matrix of identical elements and whose dimensions will be adjusted to fit the other matrices in the layout.</p>
 </dd></dl>
 
 <dl class="function">
@@ -386,7 +407,7 @@ operates on a matrix that already exists instead of creating a new one.</p>
         <li class="right" >
           <a href="complex.html" title="Complex Numbers"
              >previous</a> |</li>
-        <li><a href="index.html">LGSL Documentation 0.1-beta1 documentation</a> &raquo;</li> 
+        <li><a href="index.html">Documentation for LGSL v0.1</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
