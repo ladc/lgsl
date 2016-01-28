@@ -1,5 +1,5 @@
 package = "LGSL"
-version = "scm-1"
+version = "scm-3"
 source = {
    url = "https://github.com/ladc/lgsl/archive/master.zip",
    dir = "lgsl-master"
@@ -91,5 +91,5 @@ build = {
           ["lgsl.demos.wave-particle"] = "demos/wave-particle.lua",
       },
    },
-   copy_directories = { "tests" },
+   copy_directories = { "tests", "doc" },
 }
