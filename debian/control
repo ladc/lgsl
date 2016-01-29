@@ -3,7 +3,7 @@ Maintainer: LGT_MAINTAINER
 Version: LGT_VERSION
 Architecture: LGT_ARCH
 Installed-Size: LGT_INSTALLED_SIZE
-Depends: libc6 (>= 2.7-1), libgsl0ldbl (>= 1.16), LGT_LUA
+Depends: libc6 (>= 2.7-1), libgsl0ldbl (>= 1.14), LGT_LUA
 Section: math
 Priority: optional
 Description: A numerical library for Lua based on GSL

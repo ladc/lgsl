@@ -8,7 +8,11 @@ LGT_ISIZE_A=(`du -s debian_build`)
 LGT_ISIZE=${LGT_ISIZE_A[0]}
 
 LGT_ARCH=`dpkg-architecture -qDEB_HOST_ARCH`
-LGT_MAINTAINER="${USER}@${HOSTNAME}"
+LGT_MAINTAINER=$4
+if [ -z "$4" ]
+then
+  LGT_MAINTAINER="${USER}@${HOSTNAME}"
+fi
 
 mkdir debian_build/DEBIAN
 
