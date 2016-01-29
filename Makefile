@@ -16,6 +16,11 @@ LUA_SRC = bspline.lua check.lua complex.lua csv.lua eigen.lua fft.lua \
 	matrix.lua nlinfit.lua ode.lua randist.lua rnd.lua \
 	rng.lua sf.lua sort.lua template.lua vegas.lua
 
+DEMO_SRC = anim.lua demos.lua fractals.lua linfit.lua ode.lua roots.lua \
+	vegas.lua bspline.lua fft.lua integ.lua nlinfit.lua plot.lua \
+	sf.lua wave-particle.lua
+DEMO_MAIN_SRC = demos.lua
+
 LUA_TEMPLATES_SRC = gauss-kronrod-x-wgs.lua.in lmfit.lua.in \
 	ode-defs.lua.in qag.lua.in qng.lua.in rk4.lua.in rk8pd.lua.in \
 	rkf45.lua.in rkf45vec.lua.in rnd-defs.lua.in sf-defs.lua.in \
@@ -30,7 +35,10 @@ $(DEB_PACKAGE):
 	@echo "creating debian package $(DEB_PACKAGE)"
 	@mkdir -p $(DEBIAN)/share/lua/5.1/lgsl
 	@mkdir -p $(DEBIAN)/share/lua/5.1/lgsl/templates
+	@mkdir -p $(DEBIAN)/share/lua/5.1/lgsl/demos
 	@cp $(LUA_SRC:%.lua=lgsl/%.lua) $(DEBIAN)/share/lua/5.1/lgsl
+	@cp $(DEMO_MAIN_SRC:%.lua=demos/%.lua) $(DEBIAN)/share/lua/5.1/lgsl
+	@cp $(DEMO_SRC:%.lua=demos/%.lua) $(DEBIAN)/share/lua/5.1/lgsl/demos
 	@cp lgsl.lua $(DEBIAN)/share/lua/5.1/
 	@cp $(LUA_TEMPLATES_SRC:%.lua.in=lgsl/templates/%.lua.in) $(DEBIAN)/share/lua/5.1/lgsl/templates
 	@fakeroot bash debian/build.sh $(PACKAGE_NAME) $(VERSION) $(LUA)
@@ -39,7 +47,10 @@ install:
 	@echo "copying files in $(PREFIX)/share/lua/5.1/lgsl"
 	@mkdir -p $(PREFIX)/share/lua/5.1/lgsl
 	@mkdir -p $(PREFIX)/share/lua/5.1/lgsl/templates
+	@mkdir -p $(PREFIX)/share/lua/5.1/lgsl/demos
 	@cp $(LUA_SRC:%.lua=lgsl/%.lua) $(PREFIX)/share/lua/5.1/lgsl
+	@cp $(DEMO_MAIN_SRC:%.lua=demos/%.lua) $(PREFIX)/share/lua/5.1/lgsl
+	@cp $(DEMO_SRC:%.lua=demos/%.lua) $(PREFIX)/share/lua/5.1/lgsl/demos
 	@cp lgsl.lua $(PREFIX)/share/lua/5.1/
 	@cp $(LUA_TEMPLATES_SRC:%.lua.in=lgsl/templates/%.lua.in) $(PREFIX)/share/lua/5.1/lgsl/templates
 
