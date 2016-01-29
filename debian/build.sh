@@ -3,20 +3,21 @@
 LGT_PACKAGE_NAME=$1
 LGT_VERSION=$2
 LGT_LUA=$3
+LGT_HOMEPAGE=$4
 
 LGT_ISIZE_A=(`du -s debian_build`)
 LGT_ISIZE=${LGT_ISIZE_A[0]}
 
 LGT_ARCH=all # `dpkg-architecture -qDEB_HOST_ARCH`
-LGT_MAINTAINER=$4
-if [ -z "$4" ]
+LGT_MAINTAINER=$5
+if [ -z "$5" ]
 then
   LGT_MAINTAINER="${USER}@${HOSTNAME}"
 fi
 
 mkdir debian_build/DEBIAN
 
-cat debian/control | sed "s/LGT_PACKAGE_NAME/$LGT_PACKAGE_NAME/;s/LGT_VERSION/$LGT_VERSION/;s/LGT_INSTALLED_SIZE/$LGT_ISIZE/;s/LGT_ARCH/$LGT_ARCH/;s/LGT_LUA/$LGT_LUA/;s/LGT_MAINTAINER/$LGT_MAINTAINER/" - > debian_build/DEBIAN/control
+cat debian/control | sed "s/LGT_PACKAGE_NAME/$LGT_PACKAGE_NAME/;s/LGT_VERSION/$LGT_VERSION/;s/LGT_INSTALLED_SIZE/$LGT_ISIZE/;s/LGT_ARCH/$LGT_ARCH/;s/LGT_LUA/$LGT_LUA/;s/LGT_MAINTAINER/$LGT_MAINTAINER/;s|LGT_HOMEPAGE|$LGT_HOMEPAGE|" - > debian_build/DEBIAN/control
 
 chown root.root -R debian_build
 chmod a-w -R debian_build

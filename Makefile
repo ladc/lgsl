@@ -2,6 +2,8 @@
 PACKAGE_NAME = luajit-lgsl
 VERSION = 0.1
 LUA = luajit
+HOMEPAGE = "http://ladc.github.io/lgsl"
+MAINTAINER = "Lesley De Cruz <lesley.decruz+lgsl@gmail.com>"
 
 DEB_PACKAGE = $(PACKAGE_NAME)_$(VERSION)-1_$(ARCH).deb
 
@@ -41,7 +43,7 @@ $(DEB_PACKAGE):
 	@cp $(DEMO_SRC:%.lua=demos/%.lua) $(DEBIAN)/share/lua/5.1/lgsl/demos
 	@cp lgsl.lua $(DEBIAN)/share/lua/5.1/
 	@cp $(LUA_TEMPLATES_SRC:%.lua.in=lgsl/templates/%.lua.in) $(DEBIAN)/share/lua/5.1/lgsl/templates
-	@fakeroot bash debian/build.sh $(PACKAGE_NAME) $(VERSION) $(LUA)
+	@fakeroot bash debian/build.sh $(PACKAGE_NAME) $(VERSION) $(LUA) $(HOMEPAGE) $(MAINTAINER)
 
 install:
 	@echo "copying files in $(PREFIX)/share/lua/5.1/lgsl"

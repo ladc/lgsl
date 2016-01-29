@@ -2,6 +2,7 @@ Package: LGT_PACKAGE_NAME
 Maintainer: LGT_MAINTAINER
 Version: LGT_VERSION
 Architecture: LGT_ARCH
+Homepage: LGT_HOMEPAGE
 Installed-Size: LGT_INSTALLED_SIZE
 Depends: libc6 (>= 2.7-1), libgsl0ldbl (>= 1.14), LGT_LUA
 Section: math
