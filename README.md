@@ -54,9 +54,14 @@ privileges.  Before installing you may change the `PREFIX` directory in
 `Makefile` or with `make install PREFIX=/path/to/install`.
 
 On Debian-based systems like Ubuntu or Debian itself, the package can be
-installed from a Debian package.  The command `make debian` or simply `make`
-will build a Debian package in the source code directory.  Once the package is
-created, it can be installed with sudo privileges using the command:
+installed from a Debian package. The .deb package can be downloaded here:
+
+[luajit-lgsl deb for all architectures](http://lgsl.duckdns.org/deb/luajit-lgsl_0.1-1_all.deb)
+
+
+The command `make debian` or simply `make` will build a Debian package in the
+source code directory.  Once the package is created, it can be installed with
+sudo privileges using the command:
 
 ```
 sudo dpkg -i name-of-debian-package
