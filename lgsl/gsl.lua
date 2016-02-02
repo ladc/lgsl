@@ -2687,7 +2687,8 @@ char *dlerror(void);
 
 local libgsl, libblas = "gsl", "gslcblas"
 if jit.os == "Linux" or jit.os == "BSD" then
-  libblas = "libgslcblas.so"
+  libgsl = "libgsl.so.0"
+  libblas = "libgslcblas.so.0"
   -- It may be required to explicitly dlopen the BLAS library with the
   -- RTLD_NOW | RTLD_GLOBAL flags, to avoid missing symbols.  For some reason,
   -- ffi.load'ing it does not suffice.
