@@ -4,8 +4,8 @@ language: python
 sudo: false
 
 env:
-  - LUA="luajit=2.0"
-  - LUA="luajit=2.1"
+  - LUA="luajit=2.0" LUAJIT=luajit-2.0.4
+  - LUA="luajit=2.1" LUAJIT=luajit-2.1.0-beta1
 
 before_install:
   - pip install hererocks
@@ -17,4 +17,4 @@ install:
 
 script:
   - luacheck --std max+busted *.lua lgsl/*.lua tests/*.lua
-  - luajit test-output.lua
+  - $LUAJIT test-output.lua
