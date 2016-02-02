@@ -1,7 +1,10 @@
 # LGSL: A numerical library for Lua based on GSL
 
+[![Build Status](https://travis-ci.org/ladc/lgsl.svg?branch=master)](https://travis-ci.org/ladc/lgsl)
+
 * Copyright (C) 2009-2016 Francesco Abbate, Lesley De Cruz and Benjamin von Ardenne
 * Published under GPL-3
+
 
 ## About
 
