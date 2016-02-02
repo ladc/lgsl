@@ -1,0 +1,20 @@
+# .travis.yml
+
+language: python
+sudo: false
+
+env:
+  - LUA="luajit=2.0"
+  - LUA="luajit=2.1"
+
+before_install:
+  - pip install hererocks
+  - hererocks lua_install -r^ --$LUA
+  - export PATH=$PATH:$PWD/lua_install/bin
+
+install:
+  - luarocks install luacheck
+
+script:
+  - luacheck --std max+busted *.lua lgsl/*.lua tests/*.lua
+  - luajit test-output.lua
