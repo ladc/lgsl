@@ -7,7 +7,7 @@
 local M = {}
 
 -------------------------------------------------------------------------------
-local function preprocess(chunk, name, defs)
+local function preprocess(ch, name, defs)
 
    local function parseDollarParen(pieces, chunk)
       local append, format = table.insert, string.format
@@ -59,7 +59,7 @@ local function preprocess(chunk, name, defs)
       ppenv.include = include
    end
 
-   local code = parseHashLines(chunk)
+   local code = parseHashLines(ch)
    local fcode = loadstring(code, name)
    if fcode then
       setfenv(fcode, ppenv)
