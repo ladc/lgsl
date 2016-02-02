@@ -1,7 +1,8 @@
 # .travis.yml
 
 language: python
-sudo: false
+sudo: required
+dist: trusty
 
 env:
   - LUA="luajit=2.0"
@@ -21,5 +22,5 @@ install:
   - luarocks install luacheck
 
 script:
-  - luacheck -u --std max+busted *.lua lgsl/*.lua tests/*.lua
+  - luacheck -u --std max+busted lgsl.lua lgsl/*.lua tests/*.lua
   - lua test-output.lua
